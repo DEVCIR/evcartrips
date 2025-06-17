@@ -1,7 +1,6 @@
   "use client";
 
   import Navbar1 from "../common_components/navbar1/page";
-  import MapComponent from "../common_components/map/page";
   import RouteOverview from "../common_components/route_overview/page";
   import Iternary from "../common_components/iternary/page";
   import CarDiv from "../common_components/cardiv/page";
@@ -9,10 +8,22 @@
   import { Edit } from "lucide-react";
   import Rentals from "../common_components/rentals/page";
   import { useSearchParams } from 'next/navigation';
-  import React from "react";
+  import React, { Suspense } from "react";
   
+import dynamic from 'next/dynamic';
+const MapComponent = dynamic(() => import('../common_components/map/page'), {
+  ssr: false,
+});
 
-  export default function Page() {
+export default function PageWrapper() {
+  return (
+    <Suspense fallback={<div className="text-white text-center mt-10">Loading...</div>}>
+      <Page />
+    </Suspense>
+  );
+}
+
+function Page() {
     const searchParams = useSearchParams();
     
     // Get data from URL parameters

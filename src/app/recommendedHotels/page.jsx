@@ -11,8 +11,19 @@ import {
 import Image from "next/image";
 import Navbar1 from "../common_components/navbar1/page";
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from "react";
 
-export default function Page() {
+
+export default function PageWrapper() {
+  return (
+    <Suspense fallback={<div className="text-white text-center mt-10">Loading...</div>}>
+      <Page />
+    </Suspense>
+  );
+}
+
+
+function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const hotels = [

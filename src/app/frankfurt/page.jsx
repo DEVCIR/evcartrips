@@ -5,8 +5,19 @@ import Navbar from "../common_components/navbar/page";
 import HotelFilters from "../common_components/hotel-filters/page";
 import { useState , useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function Page() {
+
+export default function PageWrapper() {
+  return (
+    <Suspense fallback={<div className="text-white text-center mt-10">Loading...</div>}>
+      <Page />
+    </Suspense>
+  );
+}
+
+
+function Page() {
     const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({

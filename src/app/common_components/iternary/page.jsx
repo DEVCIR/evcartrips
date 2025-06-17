@@ -1,8 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from "react";
 
-export default function Iternary({ stops = [], startDate, maxDistance = "500 KM", needHotel = true, travellers = "1 Traveller, 1 Room",from, to }) {
+export default function PageWrapper() {
+  return (
+    <Suspense fallback={<div className="text-white text-center mt-10">Loading...</div>}>
+      <Iternary />
+    </Suspense>
+  );
+}
+
+
+function Iternary({ stops = [], startDate, maxDistance = "500 KM", needHotel = true, travellers = "1 Traveller, 1 Room",from, to }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
