@@ -46,22 +46,21 @@ export default function TravelForm() {
   const [searchTimeout, setSearchTimeout] = useState(null)
   const [activeStopIndex, setActiveStopIndex] = useState(0)
 
-  const fetchCities = async (searchTerm) => {
-    if (!searchTerm || searchTerm.length < 2) return
-    
-    setLoadingCities(true)
-    try {
-      const response = await axios.get(
-        `http://api.geonames.org/searchJSON?q=${searchTerm}&maxRows=5&username=wotileh938`
-      )
-      setCities(response.data.geonames || [])
-    } catch (error) {
-      console.error("Error fetching cities:", error)
-      setCities([])
-    } finally {
-      setLoadingCities(false)
-    }
+const fetchCities = async (searchTerm) => {
+  if (!searchTerm || searchTerm.length < 2) return;
+
+  setLoadingCities(true);
+  try {
+    const response = await axios.get(`/api/cities?q=${encodeURIComponent(searchTerm)}`);
+    setCities(response.data.geonames || []);
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    setCities([]);
+  } finally {
+    setLoadingCities(false);
   }
+};
+
 
   const handleInputChange = async (field, value, index = null) => {
     if (field === 'stop' && index !== null) {
