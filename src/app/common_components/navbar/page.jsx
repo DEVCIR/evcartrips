@@ -1,8 +1,9 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { User } from "lucide-react";
+import { House, User , Users, Mail } from "lucide-react";
 import SideMenu from '../SideMenu/page'
 import { useState } from "react";
+import Link from "next/link"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -16,12 +17,24 @@ export default function Navbar() {
         />
       </button>
 
-      <div className="flex items-center">
+      <div className="flex items-center gap-x-6">
         <img
           src="/images/evcartrips-logo.png"
           alt="evcartrips.com"
           className="h-8 w-auto md:h-10"
         />
+        <div className="cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
+          <House className="w-4 h-4"/>
+          <Link href="/home" className="font-semibold">Home</Link>
+        </div>
+        <div className="cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
+          <Users className="w-4 h-4"/>
+          <Link href="/about" className="font-semibold">About</Link>
+        </div>
+        <div className="cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
+          <Mail className="w-4 h-4"/>
+          <Link href="/contact" className="font-semibold">Contact</Link>
+        </div>
       </div>
 
 
@@ -53,7 +66,9 @@ export default function Navbar() {
         </div>
 
         <div className="bg-gray-600 rounded-full p-1">
-          <User className="h-4 w-4 md:h-5 md:w-5 xl:w-[41px] xl:h-[41px] text-white" />
+          <Link href="/signin" className="cursor-pointer"> 
+            <User className="h-4 w-4 md:h-5 md:w-5 xl:w-[41px] xl:h-[41px] text-white" />
+          </Link>
         </div>
       </div>
       <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />

@@ -1,5 +1,4 @@
 "use client"
-import React from "react"
 
 export default function RouteOverview({
   from,
@@ -7,56 +6,60 @@ export default function RouteOverview({
   stops = [],
   maxDistance = "500 KM",
   autonomy = "500 KM",
-  startDate
+  startDate,
 }) {
+  // Extract unit (KM or MI) and value from parameters
+  const maxDistanceValue = Number.parseInt(maxDistance) || 500
+  const maxDistanceUnit = maxDistance.includes("MI") ? "MI" : "KM"
 
- // Extract unit (KM or MI) and value from parameters
-  const maxDistanceValue = parseInt(maxDistance) || 500;
-  const maxDistanceUnit = maxDistance.includes("MI") ? "MI" : "KM";
-  
-  const autonomyValue = parseInt(autonomy) || 500;
-  const autonomyUnit = autonomy.includes("MI") ? "MI" : "KM";
+  const autonomyValue = Number.parseInt(autonomy) || 500
+  const autonomyUnit = autonomy.includes("MI") ? "MI" : "KM"
 
   // Conversion factor
-  const MILES_TO_KM = 1.60934;
+  const MILES_TO_KM = 1.60934
 
   // Convert to consistent unit (KM) for calculations
-  const maxDistanceKm = maxDistanceUnit === "MI" ? maxDistanceValue * MILES_TO_KM : maxDistanceValue;
-  const autonomyKm = autonomyUnit === "MI" ? autonomyValue * MILES_TO_KM : autonomyValue;
+  const maxDistanceKm = maxDistanceUnit === "MI" ? maxDistanceValue * MILES_TO_KM : maxDistanceValue
+  const autonomyKm = autonomyUnit === "MI" ? autonomyValue * MILES_TO_KM : autonomyValue
 
   // Calculate total distance (in original units)
   const calculateTotalDistance = () => {
-    const baseDistancePerLeg = maxDistanceKm;
-    const totalDistanceKm = baseDistancePerLeg * (stops.length + 1);
-    const totalDistance = maxDistanceUnit === "MI" ? totalDistanceKm / MILES_TO_KM : totalDistanceKm;
-    return `${Math.round(totalDistance).toLocaleString()}${maxDistanceUnit}`;
-  };
+    const baseDistancePerLeg = maxDistanceKm
+    const totalDistanceKm = baseDistancePerLeg * (stops.length + 1)
+    const totalDistance = maxDistanceUnit === "MI" ? totalDistanceKm / MILES_TO_KM : totalDistanceKm
+    return `${Math.round(totalDistance).toLocaleString()}${maxDistanceUnit}`
+  }
 
   const calculateDrivingTime = () => {
-    const baseDistancePerLeg = maxDistanceKm;
-    const totalDistanceKm = baseDistancePerLeg * (stops.length + 1);
-    const averageSpeed = 80; // km/h (conservative estimate)
-    const drivingHours = totalDistanceKm / averageSpeed;
-    const stopHours = stops.length * 0.5; // 30min per stop
-    const totalHours = Math.round(drivingHours + stopHours);
-    return `~${totalHours} HOURS`;
-  };
-
+    const baseDistancePerLeg = maxDistanceKm
+    const totalDistanceKm = baseDistancePerLeg * (stops.length + 1)
+    const averageSpeed = 80 // km/h (conservative estimate)
+    const drivingHours = totalDistanceKm / averageSpeed
+    const stopHours = stops.length * 0.5 // 30min per stop
+    const totalHours = Math.round(drivingHours + stopHours)
+    return `~${totalHours} HOURS`
+  }
 
   // Extract the numeric value from maxDistance (e.g., "500 KM" -> 500)
   const getDailyLimit = () => {
-    return `<${maxDistanceValue}${maxDistanceUnit}`;
-  };
+    return `<${maxDistanceValue}${maxDistanceUnit}`
+  }
 
   // Extract the numeric value from autonomy (e.g., "500 KM" -> 500)
   const getChargingInterval = () => {
-    const minRange = Math.round(autonomyValue * 0.8);
-    return `${minRange}-${autonomyValue}${autonomyUnit}`;
-  };
-  
+    const minRange = Math.round(autonomyValue * 0.8)
+    return `${minRange}-${autonomyValue}${autonomyUnit}`
+  }
 
   const DistanceIcon = () => (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="xl:w-20 xl:h-20">
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="xl:w-20 xl:h-20"
+    >
       <path
         d="M11.39 10.3899L7.5 14.2769L3.61 10.3899C2.84107 9.62059 2.3175 8.64058 2.10549 7.57376C1.89349 6.50693 2.00255 5.4012 2.41891 4.39635C2.83527 3.39151 3.54022 2.53268 4.44463 1.92845C5.34905 1.32421 6.41232 1.00171 7.5 1.00171C8.58769 1.00171 9.65096 1.32421 10.5554 1.92845C11.4598 2.53268 12.1647 3.39151 12.5811 4.39635C12.9975 5.4012 13.1065 6.50693 12.8945 7.57376C12.6825 8.64058 12.1589 9.62059 11.39 10.3899ZM7.5 8.49988C8.03044 8.49988 8.53914 8.28917 8.91422 7.9141C9.28929 7.53902 9.5 7.03032 9.5 6.49988C9.5 5.96945 9.28929 5.46074 8.91422 5.08567C8.53914 4.7106 8.03044 4.49988 7.5 4.49988C6.96957 4.49988 6.46086 4.7106 6.08579 5.08567C5.71072 5.46074 5.5 5.96945 5.5 6.49988C5.5 7.03032 5.71072 7.53902 6.08579 7.9141C6.46086 8.28917 6.96957 8.49988 7.5 8.49988ZM20.39 19.3899L16.5 23.2779L12.61 19.3889C11.8411 18.6196 11.3175 17.6396 11.1055 16.5728C10.8935 15.5059 11.0026 14.4002 11.4189 13.3954C11.8353 12.3905 12.5402 11.5317 13.4446 10.9274C14.349 10.3232 15.4123 10.0007 16.5 10.0007C17.5877 10.0007 18.651 10.3232 19.5554 10.9274C20.4598 11.5317 21.1647 12.3905 21.5811 13.3954C21.9974 14.4002 22.1065 15.5059 21.8945 16.5728C21.6825 17.6396 21.1589 18.6206 20.39 19.3899ZM16.5 17.4999C17.0304 17.4999 17.5391 17.2892 17.9142 16.9141C18.2893 16.539 18.5 16.0303 18.5 15.4999C18.5 14.9695 18.2893 14.4607 17.9142 14.0857C17.5391 13.7106 17.0304 13.4999 16.5 13.4999C15.9696 13.4999 15.4609 13.7106 15.0858 14.0857C14.7107 14.4607 14.5 14.9695 14.5 15.4999C14.5 16.0303 14.7107 16.539 15.0858 16.9141C15.4609 17.2892 15.9696 17.4999 16.5 17.4999Z"
         fill="#F96C41"
@@ -65,7 +68,14 @@ export default function RouteOverview({
   )
 
   const TimeIcon = () => (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="xl:w-20 xl:h-20">
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="xl:w-20 xl:h-20"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -76,71 +86,92 @@ export default function RouteOverview({
   )
 
   const KMIcon = () => (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="xl:w-20 xl:h-20">
-      <path d="M18 15C18 17.6 16.8 19.9 14.9 21.3L14.4 20.8L12.3 18.7L13.7 17.3L14.9 18.5C15.4 17.8 15.8 16.9 15.9 16H14V14H15.9C15.7 13.1 15.4 12.3 14.9 11.5L13.7 12.7L12.3 11.3L13.5 10.1C12.8 9.6 11.9 9.2 11 9.1V11H9V9.1C8.1 9.3 7.3 9.6 6.5 10.1L9.5 13.1C9.7 13.1 9.8 13 10 13C10.5304 13 11.0391 13.2107 11.4142 13.5858C11.7893 13.9609 12 14.4696 12 15C12 15.5304 11.7893 16.0391 11.4142 16.4142C11.0391 16.7893 10.5304 17 10 17C8.89 17 8 16.11 8 15C8 14.8 8 14.7 8.1 14.5L5.1 11.5C4.6 12.2 4.2 13.1 4.1 14H6V16H4.1C4.3 16.9 4.6 17.7 5.1 18.5L6.3 17.3L7.7 18.7L5.1 21.3C3.2 19.9 2 17.6 2 15C2 10.58 5.58 7 10 7C14.42 7 18 10.58 18 15ZM23 5C23 3.34 21.66 2 20 2C18.34 2 17 3.34 17 5C17 6.3 17.84 7.4 19 7.82V11H21V7.82C22.16 7.4 23 6.3 23 5ZM20 6C19.45 6 19 5.55 19 5C19 4.45 19.45 4 20 4C20.55 4 21 4.45 21 5C21 5.55 20.55 6 20 6Z" fill="#F96C41"/>
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="xl:w-20 xl:h-20"
+    >
+      <path
+        d="M18 15C18 17.6 16.8 19.9 14.9 21.3L14.4 20.8L12.3 18.7L13.7 17.3L14.9 18.5C15.4 17.8 15.8 16.9 15.9 16H14V14H15.9C15.7 13.1 15.4 12.3 14.9 11.5L13.7 12.7L12.3 11.3L13.5 10.1C12.8 9.6 11.9 9.2 11 9.1V11H9V9.1C8.1 9.3 7.3 9.6 6.5 10.1L9.5 13.1C9.7 13.1 9.8 13 10 13C10.5304 13 11.0391 13.2107 11.4142 13.5858C11.7893 13.9609 12 14.4696 12 15C12 15.5304 11.7893 16.0391 11.4142 16.4142C11.0391 16.7893 10.5304 17 10 17C8.89 17 8 16.11 8 15C8 14.8 8 14.7 8.1 14.5L5.1 11.5C4.6 12.2 4.2 13.1 4.1 14H6V16H4.1C4.3 16.9 4.6 17.7 5.1 18.5L6.3 17.3L7.7 18.7L5.1 21.3C3.2 19.9 2 17.6 2 15C2 10.58 5.58 7 10 7C14.42 7 18 10.58 18 15ZM23 5C23 3.34 21.66 2 20 2C18.34 2 17 3.34 17 5C17 6.3 17.84 7.4 19 7.82V11H21V7.82C22.16 7.4 23 6.3 23 5ZM20 6C19.45 6 19 5.55 19 5C19 4.45 19.45 4 20 4C20.55 4 21 4.45 21 5C21 5.55 20.55 6 20 6Z"
+        fill="#F96C41"
+      />
     </svg>
   )
 
   const FuelIcon = () => (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="xl:w-20 xl:h-20">
-      <path d="M6 10H12V5H6V10ZM4 21V3H14V12H17V19.5H19.25V9H18V6H18.5V4.5H19.5V6H20.5V4.5H21.5V6H22V9H20.75V21H15.5V13.5H14V21H4ZM8.5 19L11 15H9.5V12L7 16H8.5V19Z" fill="#F96C41"/>
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="xl:w-20 xl:h-20"
+    >
+      <path
+        d="M6 10H12V5H6V10ZM4 21V3H14V12H17V19.5H19.25V9H18V6H18.5V4.5H19.5V6H20.5V4.5H21.5V6H22V9H20.75V21H15.5V13.5H14V21H4ZM8.5 19L11 15H9.5V12L7 16H8.5V19Z"
+        fill="#F96C41"
+      />
     </svg>
   )
 
   return (
-    <div className="w-full" data-aos="fade-up" data-aos-delay="100">
-      <h1 className="text-[10px] md:text-[19px] xl:text-4xl xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-[#22222299] -tracking-[0.41px] ml-2 xl:ml-6 uppercase" data-aos="fade-down">Route Overview</h1>
-      <div className="bg-white rounded-2xl border border-gray-400 overflow-hidden mt-4 xl:mt-10" data-aos="fade-up"
-    data-aos-delay="200">
+    <div className="w-full">
+      <h1 className="text-[10px] md:text-[19px] xl:text-4xl xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-[#22222299] -tracking-[0.41px] ml-2 xl:ml-6 uppercase">
+        Route Overview
+      </h1>
+      <div className="bg-white rounded-2xl border border-gray-400 overflow-hidden mt-4 xl:mt-10">
         <div className="grid grid-cols-2">
           {/* Total Distance */}
           <div className="p-6 border-r border-b border-gray-400 text-center">
-            <div className="flex justify-center mb-3" data-aos="fade-right">
+            <div className="flex justify-center mb-3">
               <DistanceIcon />
             </div>
-            <div className="text-lg md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-gray-600 mb-1" data-aos="fade-right">
+            <div className="text-lg md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-gray-600 mb-1">
               {calculateTotalDistance()}
             </div>
-            <div className="text-[8px] md:text-[11px] xl:text-[20px] font-bold xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase" data-aos="fade-right">
+            <div className="text-[8px] md:text-[11px] xl:text-[20px] font-bold xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               TOTAL DISTANCE
             </div>
           </div>
 
           {/* Estimated Driving Time */}
           <div className="p-6 border-b border-gray-400 text-center">
-            <div className="flex justify-center mb-3" data-aos="fade-left">
+            <div className="flex justify-center mb-3">
               <TimeIcon />
             </div>
-            <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1" data-aos="fade-left">
+            <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1">
               {calculateDrivingTime()}
             </div>
-            <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase" data-aos="fade-left">
+            <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               ESTIMATED DRIVING TIME
             </div>
           </div>
 
           {/* Daily Driving Limit */}
           <div className="p-6 border-r border-gray-400 text-center">
-            <div className="flex justify-center mb-3" data-aos="fade-right">
+            <div className="flex justify-center mb-3">
               <KMIcon />
             </div>
-            <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1" data-aos="fade-right">
+            <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1">
               {getDailyLimit()}
             </div>
-            <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase" data-aos="fade-right">
+            <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               DAILY DRIVING LIMIT
             </div>
           </div>
 
           {/* Charging Intervals */}
           <div className="p-6 text-center">
-            <div className="flex justify-center mb-3" data-aos="fade-left">
+            <div className="flex justify-center mb-3">
               <FuelIcon />
             </div>
-            <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1" data-aos="fade-left">
+            <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1">
               {getChargingInterval()}
             </div>
-            <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase" data-aos="fade-left">
+            <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               CHARGING INTERVALS
             </div>
           </div>

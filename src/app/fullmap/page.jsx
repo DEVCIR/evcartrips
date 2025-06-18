@@ -8,10 +8,22 @@ import { Edit } from "lucide-react"
 import Rentals from "../common_components/rentals/page"
 import { useSearchParams } from "next/navigation"
 import React, { Suspense } from "react"
+import Footer from "@/components/ui/footer"
+import { motion, useInView } from "framer-motion"
+import { useRef } from "react"
 
 export default function PageWrapper() {
   return (
-    <Suspense fallback={<div className="text-white text-center mt-10">Loading...</div>}>
+    <Suspense fallback={
+      <motion.div
+        className="text-white text-center mt-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        Loading...
+      </motion.div>
+    }>
       <Page />
     </Suspense>
   )
@@ -27,6 +39,16 @@ const MapComplete = dynamic(() => import("../common_components/mapcomplete/page"
 
 function Page() {
   const searchParams = useSearchParams()
+
+  // Refs for scroll animations
+  const carDivRef = useRef(null)
+  const rentalsRef = useRef(null)
+  const footerRef = useRef(null)
+
+  // useInView hooks for scroll-triggered animations
+  const isCarDivInView = useInView(carDivRef, { once: true, amount: 0.3 })
+  const isRentalsInView = useInView(rentalsRef, { once: true, amount: 0.3 })
+  const isFooterInView = useInView(footerRef, { once: true, amount: 0.3 })
 
   // Get data from URL parameters
   const from = searchParams.get("from") || "Barcelona"
@@ -44,80 +66,163 @@ function Page() {
   const formatCityName = (location) => location?.split(",")[0]?.trim() || location
 
   return (
-    <div className="min-h-screen bg-white" data-aos="fade-in">
+    <motion.div
+      className="min-h-screen bg-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Header Section */}
-      <div className="bg-black px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 pt-4 pb-12 sm:pb-16 min-h-[54vh] md:min-h-[40vh] flex flex-col justify-start rounded-b-[24px] sm:rounded-b-[32px] md:rounded-none">
-        <div className="xl:hidden">
+      <motion.div
+        className="bg-black px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 pt-4 pb-12 sm:pb-16 min-h-[54vh] md:min-h-[40vh] flex flex-col justify-start rounded-b-[24px] sm:rounded-b-[32px] md:rounded-none"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <motion.div
+          className="xl:hidden"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
           <Navbar1 />
-        </div>
-        <div className="max-xl:hidden">
+        </motion.div>
+        <motion.div
+          className="max-xl:hidden"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
           <Navbar />
-        </div>
+        </motion.div>
 
-        <div className="mt-2 max-xl:leading-4 xl:mt-16 px-4 max-w-[80%]">
-          <h2
+        <motion.div
+          className="mt-2 max-xl:leading-4 xl:mt-16 px-4 max-w-[80%]"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          <motion.h2
             className="text-gray-400 text-[10px] font-medium md:font-bold md:text-[16px] xl:text-[29px] mb-4 md:-tracking-[0.69px] xl:-tracking-[1.19px]"
-            data-aos="fade-right"
-            data-aos-delay="100"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
           >
             TRIP INFO
-          </h2>
+          </motion.h2>
 
           {/* Dynamic Route Display */}
-          <div
+          <motion.div
             className="flex items-center gap-1 sm:gap-2 md:gap-5 xl:gap-10 flex-wrap"
-            data-aos="fade-up"
-            data-aos-delay="200"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.7 }}
           >
-            <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap">
+            <motion.span
+              className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, duration: 0.6, type: "spring" }}
+            >
               {formatCityName(from)}
-            </span>
+            </motion.span>
 
             {stops.length > 0 ? (
               stops.map((stop, index) => (
                 <React.Fragment key={index}>
-                  <ArrowIcon />
-                  <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.7 + index * 0.1, duration: 0.5, type: "spring" }}
+                  >
+                    <ArrowIcon />
+                  </motion.div>
+                  <motion.span
+                    className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.8 + index * 0.1, duration: 0.6, type: "spring" }}
+                  >
                     {formatCityName(stop)}
-                  </span>
+                  </motion.span>
                 </React.Fragment>
               ))
             ) : (
-              <ArrowIcon />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7, duration: 0.5, type: "spring" }}
+              >
+                <ArrowIcon />
+              </motion.div>
             )}
 
-            <ArrowIcon />
-            <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7 + stops.length * 0.1, duration: 0.5, type: "spring" }}
+            >
+              <ArrowIcon />
+            </motion.div>
+            <motion.span
+              className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 + stops.length * 0.1, duration: 0.6, type: "spring" }}
+            >
               {formatCityName(to)}
-            </span>
-          </div>
+            </motion.span>
+          </motion.div>
 
-          <div
+          <motion.div
             className="max-md:hidden absolute right-28 top-32 xl:right-36 xl:top-52 bg-[#323232] rounded-md w-[49px] h-[46px] xl:w-[80px] xl:h-[75px]"
-            data-aos="fade-left"
-            data-aos-delay="300"
+            initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ delay: 1, duration: 0.6, type: "spring" }}
           >
             <Edit className="w-5 h-5 xl:w-8 xl:h-8 z-10 text-[#F96C41] mx-auto my-3 xl:my-5" />
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
 
       {/* Map Section */}
       <div className="max-md:px-8 max-md:-mt-32 pb-8">
-        <div className="max-w-full mx-auto" data-aos="zoom-in" data-aos-delay="400">
+        <div className="max-w-full mx-auto">
           <MapComplete from={from} to={to} stops={stops} />
         </div>
       </div>
 
       {/* Other Sections */}
-      <div className="px-8 mt-4 pb-8 xl:px-32" data-aos="fade-up" data-aos-delay="700">
+      <motion.div
+        ref={carDivRef}
+        className="px-8 mt-4 pb-8 xl:px-32"
+        initial={{ opacity: 0, y: 50 }}
+        animate={isCarDivInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+        transition={{ duration: 0.8 }}
+      >
         <CarDiv />
-      </div>
+      </motion.div>
 
-      <div className="px-8 mt-4 pb-8 xl:px-32 max-md:hidden" data-aos="fade-up" data-aos-delay="800">
+      <motion.div
+        ref={rentalsRef}
+        className="px-8 mt-4 pb-8 xl:px-32 max-md:hidden"
+        initial={{ opacity: 0, y: 50 }}
+        animate={isRentalsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+        transition={{ duration: 0.8 }}
+      >
         <Rentals />
-      </div>
-    </div>
+      </motion.div>
+
+      <motion.div
+        ref={footerRef}
+        className=""
+        initial={{ opacity: 0, y: 50 }}
+        animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+        transition={{ duration: 0.8 }}
+      >
+        <Footer />
+      </motion.div>
+    </motion.div>
   )
 }
 

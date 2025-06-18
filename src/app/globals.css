@@ -122,4 +122,346 @@
   }
 }
 
+/* Custom Filter Slide Animation */
+.filter-slide-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.filter-slide-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+
+.filter-slide-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.filter-slide-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+
+/* Smooth backdrop transition */
+.backdrop-enter {
+  opacity: 0;
+}
+
+.backdrop-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.backdrop-exit {
+  opacity: 1;
+}
+
+.backdrop-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+/* Enhanced button hover effects */
+.filter-button-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-button-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Rentbio Page Animations */
+.rentbio-fade-in {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.rentbio-stagger-1 {
+  animation: fadeInUp 0.8s ease-out 0.1s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.rentbio-stagger-2 {
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.rentbio-stagger-3 {
+  animation: fadeInUp 0.8s ease-out 0.3s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.rentbio-stagger-4 {
+  animation: fadeInUp 0.8s ease-out 0.4s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.rentbio-stagger-5 {
+  animation: fadeInUp 0.8s ease-out 0.5s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth scale hover effects */
+.hover-scale {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Enhanced city name hover effects */
+.city-name-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.city-name-hover:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+}
+
+/* Arrow pulse animation */
+.arrow-pulse {
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Edit button hover animation */
+.edit-button-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.edit-button-hover:hover {
+  background-color: #404040;
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.edit-icon-hover {
+  transition: transform 0.3s ease;
+}
+
+.edit-icon-hover:hover {
+  transform: rotate(12deg);
+}
+
+/* Component entrance animations */
+.component-entrance {
+  animation: componentEntrance 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes componentEntrance {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth backdrop blur effect */
+.backdrop-blur {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Enhanced loading animation */
+.loading-pulse {
+  animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Scroll-triggered animations */
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-slide-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-slide-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-slide-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-scale-in {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Staggered animations for multiple elements */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; }
+
+/* Enhanced hover effects for components */
+.component-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.component-hover:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth page transitions */
+.page-transition {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced city name animations */
+.city-name-animate {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.city-name-animate:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 30px rgba(255, 165, 0, 0.7);
+  filter: brightness(1.2);
+}
+
+/* Arrow animations */
+.arrow-bounce {
+  animation: arrowBounce 2s ease-in-out infinite;
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+/* Edit button enhanced animations */
+.edit-button-enhanced {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.edit-button-enhanced:hover {
+  background-color: #404040;
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* Map component animations */
+.map-entrance {
+  animation: mapEntrance 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes mapEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Route display animations */
+.route-display-animate {
+  animation: routeDisplay 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes routeDisplay {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Component entrance with bounce */
+.bounce-entrance {
+  animation: bounceEntrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes bounceEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(50px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 

@@ -191,7 +191,7 @@ const fetchCities = async (searchTerm) => {
 
 
   return (
-    <div className="bg-[#FFFFFF] rounded-t-3xl rounded-b-3xl shadow-xl px-4 sm:mx-2 md:px-6 py-6 mx-auto md:mx-4 -mt-4 relative z-40">
+    <div className="bg-[#FFFFFF] rounded-t-3xl rounded-b-3xl shadow-xl px-4 sm:mx-2 md:px-6 py-6 mx-auto md:mx-4 -mt-4 relative">
       <div className="space-y-4 md:space-y-6">
         {/* Date Picker - unchanged */}
         <div>
@@ -531,7 +531,7 @@ const fetchCities = async (searchTerm) => {
 
         <Button
           onClick={handleSubmit}
-          className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg mt-3 md:mt-0"
+          className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] cursor-pointer text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg mt-3 md:mt-0"
         >
           FIND MY ROUTE
         </Button>

@@ -4,8 +4,7 @@ import Image from "next/image"
 
 export default function CarDiv() {
   return (
-    <div className="w-full relative -mt-4 z-10" data-aos="fade-up"
-  data-aos-delay="500">
+    <div className="w-full relative -mt-4">
       <div className="relative w-full h-[200px] sm:h-[300px] md:h-[380px] lg:h-[520px] xl:h-[558px]">
         <Image
           src="/images/icons/imagesssssssss.png"
@@ -44,23 +43,23 @@ export default function CarDiv() {
             <div className="absolute right-3 top-2/5 -translate-y-1/2 xl:right-10">
               <div className="block relative">
                 <div className="relative w-[80px] h-[80px] sm:w-[140px] sm:h-[140px] md:w-[160px] md:h-[160px] lg:w-[180px] lg:h-[180px] xl:w-[222px] xl:h-[222px]">
-                  <Image
-                    src="/images/icons/discount.png"
-                    alt="Star badge"
-                    fill
-                    className="object-contain transform"
-                  />
+                  <Image src="/images/icons/discount.png" alt="Star badge" fill className="object-contain transform" />
                 </div>
               </div>
             </div>
           </div>
-          
+
           <div className="w-full flex justify-end mb-4 xl:mb-6">
             <button className="bg-transparent border-2 border-[#F96C41] text-white hover:bg-[#F96C41] transition-colors rounded-xl w-full max-w-[150px] xs:max-w-[180px] sm:max-w-[220px] md:max-w-[260px] xl:max-w-[342px] xl:h-[85px] h-[40px] sm:h-[52px] md:h-[56px] flex items-center justify-between px-3 sm:px-6 md:px-8">
-              <span className="font-medium text-xs sm:text-lg xl:text-xl xl:font-bold flex-1 text-center pr-2">JOIN NOW</span>
+              <span className="font-medium text-xs sm:text-lg xl:text-xl xl:font-bold flex-1 text-center pr-2">
+                JOIN NOW
+              </span>
               <div className="bg-transparent flex items-center justify-center flex-shrink-0">
                 <svg width="12" height="12" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.384 5.47142C1.42441 5.49256 1.46984 5.50224 1.51536 5.49942C1.56088 5.4966 1.60476 5.48139 1.64225 5.45542L4.89225 3.20542C4.92546 3.18241 4.9526 3.15169 4.97134 3.1159C4.99009 3.08012 4.99988 3.04032 4.99988 2.99992C4.99988 2.95951 4.99009 2.91972 4.97134 2.88393C4.9526 2.84814 4.92546 2.81742 4.89225 2.79442L1.64225 0.544416C1.60474 0.518464 1.56085 0.503267 1.51533 0.50047C1.4698 0.497674 1.42438 0.507384 1.38398 0.52855C1.34358 0.549717 1.30974 0.581532 1.28612 0.620551C1.26251 0.65957 1.25002 0.704306 1.25 0.749916V5.24992C1.24999 5.29555 1.26248 5.34032 1.2861 5.37936C1.30972 5.41841 1.34358 5.45024 1.384 5.47142Z" fill="white"/>
+                  <path
+                    d="M1.384 5.47142C1.42441 5.49256 1.46984 5.50224 1.51536 5.49942C1.56088 5.4966 1.60476 5.48139 1.64225 5.45542L4.89225 3.20542C4.92546 3.18241 4.9526 3.15169 4.97134 3.1159C4.99009 3.08012 4.99988 3.04032 4.99988 2.99992C4.99988 2.95951 4.99009 2.91972 4.97134 2.88393C4.9526 2.84814 4.92546 2.81742 4.89225 2.79442L1.64225 0.544416C1.60474 0.518464 1.56085 0.503267 1.51533 0.50047C1.4698 0.497674 1.42438 0.507384 1.38398 0.52855C1.34358 0.549717 1.30974 0.581532 1.28612 0.620551C1.26251 0.65957 1.25002 0.704306 1.25 0.749916V5.24992C1.24999 5.29555 1.26248 5.34032 1.2861 5.37936C1.30972 5.41841 1.34358 5.45024 1.384 5.47142Z"
+                    fill="white"
+                  />
                 </svg>
               </div>
             </button>
