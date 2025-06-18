@@ -170,7 +170,7 @@ function Page() {
               />
             </motion.svg>
 
-            {stops.length > 0 ? (
+            {stops.length > 0 && (
               stops.map((stop, index) => (
                 <React.Fragment key={`stop-${index}`}>
                   <motion.span
@@ -199,22 +199,6 @@ function Page() {
                   </motion.svg>
                 </React.Fragment>
               ))
-            ) : (
-              <motion.svg
-                viewBox="0 0 22 23"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="flex-shrink-0 w-[20px] h-[21px] md:w-[36px] md:h-[36px] xl:w-[62px] xl:h-[62px]"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7, duration: 0.5, type: "spring" }}
-              >
-                <path
-                  d="M14.8959 15.9673L20.2291 11.0209L14.8959 6.07446L13.7599 7.29652L16.8768 10.1871H1.64035V11.8547H16.8768L13.7599 14.7455L14.8959 15.9673Z"
-                  fill="white"
-                  fillOpacity="0.5"
-                />
-              </motion.svg>
             )}
 
             <motion.span
