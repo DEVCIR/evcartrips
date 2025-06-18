@@ -144,11 +144,11 @@ const fetchCities = async (searchTerm) => {
     }
 
     // Validate stops (remove empty stops first)
-    const validStops = formData.stops.filter(stop => stop.trim() !== "")
-    if (validStops.length === 0) {
-      toast.error("Please enter at least one stop")
-      return false
-    }
+    // const validStops = formData.stops.filter(stop => stop.trim() !== "")
+    // if (validStops.length === 0) {
+    //   toast.error("Please enter at least one stop")
+    //   return false
+    // }
 
     return true
   }
