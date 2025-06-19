@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-black text-white">
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
+        <div className="flex flex-row max-lg:items-center justify-between items-start gap-8">
           {/* Left side - Logo and Quick Links */}
           <div className="flex-1">
             {/* Logo */}
@@ -18,20 +18,20 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-semibold mb-4 text-lg">Quick Links</h3>
               <nav className="flex flex-wrap gap-6">
-                <Link href="/ev-trips" className="text-white hover:text-orange-500 transition-colors">
-                  EV Trips
-                </Link>
-                <Link href="/hotel-booking" className="text-white hover:text-orange-500 transition-colors">
-                  Hotel Booking
+                <Link href="/home" className="text-white hover:text-orange-500 transition-colors">
+                  Home
                 </Link>
                 <Link href="/about-us" className="text-white hover:text-orange-500 transition-colors">
                   About us
                 </Link>
-                <Link href="/faqs" className="text-white hover:text-orange-500 transition-colors">
-                  FAQs
+                <Link href="/contact-us" className="text-white hover:text-orange-500 transition-colors">
+                  Contact us
                 </Link>
-                <Link href="/contact" className="text-white hover:text-orange-500 transition-colors">
-                  Contact
+                <Link href="/signup" className="text-white hover:text-orange-500 transition-colors">
+                  Sign-up
+                </Link>
+                <Link href="/signin" className="text-white hover:text-orange-500 transition-colors">
+                  Sign-in
                 </Link>
               </nav>
             </div>

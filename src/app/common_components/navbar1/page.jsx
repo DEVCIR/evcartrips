@@ -1,10 +1,39 @@
-import { User } from "lucide-react"
+"use client"
 
-export default function Navbar1() {
+import { Suspense } from "react";
+import { User } from "lucide-react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+
+function Navbar1() {
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const handleBackClick = () => {
+    // Get all current search parameters
+    const params = new URLSearchParams(searchParams)
+    
+    if (pathname.includes('/rentbio')) {
+      // If on rentbio, go to home without parameters
+      router.push("/")
+    } else if (pathname.includes('/fullmap') || pathname.includes('/recommendedHotels')) {
+      // If on fullmap or recommendedhotels, go to rentbio with all parameters
+      router.push(`/rentbio?${params.toString()}`)
+    } else if (pathname.includes('/frankfurt')) {
+      // If on frankfurt, go to recommendedhotels with all parameters
+      router.push(`/recommendedHotels?${params.toString()}`)
+    } else {
+      // Default fallback - go home
+      router.push("/")
+    }
+  }
+
+
   return (
     <nav className="bg-black px-4 py-3 flex items-center justify-between">
      
-      <div className="flex items-center">
+      <div className="flex items-center cursor-pointer" onClick={handleBackClick}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M20 11V13H8L13.5 18.5L12.08 19.92L4.16 12L12.08 4.07996L13.5 5.49996L8 11H20Z" fill="white"/>
 </svg>
@@ -33,4 +62,13 @@ export default function Navbar1() {
       </div>
     </nav>
   )
+}
+
+
+export default function Navbar1Wrapper() {
+  return (
+    <Suspense fallback={null}>
+      <Navbar1 />
+    </Suspense>
+  );
 }

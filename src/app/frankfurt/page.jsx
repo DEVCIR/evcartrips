@@ -4,13 +4,14 @@ import HotelCard from "@/components/ui/hotel-card"
 import Navbar from "../common_components/navbar/page"
 import HotelFilters from "../common_components/hotel-filters/page"
 import { useState, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
-import { Suspense } from "react"
+import { useSearchParams , useRouter} from "next/navigation"
+import { Suspense} from "react"
 import Footer from "@/components/ui/footer"
 import Rentals from "../common_components/rentals/page"
 import CarDiv from "../common_components/cardiv/page"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRef } from "react"
+import Navbar1 from "../common_components/navbar1/page"
 
 export default function PageWrapper() {
   return (
@@ -33,6 +34,7 @@ export default function PageWrapper() {
 
 function Page() {
   const searchParams = useSearchParams()
+  const router = useRouter();
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState({
     selectedRatings: [],
@@ -49,6 +51,21 @@ function Page() {
   const [filteredHotels, setFilteredHotels] = useState([])
   const [sortedHotels, setSortedHotels] = useState([])
 
+  // Check if required parameters exist
+    useEffect(() => {
+      const from = searchParams.get("from")
+      const to = searchParams.get("to")
+      
+      if (!from || !to) {
+        router.push("/") // Redirect to home if required params are missing
+      }
+    }, [searchParams, router])
+  
+    // If params are missing, return null (will redirect)
+    if (!searchParams.get("from") || !searchParams.get("to")) {
+      return null
+    }
+
   // Refs for scroll animations
   const carDivRef = useRef(null)
   const rentalsRef = useRef(null)
@@ -59,9 +76,9 @@ function Page() {
   const isRentalsInView = useInView(rentalsRef, { once: true, amount: 0.3 })
   const isFooterInView = useInView(footerRef, { once: true, amount: 0.3 })
 
-  const fromCity = searchParams.get("from")?.split(",")[0] || "Karachi"
-  const toCity = searchParams.get("to")?.split(",")[0] || "Islamabad"
-  const travellers = searchParams.get("travellers") || "2 Adult(s)"
+  const fromCity = searchParams.get("from")?.split(",")[0]
+  const toCity = searchParams.get("to")?.split(",")[0]
+  const travellers = searchParams.get("travellers")
   const stops = [
     searchParams.get("stop1")?.split(",")[0],
     searchParams.get("stop2")?.split(",")[0],
@@ -236,13 +253,16 @@ function Page() {
 
       {/* Header/Navbar Section with Dark Background */}
       <motion.div
-        className="bg-black min-h-[50vh] md:min-h-[80vh] text-white rounded-b-[40px]"
+        className="bg-black min-h-[65vh] md:min-h-[80vh] text-white rounded-b-[40px]"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
       >
-        <div className="md:px-8">
+        <div className="md:px-8 max-xl:hidden">
           <Navbar />
+        </div>
+        <div className="md:px-8 xl:hidden">
+          <Navbar1 />
         </div>
 
         <div className="container mx-auto py-8">
@@ -399,7 +419,7 @@ function Page() {
 
       <motion.div
         ref={footerRef}
-        className=""
+        className="max-md:hidden"
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.6 }}

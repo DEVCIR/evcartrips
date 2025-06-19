@@ -6,8 +6,8 @@ import CarDiv from "../common_components/cardiv/page"
 import Navbar from "../common_components/navbar/page"
 import { Edit } from "lucide-react"
 import Rentals from "../common_components/rentals/page"
-import { useSearchParams } from "next/navigation"
-import React, { Suspense } from "react"
+import { useSearchParams , useRouter} from "next/navigation"
+import React, { Suspense , useEffect } from "react"
 import Footer from "@/components/ui/footer"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
@@ -39,6 +39,22 @@ const MapComplete = dynamic(() => import("../common_components/mapcomplete/page"
 
 function Page() {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  
+    // Check if required parameters exist
+    useEffect(() => {
+      const from = searchParams.get("from")
+      const to = searchParams.get("to")
+      
+      if (!from || !to) {
+        router.push("/") // Redirect to home if required params are missing
+      }
+    }, [searchParams, router])
+  
+    // If params are missing, return null (will redirect)
+    if (!searchParams.get("from") || !searchParams.get("to")) {
+      return null
+    }
 
   // Refs for scroll animations
   const carDivRef = useRef(null)
@@ -51,8 +67,8 @@ function Page() {
   const isFooterInView = useInView(footerRef, { once: true, amount: 0.3 })
 
   // Get data from URL parameters
-  const from = searchParams.get("from") || "Barcelona"
-  const to = searchParams.get("to") || "Kiel"
+  const from = searchParams.get("from")
+  const to = searchParams.get("to")
   const stops = []
 
   // Collect all stops from parameters
@@ -127,7 +143,7 @@ function Page() {
               {formatCityName(from)}
             </motion.span>
 
-            {stops.length > 0 ? (
+            {stops.length > 0 && (
               stops.map((stop, index) => (
                 <React.Fragment key={index}>
                   <motion.div
@@ -147,14 +163,6 @@ function Page() {
                   </motion.span>
                 </React.Fragment>
               ))
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7, duration: 0.5, type: "spring" }}
-              >
-                <ArrowIcon />
-              </motion.div>
             )}
 
             <motion.div
@@ -215,7 +223,7 @@ function Page() {
 
       <motion.div
         ref={footerRef}
-        className=""
+        className="max-md:hidden"
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}

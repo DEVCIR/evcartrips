@@ -1,37 +1,62 @@
-// import HalfNavbar1 from "../common_components/halfnavbar1/page"
+"use client"
 
-// export default function Page() {
-//   return (
-//     <div className="min-h-screen bg-white">
-//       <div className="bg-black px-3 sm:px-4 pt-1 pb-4 min-h-[10vh] flex flex-col rounded-b-[16px] sm:rounded-b-[20px]">
-//         <HalfNavbar1 />
-//       </div>
-
-//       <div className="w-full">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-
-
+import Footer from "@/components/ui/footer"
+import CarDiv from "../common_components/cardiv/page"
 import HalfNavbar1 from "../common_components/halfnavbar1/page"
+import Rentals from "../common_components/rentals/page"
+import { motion, useInView } from "framer-motion"
+import { useRef } from "react"
+import { useRouter } from "next/navigation"
+
 
 export default function Page() {
-  return (
-    <div className="min-h-screen bg-white">
-      <div className="bg-black px-3 sm:px-4 pt-1 pb-4 min-h-[10vh] flex flex-col rounded-b-[16px] sm:rounded-b-[20px]">
-        <HalfNavbar1 />
-      </div>
+  const router = useRouter();
+  const headerRef = useRef(null)
+  const checkmarkRef = useRef(null)
+  const contentRef = useRef(null)
+  const footerRef = useRef(null)
 
-      <div className="w-full">
+  const isHeaderInView = useInView(headerRef, { once: true })
+  const isCheckmarkInView = useInView(checkmarkRef, { once: true, margin: "-50px" })
+  const isContentInView = useInView(contentRef, { once: true, margin: "-100px" })
+  const isFooterInView = useInView(footerRef, { once: true })
+
+  return (
+    <div className="min-h-screen bg-white overflow-hidden">
+      {/* Animated Header */}
+      <motion.div 
+        ref={headerRef}
+        className="bg-black px-3 sm:px-4 pt-1 pb-4 min-h-[10vh] md:min-h-[40vh] flex flex-col rounded-b-[16px] sm:rounded-b-[20px]"
+        initial={{ opacity: 0, y: -50 }}
+        animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+      >
+        <HalfNavbar1 />
+      </motion.div>
+
+      <div className="w-full md:-mt-[210px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-          <div className="flex flex-col items-center justify-center text-center px-2 sm:px-4">
-            {/* Checkmark SVG */}
-            <div className="mb-4 sm:mb-6">
+          <motion.div 
+            className="flex flex-col items-center justify-center text-center px-2 sm:px-4"
+            initial={{ opacity: 0 }}
+            animate={isHeaderInView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.3 }}
+          >
+            {/* Animated Checkmark */}
+            <motion.div 
+              ref={checkmarkRef}
+              className="mb-4 sm:mb-6"
+              initial={{ scale: 0 }}
+              animate={isCheckmarkInView ? { 
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 15,
+                  delay: 0.2
+                }
+              } : {}}
+            >
               <svg
                 width="66"
                 height="65"
@@ -46,61 +71,155 @@ export default function Page() {
                   fill="#F96C41"
                 />
               </svg>
-            </div>
+            </motion.div>
 
-            {/* Payment Success Heading */}
-            <h1 className="text-xl sm:text-2xl md:text-3xl  text-gray-900 mb-2">Payment Success!</h1>
+            {/* Animated Heading */}
+            <motion.h1 
+              className="text-xl sm:text-2xl md:text-3xl text-gray-900 mb-2 md:text-white/80"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isCheckmarkInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              Payment Success!
+            </motion.h1>
 
-            {/* Amount */}
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">US$ 750.00</p>
+            {/* Animated Amount */}
+            <motion.p 
+              className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 md:text-white"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={isCheckmarkInView ? { 
+                opacity: 1, 
+                scale: 1,
+                transition: { 
+                  delay: 0.5,
+                  type: "spring",
+                  stiffness: 200
+                }
+              } : {}}
+            >
+              US$ 750.00
+            </motion.p>
 
             {/* Payment Details Container */}
-            <div className="w-full max-w-sm sm:max-w-md rounded-lg p-3 sm:p-4 md:p-6 mb-6 sm:mb-8">
-              {/* Divider Line - spans full width */}
-              <div className="w-full border-t border-gray-400 mb-4 sm:mb-6"></div>
+            <motion.div
+              ref={contentRef}
+              className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl rounded-lg p-3 sm:p-4 md:p-6 mb-6 sm:mb-8 bg-white shadow-lg"
+              initial={{ opacity: 0, y: 50 }}
+              animate={isContentInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+            >
+              {/* Divider Line */}
+              <motion.div 
+                className="w-full border-t border-gray-400 mb-4 sm:mb-6"
+                initial={{ scaleX: 0 }}
+                animate={isContentInView ? { scaleX: 1 } : {}}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              />
 
-              {/* Payment Details with perfect alignment and proper spacing */}
-              <div className="space-y-3 sm:space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm sm:text-base text-left">Ref Number</span>
-                  <span className="text-gray-900 font-medium text-sm sm:text-base text-left">000085752257</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm sm:text-base text-left">Payment Time</span>
-                  <span className="text-gray-900 font-medium text-sm sm:text-base text-left">25-06-2025, 13:22:16</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm sm:text-base text-left">Payment Method</span>
-                  <span className="text-gray-900 font-medium text-sm sm:text-base text-left">Bank Transfer</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm sm:text-base text-left">Sender Name</span>
-                  <span className="text-gray-900 font-medium text-sm sm:text-base text-left">Billed Hossain</span>
-                </div>
+              {/* Payment Details - Staggered Animation */}
+              <motion.div 
+                className="space-y-3 sm:space-y-4"
+                initial={{ opacity: 0 }}
+                animate={isContentInView ? { opacity: 1 } : {}}
+                transition={{ staggerChildren: 0.1 }}
+              >
+                {[
+                  { label: "Ref Number", value: "000085752257" },
+                  { label: "Payment Time", value: "25-06-2025, 13:22:16" },
+                  { label: "Payment Method", value: "Bank Transfer" },
+                  { label: "Sender Name", value: "Billed Hossain" }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex justify-between items-center"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isContentInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <span className="text-gray-600 text-sm sm:text-base text-left">{item.label}</span>
+                    <span className="text-gray-900 font-medium text-sm sm:text-base text-left">{item.value}</span>
+                  </motion.div>
+                ))}
 
-                <div className="w-full border-t border-[#F96C41] border-dashed mb-4 sm:mb-6"></div>
+                <motion.div 
+                  className="w-full border-t border-[#F96C41] border-dashed mb-4 sm:mb-6"
+                  initial={{ scaleX: 0 }}
+                  animate={isContentInView ? { scaleX: 1 } : {}}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                />
 
+                {[
+                  { label: "Amount", value: "US$ 750.00" },
+                  { label: "Tax", value: "US$ 50.00" }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index + 4}
+                    className="flex justify-between items-center"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={isContentInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                  >
+                    <span className="text-gray-600 text-sm sm:text-base text-left">{item.label}</span>
+                    <span className="text-gray-900 font-medium text-sm sm:text-base text-left">{item.value}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
 
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm sm:text-base text-left">Amount</span>
-                  <span className="text-gray-900 font-medium text-sm sm:text-base text-left">US$ 750.00</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm sm:text-base text-left">Tax</span>
-                  <span className="text-gray-900 font-medium text-sm sm:text-base text-left">US$ 50.00</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Home Page Button - full width and centered on all screens */}
-            <div className="w-full max-w-sm sm:max-w-md">
-              <button className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-[#E55B30] text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-base transition duration-200 ease-in-out transform hover:scale-[1.02] active:scale-[0.98]">
+            {/* Home Page Button */}
+            <motion.div
+              className="w-full max-w-sm sm:max-w-md"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isContentInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.8, duration: 0.5 }}
+            >
+              <motion.button 
+                className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:to-[#F96C41] hover:from-[#AA3916] cursor-pointer text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-base"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => router.push('/home')}
+              >
                 HOME PAGE
-              </button>
-            </div>
-          </div>
+              </motion.button>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
+
+      {/* Animated CarDiv */}
+      <motion.div
+        className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden"
+        initial={{ opacity: 0, y: 50 }}
+        animate={isContentInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 1.0, duration: 0.6 }}
+      >
+        <div className="max-w-full mx-auto">
+          <CarDiv />
+        </div>
+      </motion.div>
+
+      {/* Animated Rentals */}
+      <motion.div
+        className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden"
+        initial={{ opacity: 0, y: 50 }}
+        animate={isContentInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <div className="max-w-full mx-auto">
+          <Rentals />
+        </div>
+      </motion.div>
+
+      {/* Animated Footer */}
+      <motion.div
+        ref={footerRef}
+        className="max-md:hidden overflow-y-hidden"
+        initial={{ opacity: 0, y: 50 }}
+        animate={isFooterInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8 }}
+      >
+        <Footer />
+      </motion.div>
     </div>
   )
 }

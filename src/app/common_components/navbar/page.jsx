@@ -7,9 +7,10 @@ import Link from "next/link"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  
   return (
     <nav className="max-md:bg-black px-4 py-3 flex items-center justify-between">
-      <button onClick={() => setIsMenuOpen(true)} className="flex items-center xl:hidden">
+      <button onClick={() => setIsMenuOpen(true)} className="flex items-center xl:hidden cursor-pointer">
         <img
           src="/images/icons/burger_icon.png"
           className="h-8 w-8 md:h-10 md:w-10"
@@ -21,17 +22,17 @@ export default function Navbar() {
         <img
           src="/images/evcartrips-logo.png"
           alt="evcartrips.com"
-          className="h-8 w-auto md:h-10"
+          className="h-8 w-auto md:h-10 cursor-pointer"
         />
-        <div className="cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
+        <div className="max-xl:hidden cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
           <House className="w-4 h-4"/>
           <Link href="/home" className="font-semibold">Home</Link>
         </div>
-        <div className="cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
+        <div className="max-xl:hidden cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
           <Users className="w-4 h-4"/>
           <Link href="/about" className="font-semibold">About</Link>
         </div>
-        <div className="cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
+        <div className="max-xl:hidden cursor-pointer flex items-center gap-x-1 text-white hover:bg-orange-500 p-2 hover:rounded-md transition-transform duration-200 hover:scale-110">
           <Mail className="w-4 h-4"/>
           <Link href="/contact" className="font-semibold">Contact</Link>
         </div>

@@ -5,7 +5,7 @@ import { Calendar, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-reac
 import Image from "next/image"
 import Navbar1 from "../common_components/navbar1/page"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Suspense } from "react"
+import { Suspense , useEffect } from "react"
 import CarDiv from "../common_components/cardiv/page"
 import Rentals from "../common_components/rentals/page"
 import Footer from "@/components/ui/footer"
@@ -102,6 +102,22 @@ function Page() {
       badgeSubtext: "+ Breakfast",
     },
   ]
+
+  
+    // Check if required parameters exist
+    useEffect(() => {
+      const from = searchParams.get("from")
+      const to = searchParams.get("to")
+      
+      if (!from || !to) {
+        router.push("/") // Redirect to home if required params are missing
+      }
+    }, [searchParams, router])
+  
+    // If params are missing, return null (will redirect)
+    if (!searchParams.get("from") || !searchParams.get("to")) {
+      return null
+    }
 
   // Refs for scroll animations
   const carDivRef = useRef(null)
@@ -359,7 +375,7 @@ function Page() {
 
           <motion.div
             ref={footerRef}
-            className=""
+            className="max-md:hidden"
             initial={{ opacity: 0, y: 50 }}
             animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.8 }}

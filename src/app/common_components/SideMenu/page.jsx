@@ -1,6 +1,7 @@
 "use client"
 
 import { X, DollarSign } from "lucide-react"
+import Link from "next/link"
 
 export default function SideMenu({ isOpen, onClose }) {
   return (
@@ -16,7 +17,7 @@ export default function SideMenu({ isOpen, onClose }) {
       >
         <div className="p-6">
           {/* Close Button */}
-          <button onClick={onClose} className="text-orange-500 hover:text-orange-400 mb-8">
+          <button onClick={onClose} className="text-orange-500 hover:text-orange-400 mb-8 cursor-pointer">
             <X size={24} />
           </button>
 
@@ -24,21 +25,21 @@ export default function SideMenu({ isOpen, onClose }) {
           <div className="mb-12">
             <h2 className="text-lg font-medium mb-6">Quick Links</h2>
             <nav className="space-y-4">
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">
-                Hotel Booking
-              </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">
+              <Link href="/home" className="block text-gray-300 hover:text-white transition-colors">
+                Home
+              </Link>
+              <Link href="/rentbio" className="block text-gray-300 hover:text-white transition-colors">
+                RentBio
+              </Link>
+              <Link href="/recommendedHotels" className="block text-gray-300 hover:text-white transition-colors">
+                RecommendedHotels
+              </Link>
+              <Link href="/about-us" className="block text-gray-300 hover:text-white transition-colors">
                 About us
-              </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">
-                FAQs
-              </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">
-                Contact
-              </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">
-                Ev Trips
-              </a>
+              </Link>
+              <Link href="/contact-us" className="block text-gray-300 hover:text-white transition-colors">
+                Contact us
+              </Link>
             </nav>
           </div>
 

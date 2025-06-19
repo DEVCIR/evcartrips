@@ -7,8 +7,8 @@ import CarDiv from "../common_components/cardiv/page"
 import Navbar from "../common_components/navbar/page"
 import { Edit } from "lucide-react"
 import Rentals from "../common_components/rentals/page"
-import { useSearchParams } from "next/navigation"
-import React, { Suspense } from "react"
+import { useSearchParams,useRouter  } from "next/navigation"
+import React, { Suspense , useEffect} from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRef } from "react"
 
@@ -39,6 +39,22 @@ export default function PageWrapper() {
 
 function Page() {
   const searchParams = useSearchParams()
+   const router = useRouter()
+
+  // Check if required parameters exist
+  useEffect(() => {
+    const from = searchParams.get("from")
+    const to = searchParams.get("to")
+    
+    if (!from || !to) {
+      router.push("/") // Redirect to home if required params are missing
+    }
+  }, [searchParams, router])
+
+  // If params are missing, return null (will redirect)
+  if (!searchParams.get("from") || !searchParams.get("to")) {
+    return null
+  }
 
   // Refs for scroll animations
   const mapRef = useRef(null)
@@ -60,8 +76,8 @@ function Page() {
   console.log("Route Overview in view:", isRouteOverviewInView)
 
   // Get data from URL parameters
-  const from = searchParams.get("from") || "Barcelona"
-  const to = searchParams.get("to") || "Kiel"
+  const from = searchParams.get("from")
+  const to = searchParams.get("to")
   const stops = []
 
   // Collect all stops from parameters
@@ -308,7 +324,7 @@ function Page() {
       {/* Footer with Animation */}
       <motion.div
         ref={footerRef}
-        className=""
+        className="max-md:hidden"
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}
