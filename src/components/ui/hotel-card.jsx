@@ -1,27 +1,63 @@
 "use client"
 import { Star, MapPin, Moon, Users } from "lucide-react"
 import { motion } from "framer-motion"
+import { useRouter } from "next/navigation"
 
-const HotelCard = ({ name, rating, address, nights, travelers, price, image, index = 0 }) => {
+const HotelCard = ({ 
+  id, 
+  name, 
+  rating, 
+  address, 
+  nights, 
+  travelers, 
+  price, 
+  image, 
+  roomImage, 
+  index = 0,
+  distance,
+  amenities,
+  chain,
+  roomType,
+  refundable,
+  city,
+  geo,
+  checkin,
+  checkout
+}) => {
+  const router = useRouter()
+
+  const handleChooseRoom = () => {
+    // Prepare hotel and room details for hotel-select
+    const hotelData = {
+      name,
+      image: image,
+      roomImage: roomImage,
+      city: city || '',
+      address: address || '',
+      rating: rating || 0,
+      // Room details placeholders (to be replaced with real data if available)
+      roomName: roomType || 'Double room',
+      sleeps: travelers || 2,
+      bedType: 'Double', // Placeholder, update if available
+      mealPlan: 'Bread and Breakfast BB', // Placeholder, update if available
+      price: price || 0,
+      refundable: refundable || false,
+      cancellation: 'Free cancellation', // Placeholder, update if available
+      moreDetails: '', // Placeholder, update if available
+      checkin: checkin,
+      checkout: checkout
+    };
+    localStorage.setItem('selectedHotel', JSON.stringify(hotelData));
+    // Navigate to hotel-select page
+    router.push('/hotel-select');
+  }
+
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
   // Generate star rating
-  const stars = Array.from({ length: 5 }, (_, i) => (
-    <motion.div
-      key={i}
-      initial={{ scale: 0, rotate: -180 }}
-      animate={{ scale: 1, rotate: 0 }}
-      transition={{
-        delay: 0.5 + i * 0.1,
-        type: "spring",
-        stiffness: 200,
-        damping: 10,
-      }}
-    >
-      <Star
-        className={`w-3 h-3 md:w-6 md:h-6 xl:w-10 xl:h-10 ${i < rating ? "text-orange-400 fill-orange-400" : "text-gray-300"}`}
-      />
-    </motion.div>
-  ))
-
+ 
   return (
     <motion.div
       className="w-[348px] md:w-[692px] xl:w-[900px] h-auto bg-white rounded-3xl shadow-lg overflow-hidden mb-8 p-4 md:p-6 mx-auto"
@@ -70,7 +106,61 @@ const HotelCard = ({ name, rating, address, nights, travelers, price, image, ind
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 + index * 0.1, duration: 0.5 }}
             >
-              {stars}
+              <div className="flex items-center">
+                {/* Full stars */}
+                {[...Array(fullStars)].map((_, i) => (
+                  <motion.div
+                    key={`full-${i}`}
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{
+                      delay: 0.5 + i * 0.1,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 10,
+                    }}
+                  >
+                    <Star className="w-3 h-3 md:w-6 md:h-6 xl:w-10 xl:h-10 text-orange-400 fill-orange-400" />
+                  </motion.div>
+                ))}
+                
+                {/* Half star */}
+                {hasHalfStar && (
+                  <motion.div
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{
+                      delay: 0.5 + fullStars * 0.1,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 10,
+                    }}
+                  >
+                    <Star className="w-3 h-3 md:w-6 md:h-6 xl:w-10 xl:h-10 text-orange-400 fill-orange-400" />
+                  </motion.div>
+                )}
+                
+                {/* Empty stars */}
+                {[...Array(emptyStars)].map((_, i) => (
+                  <motion.div
+                    key={`empty-${i}`}
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{
+                      delay: 0.5 + (fullStars + (hasHalfStar ? 1 : 0) + i * 0.1),
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 10,
+                    }}
+                  >
+                    <Star className="w-3 h-3 md:w-6 md:h-6 xl:w-10 xl:h-10 text-gray-300" />
+                  </motion.div>
+                ))}
+                
+                <span className="ml-1 text-[8px] md:text-[16px] xl:text-[24px] font-medium text-gray-600">
+                {rating.toFixed(1)}
+                </span>
+              </div>
             </motion.div>
 
             <motion.div
@@ -141,6 +231,7 @@ const HotelCard = ({ name, rating, address, nights, travelers, price, image, ind
         </motion.div>
 
         <motion.button
+          onClick={handleChooseRoom}
           className="px-4 py-2 md:px-8 md:py-4 rounded-md md:rounded-lg cursor-pointer bg-gradient-to-r from-orange-500 to-red-600 hover:bg-gradient-to-l hover:from-orange-500 hover:to-red-600 text-white shadow-lg flex items-center font-bold text-[8px] -tracking-[0.41px] md:text-[11px] md:-tracking-[0.81px]"
           whileHover={{
             scale: 1.05,

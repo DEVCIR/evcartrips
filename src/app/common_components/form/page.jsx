@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "../../../components/ui/input"
+import { Button } from "../../../components/ui/button"
+import { Checkbox } from "../../../components/ui/checkbox"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { X } from "lucide-react"
@@ -510,7 +510,7 @@ const fetchCities = async (searchTerm) => {
             />
 
             {showTravellerDropdown && (
-      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+      <div className="absolute z-20 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
         {TRAVELLER_OPTIONS.map((option, index) => (
           <div
             key={index}
@@ -538,7 +538,6 @@ const fetchCities = async (searchTerm) => {
 
  
       </div>
-      <ToastContainer/>
     </div>
   )
 }

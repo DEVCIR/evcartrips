@@ -24,7 +24,7 @@ export default function Footer() {
                 <Link href="/about-us" className="text-white hover:text-orange-500 transition-colors">
                   About us
                 </Link>
-                <Link href="/contact-us" className="text-white hover:text-orange-500 transition-colors">
+                <Link href="/contactus" className="text-white hover:text-orange-500 transition-colors">
                   Contact us
                 </Link>
                 <Link href="/signup" className="text-white hover:text-orange-500 transition-colors">
@@ -32,6 +32,9 @@ export default function Footer() {
                 </Link>
                 <Link href="/signin" className="text-white hover:text-orange-500 transition-colors">
                   Sign-in
+                </Link>
+                <Link href="/thankyou" className="text-white hover:text-orange-500 transition-colors">
+                  Thankyou
                 </Link>
               </nav>
             </div>

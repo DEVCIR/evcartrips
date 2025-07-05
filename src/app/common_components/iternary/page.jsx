@@ -1,164 +1,248 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { useRouter, useSearchParams } from "next/navigation"
-import { Suspense } from "react"
+"use client";
+import { Button } from "../../../components/ui/button";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 export default function PageWrapper() {
   return (
-    <Suspense fallback={<div className="text-white text-center mt-10">Loading...</div>}>
+    <Suspense
+      fallback={<div className="text-white text-center mt-10">Loading...</div>}
+    >
       <Iternary />
     </Suspense>
-  )
+  );
 }
 
 function Iternary({
   stops = [],
   startDate,
-  maxDistance = "500 KM",
-  needHotel = true,
-  travellers = "1 Traveller, 1 Room",
-  from, // ✅ Remove default values here
-  to, // ✅ Remove default values here
+  maxDistance = "",
+  autonomy = "",
+  needHotel = false,
+  travellers = "",
+  from,
+  to,
 }) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [apiItinerary, setApiItinerary] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [matchedHotels, setMatchedHotels] = useState([]);
+  const hasFetched = useRef(false);
 
-  // ✅ ALWAYS extract from URL first, then use props as fallback
-  const actualFrom = searchParams.get("from") || from || "Barcelona"
-  const actualTo = searchParams.get("to") || to || "Kiel"
-
-  // ✅ Extract other params from URL too
+  // Extract params
+  const actualFrom = searchParams.get("from") || from;
+  const actualTo = searchParams.get("to") || to;
   const actualStartDate = searchParams.get("startDate")
     ? new Date(searchParams.get("startDate"))
-    : startDate || new Date()
-  const actualMaxDistance = searchParams.get("maxDistance") || maxDistance || "500 KM"
-  const actualNeedHotel = searchParams.get("needHotel") === "true" || needHotel
-  const actualTravellers = searchParams.get("travellers") || travellers || "1 Traveller, 1 Room"
+    : startDate || new Date();
+  const actualMaxDistance =
+    searchParams.get("maxDistance") || maxDistance;
+  const actualAutonomy = searchParams.get("autonomy") || autonomy;
+  const actualNeedHotel = searchParams.get("needHotel") === "true" || needHotel;
+  const actualTravellers =
+    searchParams.get("travellers") || travellers;
 
-  // ✅ Extract stops from URL
+  // Extract stops from URL
   const actualStops = (() => {
-    const urlStops = []
-    let i = 1
+    const urlStops = [];
+    let i = 1;
     while (searchParams.get(`stop${i}`)) {
-      urlStops.push(searchParams.get(`stop${i}`))
-      i++
+      urlStops.push(searchParams.get(`stop${i}`));
+      i++;
     }
-    return urlStops.length > 0 ? urlStops : stops
-  })()
+    return urlStops.length > 0 ? urlStops : stops;
+  })();
 
-  // ✅ DEBUG LOGS
-  console.log("🔍 URL Parameters:", Object.fromEntries(searchParams.entries()))
-  console.log("🔍 Extracted Data:", {
+  useEffect(() => {
+    if (!actualFrom || !actualTo || hasFetched.current) return;
+
+    hasFetched.current = true;
+    setIsLoading(true);
+    setError(null);
+
+    const generateItineraryFromAPI = async () => {
+      try {
+        const response = await fetch("/api/generate-itinerary", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: actualFrom,
+            to: actualTo,
+            stops: actualStops,
+            maxDistance: actualMaxDistance,
+            autonomy: actualAutonomy,
+            needHotel: actualNeedHotel,
+            startDate: actualStartDate.toISOString(),
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to generate itinerary");
+        }
+
+        const data = await response.json();
+        setApiItinerary(parseItineraryText(data.itinerary));
+        if (!actualNeedHotel) {
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error generating itinerary:", error);
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    generateItineraryFromAPI();
+  }, [
     actualFrom,
     actualTo,
     actualStops,
-    actualStartDate,
     actualMaxDistance,
+    actualAutonomy,
     actualNeedHotel,
-    actualTravellers,
-  })
+    actualStartDate,
+  ]);
 
-  const handleContinue = () => {
-    const params = new URLSearchParams(searchParams.toString())
-    router.push(`/recommendedHotels?${params.toString()}`)
-  }
-
-  // Parse numeric values
-  const dailyLimit = Number.parseInt(actualMaxDistance) || 500
-  const [travellerCount] = actualTravellers.split(" ")
-
-  // ✅ SAFE HELPER FUNCTION
-  const getCityName = (location) => {
-    if (!location) return "Unknown"
-    return location.split(",")[0]?.trim() || location
-  }
-
-  // Generate itinerary days dynamically
-  const generateItinerary = () => {
-    const itinerary = []
-    const allStops = [...actualStops]
-    const currentDate = new Date(actualStartDate)
-
-    console.log("🚀 Generating Itinerary:", {
-      from: actualFrom,
-      to: actualTo,
-      stops: allStops,
-      stopsCount: allStops.length,
-    })
-
-    // ✅ NULL CHECKS
-    if (!actualFrom || !actualTo) {
-      console.log("❌ Missing actual from or to:", { actualFrom, actualTo })
-      return []
+  // After apiItinerary is set, fetch hotels for each city
+  useEffect(() => {
+    if (!actualNeedHotel || !apiItinerary.length) return;
+    let cancelled = false;
+    
+    async function fetchHotels() {
+      setMatchedHotels([]);
+      const results = await Promise.all(apiItinerary.map(async (item) => {
+        if (!item.to || !item.hotel?.name) return { ...item, matchedHotel: null };
+        // 1. Get geocode
+        const geoRes = await fetch(`https://cp.militaryfares.com/api.php?input=${encodeURIComponent(item.to)}&method=geocode`);
+        let geoData;
+        try {
+          geoData = await geoRes.json();
+        } catch {
+          return { ...item, matchedHotel: null };
+        }
+        const geo = geoData?.response?.[0]?.geo;
+        if (!geo) return { ...item, matchedHotel: null };
+        // 2. Get hotels
+        // Calculate check-in date based on actual start date and day number
+        let checkin = "20250915"; // fallback
+        
+        if (actualStartDate && item.day) {
+          // Calculate the check-in date by adding (day - 1) days to the start date
+          const checkinDate = new Date(actualStartDate);
+          checkinDate.setDate(checkinDate.getDate() + (item.day - 1));
+          
+          // Format as YYYYMMDD for the API
+          const year = checkinDate.getFullYear();
+          const month = String(checkinDate.getMonth() + 1).padStart(2, '0');
+          const day = String(checkinDate.getDate()).padStart(2, '0');
+          checkin = `${year}${month}${day}`;
+          
+          console.log(`📅 Day ${item.day}: Start date ${actualStartDate.toISOString().slice(0, 10)} → Check-in: ${checkin}`);
+        }
+        
+        // Calculate checkout date (next day)
+        const checkoutDate = new Date(actualStartDate);
+        checkoutDate.setDate(checkoutDate.getDate() + item.day);
+        const checkoutYear = checkoutDate.getFullYear();
+        const checkoutMonth = String(checkoutDate.getMonth() + 1).padStart(2, '0');
+        const checkoutDay = String(checkoutDate.getDate()).padStart(2, '0');
+        const checkout = `${checkoutYear}${checkoutMonth}${checkoutDay}`;
+        
+        console.log(`🏨 Day ${item.day} - Check-in: ${checkin}, Check-out: ${checkout}`);
+        
+        const apiUrl = `https://gimmonixapi.militaryfares.com/?a=evtrips&method=search&_q=${geo}|${checkin}|${checkout}|1|2:0|25|1||US|hotel&lang=en&curr=USD`;
+        let hotelRes;
+        try {
+          hotelRes = await fetch(apiUrl);
+          console.log("hotelRes : ", hotelRes);
+          
+        } catch {
+          return { ...item, matchedHotel: null };
+        }
+        if (!hotelRes.ok) return { ...item, matchedHotel: null };
+        let hotelData;
+        try {
+          hotelData = await hotelRes.json();
+        } catch {
+          return { ...item, matchedHotel: null };
+        }
+        const hotels = hotelData?.response || [];
+        // 3. Try to match GPT hotel
+        const match = hotels.find(hotel => hotel.name.trim().toLowerCase() === item.hotel.name.trim().toLowerCase());
+        return {
+          ...item,
+          matchedHotel: match || hotels[0] || null,
+        };
+      }));
+      if (!cancelled) {
+        setMatchedHotels(results);
+        setIsLoading(false);
+      }
     }
+    fetchHotels();
+    return () => { cancelled = true; };
+  }, [actualNeedHotel, apiItinerary]);
 
-    // ✅ EMPTY STOPS CASE - Direct route
-    if (allStops.length === 0) {
-      console.log("📍 No stops - creating direct route")
-      itinerary.push({
-        day: 1,
-        date: currentDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
-        from: getCityName(actualFrom),
-        to: getCityName(actualTo),
-        distance: `${dailyLimit}KM`,
-        chargingStop: `Around ${getMidpoint(actualFrom, actualTo)}`,
-        ...(actualNeedHotel && generateHotelDetails(actualTo, 1)),
-      })
-      return itinerary
-    }
+  // Helper function to parse the text response from ChatGPT
+  const parseItineraryText = (text) => {
+    if (!text) return [];
+    
+    const days = text.split('\n\n').filter(day => day.startsWith('DAY'));
+    return days.map(dayText => {
+      const lines = dayText.split('\n').filter(l => l.trim());
+      
+      // Parse DAY line
+      const dayLine = lines[0];
+      const dayNumber = dayLine.match(/DAY (\d+)/)?.[1] || 1;
+      const route = dayLine.split(': ')[1] || '';
+      const [from, toWithDist] = route.split(' --> ');
+      const to = toWithDist?.split(' (')[0] || '';
+      const distance = toWithDist?.match(/\(~(.+)\)/)?.[1] || '';
+      
+      // Parse date line
+      const dateLine = lines.find(l => l.includes('Departure:') || l.includes('Overnight Stay:'));
+      const date = dateLine?.split(': ')[1]?.trim() || '';
 
-    // ✅ WITH STOPS - Multi-day route
-    console.log("🗺️ Creating multi-day route with", allStops.length, "stops")
+      // Parse charging stop
+      const chargingLine = lines.find(l => l.includes('Midway Charging Stop:'));
+      const chargingStop = chargingLine?.split(': ')[1]?.trim() || '';
 
-    // First day: actualFrom → first stop
-    allStops.forEach((stop, index) => {
-      const dayNumber = index + 1
-      currentDate.setDate(currentDate.getDate() + (index === 0 ? 0 : 1))
+      // Only parse hotel if needed
+      let hotel = null;
+      if (actualNeedHotel) {
+        const hotelLine = lines.find(l => l.includes('Hotel Recommendation:'));
+        const hotelName = hotelLine?.split(': ')[1]?.trim() || '';
+        if (hotelName) {
+          hotel = {
+            name: hotelName,
+            description: `Recommended hotel in ${to}`,
+            savings: "Gratis 25KWh/night"
+          };
+        }
+      }
 
-      itinerary.push({
-        day: dayNumber,
-        date: currentDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
-        from: index === 0 ? getCityName(actualFrom) : getCityName(allStops[index - 1]), // ✅ Use actualFrom
-        to: getCityName(stop),
-        distance: `${dailyLimit}KM`,
-        chargingStop: `Around ${getMidpoint(allStops[index - 1] || actualFrom, stop)}`,
-        ...(actualNeedHotel && generateHotelDetails(stop, dayNumber)),
-      })
-    })
-
-    // ✅ Final day: last stop → actualTo
-    if (allStops.length > 0) {
-      const finalDay = allStops.length + 1
-      currentDate.setDate(currentDate.getDate() + 1)
-
-      itinerary.push({
-        day: finalDay,
-        date: currentDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
-        from: getCityName(allStops[allStops.length - 1]),
-        to: getCityName(actualTo), // ✅ Use actualTo
-        distance: `${dailyLimit}KM`,
-        chargingStop: `Around ${getMidpoint(allStops[allStops.length - 1], actualTo)}`,
-        ...(actualNeedHotel && generateHotelDetails(actualTo, finalDay)),
-      })
-    }
-
-    return itinerary
-  }
+      return {
+        day: parseInt(dayNumber),
+        from: from?.trim(),
+        to: to?.trim(),
+        distance: distance?.trim(),
+        date: date?.trim(),
+        chargingStop: chargingStop?.trim(),
+        ...(hotel && { hotel })
+      };
+    });
+  };
 
   // Helper functions
-  const getMidpoint = (from, to) => {
-    return `${getCityName(from)} → ${getCityName(to)}`
-  }
-
-  const generateHotelDetails = (location, day) => {
-    return {
-      hotel: {
-        name: `Recommended Hotel in ${getCityName(location)}`,
-        description: `Centrally located with ${travellerCount} room(s) and EV charging`,
-        savings: "Gratis 25KWh/night",
-      },
-    }
-  }
+  const getCityName = (location) => {
+    if (!location) return "Unknown";
+    return location.split(",")[0]?.trim() || location;
+  };
 
   const ArrowIcon = () => (
     <svg
@@ -175,17 +259,40 @@ function Iternary({
         fillOpacity="0.5"
       />
     </svg>
-  )
+  );
 
-  const itineraryData = generateItinerary()
-  // console.log("✅ Final Itinerary Data:", itineraryData)
+  const handleContinue = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    router.push(`/recommendedHotels?${params.toString()}`);
+  };
+
+
+  if (!actualFrom || !actualTo) {
+    return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="w-full flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return null; // Show nothing if there's an error
+  }
+
+  const displayData = matchedHotels.length > 0 ? matchedHotels : apiItinerary;
+  if (displayData.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full">
-
       <div className="bg-white rounded-2xl overflow-hidden">
         <div className="relative">
-          {itineraryData.map((item, index) => (
+          {displayData.map((item, index) => (
             <div key={item.day} className="relative">
               {/* Timeline Line */}
               <div
@@ -202,18 +309,11 @@ function Iternary({
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  {/* Day Title with Arrow */}
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap max-w-[80%]">
+                  {/* Day Title */}
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                     <h3 className="text-base sm:text-lg md:text-3xl xl:text-[50px] font-bold text-gray-900">
-                      DAY {item.day}: {item.from}
+                      DAY {item.day}: {item.from} → {item.to} (~{item.distance})
                     </h3>
-                    <ArrowIcon />
-                    <span className="text-base sm:text-lg md:text-3xl xl:text-[50px] font-bold text-gray-900">
-                      {item.to}
-                    </span>
-                    <span className="text-sm sm:text-base md:text-3xl xl:text-[45px] text-gray-900 font-bold">
-                      (~{item.distance})
-                    </span>
                   </div>
 
                   {/* Trip Details */}
@@ -228,53 +328,58 @@ function Iternary({
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
-                      <div className="text-[10px] sm:text-base">
-                        <span className="font-medium text-gray-900 md:text-lg xl:text-3xl">Midway Charging Stop:</span>
-                        <span className="text-[10px] font-[400] text-gray-700 ml-1 md:text-lg xl:text-3xl">
-                          {item.chargingStop}
-                        </span>
-                      </div>
-                    </div>
-
-                    {actualNeedHotel && (
+                    {item.chargingStop && (
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
-                        <div className="text-[10px] sm:text-base md:text-lg">
-                          <span className="font-medium text-gray-900 xl:text-3xl">Hotel Recommendation:</span>
+                        <div className="text-[10px] sm:text-base">
+                          <span className="font-medium text-gray-900 md:text-lg xl:text-3xl">Midway Charging Stop:</span>
+                          <span className="text-[10px] font-[400] text-gray-700 ml-1 md:text-lg xl:text-3xl">
+                            {item.chargingStop}
+                          </span>
                         </div>
                       </div>
                     )}
-                  </div>
 
-                  {actualNeedHotel && item.hotel && (
-                    <div className="bg-white w-[311px] md:w-[584px] xl:w-[1005px] h-auto rounded-lg px-4 py-4 sm:p-5 border-2 border-gray-200 relative">
-                      <div className="absolute -top-5 right-4 md:-top-12 md:right-8 xl:right-8 xl:-top-22 w-[36px] h-[36px] md:w-[68px] md:h-[68px] xl:w-[117px] xl:h-[117px] flex items-center justify-center">
-                        <img src="images/icons/discount2.png" alt="discount" className="w-full h-auto" />
-                      </div>
-                      <div className="flex flex-row sm:items-center sm:justify-between gap-3">
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-gray-900 text-[10px] md:text-lg sm:text-base xl:text-3xl mb-1 sm:mb-2 md:mb-0">
-                            {item.hotel.name}
-                          </h4>
-                          <p className="text-[8px] font-[400] md:text-base sm:text-sm xl:text-2xl text-gray-600 leading-relaxed">
-                            {item.hotel.description}
-                          </p>
+                    {actualNeedHotel && (item.matchedHotel || item.hotel) && (
+                      <>
+                        <div className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
+                          <div className="text-[10px] sm:text-base md:text-lg">
+                            <span className="font-medium text-gray-900 xl:text-3xl">Hotel Recommendation:</span>
+                          </div>
                         </div>
-                        <Button className="bg-[#F96C41] hover:bg-[#e55f38] cursor-pointer text-white text-xs font-medium rounded-sm flex-shrink-0 self-center w-[50px] h-[21px] md:w-24 md:h-10 xl:w-36 xl:h-[50px] md:rounded-lg">
-                          <div className="flex items-center justify-center w-full gap-x-1 md:gap-x-2">
-                            <h1 className="text-[6px] font-[600] md:text-[11px] xl:text-xl">More Info</h1>
+                        <div className="bg-white w-[311px] md:w-[584px] xl:w-[1005px] h-auto rounded-lg px-4 py-4 sm:p-5 border-2 border-gray-200 relative">
+                          <div className="absolute -top-5 right-4 md:-top-12 md:right-8 xl:right-8 xl:-top-22 w-[36px] h-[36px] md:w-[68px] md:h-[68px] xl:w-[117px] xl:h-[117px] flex items-center justify-center">
                             <img
-                              src="images/icons/more.png"
-                              alt="MORE"
-                              className="w-2 h-2 md:w-3 md:h-3 xl:w-4 xl:h-4"
+                              src="images/icons/discount2.png"
+                              alt="discount"
+                              className="w-full h-auto"
                             />
                           </div>
-                        </Button>
-                      </div>
-                    </div>
-                  )}
+                          <div className="flex flex-row sm:items-center sm:justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-medium text-gray-900 text-[10px] md:text-lg sm:text-base xl:text-3xl mb-1 sm:mb-2 md:mb-0">
+                                {(item.matchedHotel && item.matchedHotel.name) || (item.hotel && item.hotel.name)}
+                              </h4>
+                              <p className="text-[8px] font-[400] md:text-base sm:text-sm xl:text-2xl text-gray-600 leading-relaxed">
+                                {(item.matchedHotel && item.matchedHotel.location?.address) || (item.hotel && item.hotel.description)}
+                              </p>
+                            </div>
+                            <Button className="bg-[#F96C41] hover:bg-[#e55f38] cursor-pointer text-white text-xs font-medium rounded-sm flex-shrink-0 self-center w-[50px] h-[21px] md:w-24 md:h-10 xl:w-36 xl:h-[50px] md:rounded-lg">
+                              <div className="flex items-center justify-center w-full gap-x-1 md:gap-x-2">
+                                <h1 className="text-[6px] font-[600] md:text-[11px] xl:text-xl">More Info</h1>
+                                <img
+                                  src="images/icons/more.png"
+                                  alt="MORE"
+                                  className="w-2 h-2 md:w-3 md:h-3 xl:w-4 xl:h-4"
+                                />
+                              </div>
+                            </Button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -291,5 +396,5 @@ function Iternary({
         </div>
       </div>
     </div>
-  )
+  );
 }

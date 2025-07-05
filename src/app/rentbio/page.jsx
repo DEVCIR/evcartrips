@@ -8,12 +8,12 @@ import Navbar from "../common_components/navbar/page"
 import { Edit } from "lucide-react"
 import Rentals from "../common_components/rentals/page"
 import { useSearchParams,useRouter  } from "next/navigation"
-import React, { Suspense , useEffect} from "react"
+import React, { Suspense , useEffect, useState} from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRef } from "react"
 
 import dynamic from "next/dynamic"
-import Footer from "@/components/ui/footer"
+import Footer from "../../components/ui/footer"
 const MapComponent = dynamic(() => import("../common_components/map/page"), {
   ssr: false,
 })
@@ -40,6 +40,8 @@ export default function PageWrapper() {
 function Page() {
   const searchParams = useSearchParams()
    const router = useRouter()
+  const [routeInfo, setRouteInfo] = useState({ distance: '', duration: '' })
+
 
   // Check if required parameters exist
   useEffect(() => {
@@ -73,7 +75,7 @@ function Page() {
   const isFooterInView = useInView(footerRef, { once: true, amount: 0.3 })
 
   // Debug logging for Route Overview scroll animation
-  console.log("Route Overview in view:", isRouteOverviewInView)
+  // console.log("Route Overview in view:", isRouteOverviewInView)
 
   // Get data from URL parameters
   const from = searchParams.get("from")
@@ -248,7 +250,7 @@ function Page() {
           animate={isMapInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8 }}
         >
-          <MapComponent />
+          <MapComponent onRouteInfoChange={(distance, duration) => setRouteInfo({ distance, duration })} />
         </motion.div>
 
         {/* Route Overview Component */}
@@ -269,6 +271,8 @@ function Page() {
               autonomy={autonomy}
               needHotel={needHotel}
               travellers={travellers}
+              distance={routeInfo.distance}
+              duration={routeInfo.duration}
             />
           </div>
         </motion.div>

@@ -8,7 +8,7 @@ import { Edit } from "lucide-react"
 import Rentals from "../common_components/rentals/page"
 import { useSearchParams , useRouter} from "next/navigation"
 import React, { Suspense , useEffect } from "react"
-import Footer from "@/components/ui/footer"
+import Footer from "../../components/ui/footer"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 

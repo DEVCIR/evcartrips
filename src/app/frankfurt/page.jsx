@@ -1,12 +1,12 @@
 "use client"
 import { ListFilter, X } from "lucide-react"
-import HotelCard from "@/components/ui/hotel-card"
+import HotelCard from "../../components/ui/hotel-card"
 import Navbar from "../common_components/navbar/page"
 import HotelFilters from "../common_components/hotel-filters/page"
-import { useState, useEffect } from "react"
-import { useSearchParams , useRouter} from "next/navigation"
-import { Suspense} from "react"
-import Footer from "@/components/ui/footer"
+import { useState, useEffect, useCallback } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
+import { Suspense } from "react"
+import Footer from "../../components/ui/footer"
 import Rentals from "../common_components/rentals/page"
 import CarDiv from "../common_components/cardiv/page"
 import { motion, AnimatePresence, useInView } from "framer-motion"
@@ -32,6 +32,8 @@ export default function PageWrapper() {
   )
 }
 
+
+
 function Page() {
   const searchParams = useSearchParams()
   const router = useRouter();
@@ -50,69 +52,134 @@ function Page() {
   const [allHotels, setAllHotels] = useState([])
   const [filteredHotels, setFilteredHotels] = useState([])
   const [sortedHotels, setSortedHotels] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const hasFetched = useRef(false) // To track if we've already fetched data
 
   // Check if required parameters exist
-    useEffect(() => {
-      const from = searchParams.get("from")
-      const to = searchParams.get("to")
-      
-      if (!from || !to) {
-        router.push("/") // Redirect to home if required params are missing
-      }
-    }, [searchParams, router])
-  
-    // If params are missing, return null (will redirect)
-    if (!searchParams.get("from") || !searchParams.get("to")) {
-      return null
+  useEffect(() => {
+    const from = searchParams.get("from")
+    const to = searchParams.get("to")
+    
+    if (!from || !to) {
+      router.push("/")
     }
+  }, [searchParams, router])
 
-  // Refs for scroll animations
-  const carDivRef = useRef(null)
-  const rentalsRef = useRef(null)
-  const footerRef = useRef(null)
+  // If params are missing, return null (will redirect)
+  if (!searchParams.get("from") || !searchParams.get("to")) {
+    return null
+  }
 
-  // useInView hooks for scroll-triggered animations
-  const isCarDivInView = useInView(carDivRef, { once: true, amount: 0.1, margin: "0px 0px -100px 0px" })
-  const isRentalsInView = useInView(rentalsRef, { once: true, amount: 0.3 })
-  const isFooterInView = useInView(footerRef, { once: true, amount: 0.3 })
+
 
   const fromCity = searchParams.get("from")?.split(",")[0]
   const toCity = searchParams.get("to")?.split(",")[0]
-  const travellers = searchParams.get("travellers")
+  const travellers = parseInt(searchParams.get("travellers")?.split(" ")[0]) || 1
+  const rooms = parseInt(searchParams.get("travellers")?.split(",")[1]?.split(" ")[1]) || 1
+  const cityGeo = searchParams.get("geo")
+  const hotelcity = searchParams.get("city")
+
   const stops = [
     searchParams.get("stop1")?.split(",")[0],
     searchParams.get("stop2")?.split(",")[0],
     searchParams.get("stop3")?.split(",")[0],
   ].filter(Boolean)
 
-  const seededRandom = (seed) => {
-    const x = Math.sin(seed) * 10000
-    return x - Math.floor(x)
-  }
+  // Function to fetch hotels from API
+  const fetchHotels = useCallback(async () => {
+    if (hasFetched.current || !cityGeo) return; // Skip if already fetched or no geo
+    
+    try {
+      setLoading(true)
+      const [lat, lon] = cityGeo.split(';')
+      
+      const { checkInDate, checkOutDate } = getDatesForAPI()
+      
+      const response = await fetch(
+        `https://gimmonixapi.militaryfares.com/?a=evtrips&method=search&_q=${lat};${lon}|${checkInDate}|${checkOutDate}|${rooms}|${travellers}:0|25|1||US|hotel&lang=en&curr=USD`
+      )
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      
+      if (data.status !== "OK" || !data.response) {
+        throw new Error("Invalid API response")
+      }
+      
+      // Take only first 6 hotels from API response
+      const apiHotels = data.response.slice(0, 6).map((hotel, index) => ({
+        id: hotel.hid || `api-${index}`,
+        name: hotel.name,
+        rating: hotel.stars || 3,
+        address: hotel.location?.address || `${searchParams.get("city") || fromCity} City Center`,
+        nights: parseInt(hotel.date?.nights) || 1,
+        travelers: travellers,
+        price: parseFloat(hotel.per_night_price) || 100,
+        image: hotel.img || hotel.thumb || "/images/1.jpg",
+        distance: parseFloat(hotel.location?.distance) || (index + 1) * 10,
+        amenities: ["Air conditioning", "WiFi", "Parking"],
+        chain: "Local Chain",
+        roomType: hotel.rooms?.["@Name"] || "Standard",
+        roomImage: hotel.rooms?.["@image"] ? hotel.rooms?.["@thumb"] : "/images/defaultroom.jpg",
+        refundable: hotel.rooms?.["@Refundable"] === "true",
+        city: searchParams.get("city") || fromCity,
+        geo: cityGeo,
+        checkin: checkInDate, // Store the geo with each hotel
+        checkout: checkOutDate, // Store the geo with each hotel
+      }))
+      
+      setAllHotels(apiHotels)
+      setFilteredHotels(apiHotels)
+      setSortedHotels(apiHotels)
+      setLoading(false)
+      hasFetched.current = true
+    } catch (err) {
+      console.error("Error fetching hotels:", err)
+      setError(err.message)
+      setLoading(false)
+      hasFetched.current = true
+    }
+  }, [cityGeo, travellers, rooms, fromCity, searchParams])
 
-  // Generate dynamic hotels array based on cities
+  // Generate dates for API call
+  const getDatesForAPI = useCallback(() => {
+    // Get startDate from params, or use today if missing
+    const startDateParam = searchParams.get("startDate");
+    let startDate;
+    if (startDateParam) {
+      // Only use the date part (YYYY-MM-DD)
+      const dateOnly = startDateParam.split("T")[0];
+      startDate = new Date(dateOnly + "T00:00:00");
+    } else {
+      startDate = new Date();
+    }
+
+    // Format as YYYYMMDD
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}${month}${day}`;
+    };
+
+    const checkInDate = formatDate(startDate);
+
+    // Add 1 day for check-out
+    const checkOut = new Date(startDate);
+    checkOut.setDate(checkOut.getDate() + 1);
+    const checkOutDate = formatDate(checkOut);
+
+    return { checkInDate, checkOutDate };
+  }, [searchParams]);
+
+  // Fetch hotels when component mounts or geo changes
   useEffect(() => {
-    const cities = [fromCity, ...stops, toCity]
-    const dynamicHotels = cities.map((city, index) => ({
-      id: index + 1,
-      name: `Best Hotels in ${city}`,
-      rating: Math.floor(seededRandom(index) * 5) + 1,
-      address: `${city} City Center`,
-      nights: 1,
-      travelers: travellers,
-      price: Math.floor(seededRandom(index + 1) * 200) + 100,
-      image: "/images/1.jpg",
-      distance: (index + 1) * 10,
-      amenities: ["Air conditioning", "WiFi", "Parking"],
-      chain: "Local Chain",
-      roomType: "Standard",
-      refundable: true,
-    }))
-
-    setAllHotels(dynamicHotels)
-    setFilteredHotels(dynamicHotels)
-    setSortedHotels(dynamicHotels)
-  }, [fromCity, toCity, stops, travellers])
+    fetchHotels()
+  }, [fetchHotels])
 
   // Filter hotels
   useEffect(() => {
@@ -120,7 +187,7 @@ function Page() {
       if (filters.name && !hotel.name.toLowerCase().includes(filters.name.toLowerCase())) {
         return false
       }
-      if (filters.selectedRatings.length > 0 && !filters.selectedRatings.includes(hotel.rating)) {
+      if (filters.selectedRatings.length > 0 && !filters.selectedRatings.includes(Math.floor(hotel.rating))) {
         return false
       }
       if (hotel.distance > filters.maxDistance) {
@@ -175,6 +242,38 @@ function Page() {
     setSortOption(e.target.value)
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <motion.div
+          className="text-gray-800 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          Loading hotels...
+        </motion.div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <motion.div
+          className="text-red-500 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          Error loading hotels: {error}
+        </motion.div>
+      </div>
+    )
+  }
+
+
+
   return (
     <motion.div
       className="min-h-screen bg-white"
@@ -194,7 +293,7 @@ function Page() {
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0  bg-opacity-50"
+              className="absolute inset-0 bg-opacity-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -278,7 +377,7 @@ function Page() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.6, type: "spring" }}
             >
-              Hotels in Frankfurt
+              Hotels in {hotelcity}
             </motion.h1>
 
             <motion.div
@@ -394,10 +493,9 @@ function Page() {
       </motion.main>
 
       <motion.div
-        ref={carDivRef}
         className="px-8 mt-4 pb-8 xl:px-40"
         initial={{ opacity: 0, y: 100 }}
-        animate={isCarDivInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
+  animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
       >
         <div className="max-w-full mx-auto">
@@ -406,11 +504,10 @@ function Page() {
       </motion.div>
 
       <motion.div
-        ref={rentalsRef}
         className="px-8 mt-4 pb-8 xl:px-40"
-        initial={{ opacity: 0, y: 50 }}
-        animate={isRentalsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-        transition={{ duration: 0.6 }}
+        initial={{ opacity: 0, y: 100 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
       >
         <div className="max-w-full mx-auto">
           <Rentals />
@@ -418,11 +515,10 @@ function Page() {
       </motion.div>
 
       <motion.div
-        ref={footerRef}
         className="max-md:hidden"
-        initial={{ opacity: 0, y: 50 }}
-        animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-        transition={{ duration: 0.6 }}
+        initial={{ opacity: 0, y: 100 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
       >
         <Footer />
       </motion.div>

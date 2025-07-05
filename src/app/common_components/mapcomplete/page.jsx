@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic"
 
 // Dynamically import the map to prevent SSR issues
-const MapComplete = dynamic(() => import("@/components/ui/map-complete-leaflet"), {
+const MapComplete = dynamic(() => import("../../../components/ui/map-complete-leaflet"), {
   ssr: false,
   loading: () => (
     <div className="mt-0">

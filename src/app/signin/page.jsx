@@ -3,7 +3,7 @@
 import Navbar from "../common_components/navbar/page"
 import SignInForm from "../common_components/signInForm/page"
 import Rentals from "../common_components/rentals/page"
-import Footer from "@/components/ui/footer"
+import Footer from "../../components/ui/footer"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 
@@ -17,7 +17,7 @@ export default function Page() {
   const isFooterInView = useInView(footerRef, { once: true })
 
   return (
-    <div className="w-svw min-h-screen bg-white overflow-x-hidden">
+    <div className="w-full min-h-screen bg-white overflow-hidden">
       {/* Animated Header Section */}
       <motion.div 
         ref={headerRef}
@@ -68,7 +68,7 @@ export default function Page() {
       {/* Animated Form Section */}
       <motion.div
         ref={formRef}
-        className="-mt-24 md:-mt-30 xl:-mt-40 pb-8"
+        className="-mt-24 md:-mt-18 lg:-mt-36 xl:-mt-40 pb-8"
         initial={{ opacity: 0, y: 50 }}
         animate={isFormInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, type: "spring" }}
@@ -96,6 +96,7 @@ export default function Page() {
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
+        className="max-md:hidden"
       >
         <Footer />
       </motion.div>

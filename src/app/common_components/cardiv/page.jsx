@@ -17,7 +17,7 @@ export default function CarDiv() {
 
         <div className="absolute inset-0 bg-[#000000C7] rounded-t-3xl rounded-b-3xl xl:rounded-[68px]"></div>
 
-        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 xl:top-10 xl:right-20 z-20">
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 xl:top-10 xl:right-20 z-10">
           <div className="font-[400] -tracking-[0.41px] text-[10px] sm:text-xl md:text-2xl xl:text-4xl xl:-tracking-[1.4px]">
             <span className="text-[#F96C41]">ev</span>
             <span className="text-white">trips.club</span>
@@ -28,13 +28,13 @@ export default function CarDiv() {
           <div className="mt-6 sm:mt-10 sm:ml-4 flex flex-col lg:flex-row lg:items-center justify-between w-full gap-4 sm:gap-6 lg:gap-8">
             <div className="flex-1 max-w-none lg:max-w-lg xl:max-w-xl">
               <div className="text-white space-y-1 sm:space-y-2 md:space-y-0">
-                <h1 className="text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl xl:-tracking-[1.4px] font-bold leading-tight">
+                <h1 className="text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl xl:-tracking-[1.4px] font-bold leading-tight  z-10">
                   EV Drivers Deserve Better
                 </h1>
-                <h2 className="text-base sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl xl:-tracking-[1.4px] font-bold leading-tight">
+                <h2 className="text-base sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl xl:-tracking-[1.4px] font-bold leading-tight z-10">
                   Join the Club. Get More.
                 </h2>
-                <h3 className="text-base sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl xl:-tracking-[1.4px] font-bold leading-tight">
+                <h3 className="text-base sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl xl:-tracking-[1.4px] font-bold leading-tight z-10">
                   Pay Less.
                 </h3>
               </div>

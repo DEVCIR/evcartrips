@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+    pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
     images: {
-    domains: ['images.unsplash.com'],
+    domains: ['content.hsp.gimmonix.com','images.unsplash.com','media.travsrv.com'],
   },
 };
 

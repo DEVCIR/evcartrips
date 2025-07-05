@@ -1,55 +1,106 @@
 "use client"
 
+import { useEffect, useState } from 'react'
+
 export default function RouteOverview({
   from,
   to,
   stops = [],
-  maxDistance = "500 KM",
-  autonomy = "500 KM",
+  maxDistance,
+  autonomy,
   startDate,
+  distance,  // Add this prop
+  duration
 }) {
-  // Extract unit (KM or MI) and value from parameters
-  const maxDistanceValue = Number.parseInt(maxDistance) || 500
-  const maxDistanceUnit = maxDistance.includes("MI") ? "MI" : "KM"
+  // const [routeData, setRouteData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const autonomyValue = Number.parseInt(autonomy) || 500
-  const autonomyUnit = autonomy.includes("MI") ? "MI" : "KM"
+  useEffect(()=>{
+    setLoading(false);
+  },[distance,duration])
 
-  // Conversion factor
-  const MILES_TO_KM = 1.60934
+  //  useEffect(() => {
+  //   const calculateRouteOverview = async () => {
+  //     try {
+  //       setLoading(true)
+  //       const response = await fetch('/api/route_overview', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           maxDistance,
+  //           autonomy,
+  //           stops,
+  //         }),
+  //       })
 
-  // Convert to consistent unit (KM) for calculations
-  const maxDistanceKm = maxDistanceUnit === "MI" ? maxDistanceValue * MILES_TO_KM : maxDistanceValue
-  const autonomyKm = autonomyUnit === "MI" ? autonomyValue * MILES_TO_KM : autonomyValue
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch route overview')
+  //       }
 
-  // Calculate total distance (in original units)
-  const calculateTotalDistance = () => {
-    const baseDistancePerLeg = maxDistanceKm
-    const totalDistanceKm = baseDistancePerLeg * (stops.length + 1)
+  //       const data = await response.json()
+  //       setRouteData(data)
+  //     } catch (err) {
+  //       console.error('Error calculating route overview:', err)
+  //       setError(err.message)
+  //       // Fallback to local calculations if API fails
+  //       setRouteData({
+  //         totalDistance: calculateTotalDistanceLocal(),
+  //         drivingTime: calculateDrivingTimeLocal(),
+  //         dailyLimit: getDailyLimitLocal(),
+  //         chargingInterval: getChargingIntervalLocal(),
+  //       })
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
+
+  //   calculateRouteOverview()
+  // }, [maxDistance, autonomy, stops])
+
+  // Local calculation functions as fallback
+  const calculateTotalDistanceLocal = () => {
+    const maxDistanceValue = Number.parseInt(maxDistance) || 500
+    const maxDistanceUnit = maxDistance.includes("MI") ? "MI" : "KM"
+    const MILES_TO_KM = 1.60934
+    
+    const maxDistanceKm = maxDistanceUnit === "MI" ? maxDistanceValue * MILES_TO_KM : maxDistanceValue
+    const totalDistanceKm = maxDistanceKm * (stops.length + 1)
     const totalDistance = maxDistanceUnit === "MI" ? totalDistanceKm / MILES_TO_KM : totalDistanceKm
+    
     return `${Math.round(totalDistance).toLocaleString()}${maxDistanceUnit}`
   }
 
-  const calculateDrivingTime = () => {
-    const baseDistancePerLeg = maxDistanceKm
-    const totalDistanceKm = baseDistancePerLeg * (stops.length + 1)
-    const averageSpeed = 80 // km/h (conservative estimate)
+  const calculateDrivingTimeLocal = () => {
+    const maxDistanceValue = Number.parseInt(maxDistance) || 500
+    const maxDistanceUnit = maxDistance.includes("MI") ? "MI" : "KM"
+    const MILES_TO_KM = 1.60934
+    
+    const maxDistanceKm = maxDistanceUnit === "MI" ? maxDistanceValue * MILES_TO_KM : maxDistanceValue
+    const totalDistanceKm = maxDistanceKm * (stops.length + 1)
+    const averageSpeed = maxDistanceUnit === "MI" ? 50 : 80 // mph or km/h
     const drivingHours = totalDistanceKm / averageSpeed
     const stopHours = stops.length * 0.5 // 30min per stop
     const totalHours = Math.round(drivingHours + stopHours)
+    
     return `~${totalHours} HOURS`
   }
 
-  // Extract the numeric value from maxDistance (e.g., "500 KM" -> 500)
-  const getDailyLimit = () => {
+  const getDailyLimitLocal = () => {
+    const maxDistanceValue = Number.parseInt(maxDistance) || 500
+    const maxDistanceUnit = maxDistance.includes("MI") ? "MI" : "KM"
     return `<${maxDistanceValue}${maxDistanceUnit}`
   }
 
-  // Extract the numeric value from autonomy (e.g., "500 KM" -> 500)
-  const getChargingInterval = () => {
+  const getChargingIntervalLocal = () => {
+    const autonomyValue = Number.parseInt(autonomy) || 500
+    const autonomyUnit = autonomy.includes("MI") ? "MI" : "KM"
     const minRange = Math.round(autonomyValue * 0.8)
     return `${minRange}-${autonomyValue}${autonomyUnit}`
   }
+
 
   const DistanceIcon = () => (
     <svg
@@ -117,6 +168,33 @@ export default function RouteOverview({
     </svg>
   )
 
+
+   if (loading) {
+    return (
+      <div className="w-full">
+        <h1 className="text-[10px] md:text-[19px] xl:text-4xl xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-[#22222299] -tracking-[0.41px] ml-2 xl:ml-6 uppercase">
+          Route Overview
+        </h1>
+        <div className="bg-white rounded-2xl border border-gray-400 overflow-hidden mt-4 xl:mt-10 p-6 text-center">
+          <div className="animate-pulse">Calculating route...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="w-full">
+        <h1 className="text-[10px] md:text-[19px] xl:text-4xl xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-[#22222299] -tracking-[0.41px] ml-2 xl:ml-6 uppercase">
+          Route Overview
+        </h1>
+        <div className="bg-white rounded-2xl border border-gray-400 overflow-hidden mt-4 xl:mt-10 p-6 text-center text-red-500">
+          {error}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="w-full">
       <h1 className="text-[10px] md:text-[19px] xl:text-4xl xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-[#22222299] -tracking-[0.41px] ml-2 xl:ml-6 uppercase">
@@ -130,7 +208,7 @@ export default function RouteOverview({
               <DistanceIcon />
             </div>
             <div className="text-lg md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-gray-600 mb-1">
-              {calculateTotalDistance()}
+              {distance || calculateTotalDistanceLocal()}
             </div>
             <div className="text-[8px] md:text-[11px] xl:text-[20px] font-bold xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               TOTAL DISTANCE
@@ -143,7 +221,7 @@ export default function RouteOverview({
               <TimeIcon />
             </div>
             <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1">
-              {calculateDrivingTime()}
+              {duration || calculateDrivingTimeLocal()}
             </div>
             <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               ESTIMATED DRIVING TIME
@@ -156,7 +234,7 @@ export default function RouteOverview({
               <KMIcon />
             </div>
             <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1">
-              {getDailyLimit()}
+              {maxDistance || getDailyLimitLocal()}
             </div>
             <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               DAILY DRIVING LIMIT
@@ -169,7 +247,7 @@ export default function RouteOverview({
               <FuelIcon />
             </div>
             <div className="text-lg font-bold md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] text-gray-600 mb-1">
-              {getChargingInterval()}
+              {autonomy || getChargingIntervalLocal()}
             </div>
             <div className="text-[8px] font-bold md:text-2 xl:text-[20px] xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               CHARGING INTERVALS

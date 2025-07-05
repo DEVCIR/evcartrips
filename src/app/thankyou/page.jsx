@@ -1,6 +1,6 @@
 "use client"
 
-import Footer from "@/components/ui/footer"
+import Footer from "../../components/ui/footer"
 import CarDiv from "../common_components/cardiv/page"
 import HalfNavbar1 from "../common_components/halfnavbar1/page"
 import Rentals from "../common_components/rentals/page"

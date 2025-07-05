@@ -1,13 +1,14 @@
 "use client"
-import { Input } from "@/components/ui/input"
+import { Input } from "../../components/ui/input"
 import Navbar from "../common_components/navbar/page"
 import TravelForm from "../common_components/form/page"
 import CarDiv from "../common_components/cardiv/page"
 import Rentals from "../common_components/rentals/page"
-import CoreBenefits from "@/components/ui/core-benefits"
-import Footer from "@/components/ui/footer"
-import { motion, useInView } from "framer-motion"
+import CoreBenefits from "../../components/ui/core-benefits"
+import Footer from "../../components/ui/footer"
+import { motion, useInView } from "framer-motion"        
 import { useRef } from "react"
+import { ToastContainer } from "react-toastify"
 
 export default function Page() {
   // const [token] = useLocalStorage('token', null)
@@ -159,7 +160,7 @@ export default function Page() {
 
       <motion.div 
         ref={carDivRef}
-        className="px-8 mt-4 pb-8"
+        className="px-8 mt-4 pb-8 z-30"
         initial={{ y: 50, opacity: 0 }}
         animate={isCarDivInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
         transition={{ duration: 0.8 }}
@@ -190,6 +191,7 @@ export default function Page() {
       >
           <Footer />
       </motion.div>
+      <ToastContainer />
     </div>
   )
 }

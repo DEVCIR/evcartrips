@@ -3,7 +3,7 @@
 import Navbar from "../common_components/navbar/page"
 import SignUpForm from "../common_components/signupform/page"
 import Rentals from "../common_components/rentals/page"
-import Footer from "@/components/ui/footer"
+import Footer from "../../components/ui/footer"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 
@@ -68,7 +68,7 @@ export default function Page() {
       {/* Animated Form Section */}
       <motion.div
         ref={formRef}
-        className="-mt-24 md:-mt-30 xl:-mt-40 pb-8 z-40"
+        className="-mt-24 md:-mt-18 lg:-mt-36 xl:-mt-40 pb-8 z-40"
         initial={{ opacity: 0, y: 50 }}
         animate={isFormInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, type: "spring" }}

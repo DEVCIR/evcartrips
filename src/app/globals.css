@@ -465,3 +465,25 @@
 }
 
 
+/* Tailwind Custom Class */
+.btn-gradient {
+  @apply bg-gradient-to-b from-[#F96C41] to-[#AA3916] transition-all duration-300 transform;
+}
+
+.btn-gradient:hover {
+  @apply from-[#E55C31] to-[#902F12] scale-105;
+}
+/* Inverse Gradient Button */
+.btn-gradient-inverse {
+  @apply relative rounded-lg border-transparent text-transparent bg-clip-text
+           bg-gradient-to-b from-[#F96C41] to-[#AA3916] transition-all duration-300;
+}
+.btn-gradient-inverse::before {
+  @apply absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#F96C41] to-[#AA3916];
+}
+.btn-gradient-inverse:hover {
+  @apply text-white bg-gradient-to-b from-[#F96C41] to-[#AA3916];
+}
+.btn-gradient-inverse:hover::before {
+  @apply opacity-0;
+}

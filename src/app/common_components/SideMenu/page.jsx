@@ -37,8 +37,11 @@ export default function SideMenu({ isOpen, onClose }) {
               <Link href="/about-us" className="block text-gray-300 hover:text-white transition-colors">
                 About us
               </Link>
-              <Link href="/contact-us" className="block text-gray-300 hover:text-white transition-colors">
+              <Link href="/contactus" className="block text-gray-300 hover:text-white transition-colors">
                 Contact us
+              </Link>
+              <Link href="/thankyou" className="block text-gray-300 hover:text-white transition-colors">
+                Thankyou
               </Link>
             </nav>
           </div>

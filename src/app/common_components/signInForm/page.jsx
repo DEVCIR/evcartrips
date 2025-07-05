@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from "../../../components/ui/input"
+import { Button } from "../../../components/ui/button"
 import { useRouter } from "next/navigation"
 import { toast, ToastContainer } from "react-toastify"
 import { motion } from "framer-motion"
@@ -56,8 +56,9 @@ export default function SignInForm() {
         localStorage.setItem("token", data.token)
         localStorage.setItem("user", JSON.stringify(data.user))
       }
-      
-      router.push("/home")
+      setTimeout(() => {
+        router.push("/home")
+      }, 3000);
     } catch (error) {
       console.error("Login error:", error)
       if (error.message.includes("Invalid email or password")) {
@@ -72,7 +73,7 @@ export default function SignInForm() {
 
   return (
     <motion.div
-      className="w-[350px] h-[400px] md:w-[586px] md:h-[600px] xl:w-[680px] xl:h-[680px] bg-[#FFFFFF] rounded-t-3xl rounded-b-3xl shadow-xl px-4 md:px-6 xl:px-10 xl:py-10 py-6 -mt-4 relative z-10 mx-auto"
+      className="w-[350px] h-auto md:w-[586px] xl:w-[680px] bg-[#FFFFFF] rounded-t-3xl rounded-b-3xl shadow-xl px-4 md:px-6 xl:px-10 xl:py-10 py-6 -mt-4 relative z-10 mx-auto"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
@@ -146,7 +147,7 @@ export default function SignInForm() {
           <Button
             type="submit"
             disabled={loading}
-            className={`w-full h-[44px] md:h-[67px] bg-gradient-to-b from-[#F96C41] to-[#AA3916] text-white font-bold py-3 md:py-4 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] mt-3 md:mt-0 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+            className={`w-full h-[44px] md:h-[67px] cursor-pointer bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:to-[#F96C41] hover:from-[#AA3916] text-white font-bold py-3 md:py-4 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] mt-3 md:mt-0 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
             whileHover={{ scale: loading ? 1 : 1.02 }}
             whileTap={{ scale: loading ? 1 : 0.98 }}
           >
@@ -161,7 +162,7 @@ export default function SignInForm() {
           transition={{ delay: 0.4, duration: 0.4 }}
           className="text-center py-0 my-0"
         >
-          <a href="#" className="text-[#F96C41] font-[600] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] hover:underline">
+          <a href="/resetpassword" className="text-[#F96C41] font-[600] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] hover:underline">
             Forgotten password?
           </a>
         </motion.div>
@@ -202,19 +203,19 @@ export default function SignInForm() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.4 }}
            className="flex justify-center space-x-4 md:space-x-6">
-          <button className="w-[42px] h-[42px] md:w-[70px] md:h-[70px] xl:w-[90px] xl:h-[90px] p-2 rounded-lg md:rounded-xl xl:rounded-2xl bg-[#D9D9D9] hover:bg-[#D9D9D9]">
+          <button className="cursor-pointer w-[42px] h-[42px] md:w-[70px] md:h-[70px] xl:w-[90px] xl:h-[90px] p-2 rounded-lg md:rounded-xl xl:rounded-2xl bg-[#D9D9D9] hover:bg-[#D9D9D9]">
             <svg className='w-[24px] h-[24px] md:w-[40px] md:h-[40px] xl:w-[60px] xl:h-[60px] mx-auto' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 12C5.99856 13.4165 6.49829 14.7877 7.41074 15.8712C8.32318 16.9546 9.58951 17.6802 10.9856 17.9197C12.3816 18.1592 13.8174 17.897 15.0388 17.1797C16.2601 16.4623 17.1883 15.336 17.659 14H12V10H21.805V14H21.8C20.873 18.564 16.838 22 12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C13.6345 1.99884 15.2444 2.39875 16.6883 3.16467C18.1323 3.93058 19.3662 5.0391 20.282 6.393L17.004 8.688C16.2924 7.61241 15.2532 6.79473 14.0404 6.35617C12.8275 5.9176 11.5057 5.88149 10.2707 6.25319C9.03579 6.62488 7.95347 7.38461 7.18421 8.41974C6.41495 9.45487 5.9997 10.7103 6 12Z" fill="black"/>
             </svg>
           </button>
 
-          <button className="w-[42px] h-[42px] md:w-[70px] md:h-[70px] xl:w-[90px] xl:h-[90px] p-2 rounded-lg md:rounded-xl xl:rounded-2xl bg-[#D9D9D9] hover:bg-[#D9D9D9]">
+          <button className="cursor-pointer w-[42px] h-[42px] md:w-[70px] md:h-[70px] xl:w-[90px] xl:h-[90px] p-2 rounded-lg md:rounded-xl xl:rounded-2xl bg-[#D9D9D9] hover:bg-[#D9D9D9]">
             <svg className='w-[24px] h-[24px] md:w-[40px] md:h-[40px] xl:w-[60px] xl:h-[60px] mx-auto' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 16.84 5.44 20.87 10 21.8V15H8V12H10V9.5C10 7.57 11.57 6 13.5 6H16V9H14C13.45 9 13 9.45 13 10V12H16V15H13V21.95C18.05 21.45 22 17.19 22 12Z" fill="black"/>
             </svg>
           </button>
 
-          <button className="w-[42px] h-[42px] md:w-[70px] md:h-[70px] xl:w-[90px] xl:h-[90px] p-2 rounded-lg md:rounded-xl xl:rounded-2xl bg-[#D9D9D9] hover:bg-[#D9D9D9]">
+          <button className="cursor-pointer w-[42px] h-[42px] md:w-[70px] md:h-[70px] xl:w-[90px] xl:h-[90px] p-2 rounded-lg md:rounded-xl xl:rounded-2xl bg-[#D9D9D9] hover:bg-[#D9D9D9]">
             <svg className='w-[24px] h-[24px] md:w-[40px] md:h-[40px] xl:w-[60px] xl:h-[60px] mx-auto' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M17.0502 20.28C16.0702 21.23 15.0002 21.08 13.9702 20.63C12.8802 20.17 11.8802 20.15 10.7302 20.63C9.29016 21.25 8.53016 21.07 7.67016 20.28C2.79016 15.25 3.51016 7.59 9.05016 7.31C10.4002 7.38 11.3402 8.05 12.1302 8.11C13.3102 7.87 14.4402 7.18 15.7002 7.27C17.2102 7.39 18.3502 7.99 19.1002 9.07C15.9802 10.94 16.7202 15.05 19.5802 16.2C19.0102 17.7 18.2702 19.19 17.0402 20.29L17.0502 20.28ZM12.0302 7.25C11.8802 5.02 13.6902 3.18 15.7702 3C16.0602 5.58 13.4302 7.5 12.0302 7.25Z" fill="black"/>
             </svg>
