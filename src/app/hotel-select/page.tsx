@@ -249,7 +249,7 @@ export default function HotelBooking() {
 
           {/* Continue Button */}
           <div className="flex justify-center mb-8">
-            <button className="btn-gradient text-white px-12 py-3 rounded-lg font-medium  text-lg">
+            <button className="cursor-pointer btn-gradient text-white px-12 py-3 rounded-lg font-medium  text-lg">
               CONTINUE
             </button>
           </div>

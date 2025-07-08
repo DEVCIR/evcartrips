@@ -67,7 +67,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room, onSelect }) => {
           </span>
           <button
             onClick={() => onSelect(room.id)}
-            className="btn-gradient text-white text-[10px]  px-6 py-2 rounded-lg font-medium"
+            className="cursor-pointer not-[]:btn-gradient text-white text-[10px]  px-6 py-2 rounded-lg font-medium"
           >
             SELECT ROOM
           </button>

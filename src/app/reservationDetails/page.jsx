@@ -388,7 +388,7 @@ function ReservationDetails() {
 
             {/* Continue Button */}
             <button
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg text-base"
+              className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] cursor-pointer text-white font-semibold py-3 px-6 rounded-lg text-base"
 
             >
               CONTINUE
