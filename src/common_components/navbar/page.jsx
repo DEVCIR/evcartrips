@@ -1,11 +1,11 @@
 "use client";
-import { Input } from "../../../components/ui/input"
+import { Input } from "../../components/ui/input"
 import { House, User, Users, Mail, LogOut } from "lucide-react";
-import SideMenu from "../SideMenu/page";
 import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { SideMenu } from "../SideMenu/page";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

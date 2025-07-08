@@ -4,11 +4,11 @@ import { useState } from "react"
 import { Users, Bed, Utensils, ChevronDown, CreditCard, Building2, Coins, Info, UserIcon, User, Globe, Phone, Mail, ClockAlert, LockKeyhole, Earth } from "lucide-react"
 import { Star, Car, Coffee, ChevronRight } from "lucide-react"
 import { MealIcon, RoomIcon } from "../hotel-select/components/Icons"
-import HalfNavbar1 from "../common_components/halfnavbar1/page"
-import Navbar from "../common_components/navbar/page"
+import HalfNavbar1 from "../../common_components/halfnavbar1/page"
+import Navbar from "../../common_components/navbar/page"
 import Footer from '../../components/ui/footer'
-import Rentals from '../common_components/rentals/page'
-import CarDiv from '../common_components/cardiv/page'
+import Rentals from '../../common_components/rentals/page'
+import CarDiv from '../../common_components/cardiv/page'
 
 export default function PaymentPage() {
   const [selectedPayment, setSelectedPayment] = useState("card")
@@ -51,11 +51,11 @@ export default function PaymentPage() {
 
   const roomDetails = [
     {
-      icon: <UserIcon className="w-4 h-4 mr-1" />,
+      icon: <UserIcon className="md:w-4 md:h-4 h-2 w-2 mr-1" />,
       text: `2 Sleeps`,
     },
-    { icon: <RoomIcon className="w-4 h-4 mr-1" />, text: "Double" },
-    { icon: <MealIcon className="w-4 h-4 mr-1" />, text: "Bread and Breakfast BB" },
+    { icon: <RoomIcon className="md:w-4 md:h-4 h-2 w-2 mr-1" />, text: "Double" },
+    { icon: <MealIcon className="md:w-4 md:h-4 h-2 w-2 mr-1" />, text: "Bread and Breakfast BB" },
   ];
 
   const renderStars = (rating) => {
@@ -81,12 +81,12 @@ export default function PaymentPage() {
 
       <div className="-mt-[16rem] md:-mt-[30rem] lg:-mt-[16rem] xl:-mt-[20rem] px-2">
 
-      <div className="max-md:px-2 py-6 max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto">
+      <div className="max-md:px-2 py-6  max-w-md md:max-w-sm md:flex md:justify-center lg:max-w-4xl lg:flex lg:justify-start lg:pl-[5%] xl:max-w-5xl  mx-auto">
         <h1 className="text-2xl font-semibold text-white">Payment</h1>
       </div>
 
       {/* Step 1: Review and Book */}
-      <div className="max-md:px-2 mb-6 max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto">
+      <div className="max-md:px-2 mb-6 max-w-4xl  mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-sm font-semibold text-white">
             1
@@ -94,10 +94,10 @@ export default function PaymentPage() {
           <span className="text-lg font-medium text-white">Review and Book your trip</span>
         </div>
 
-        <div className="max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-4 space-y-4">
+        <div className="max-w-5xl  mx-auto bg-white shadow-2xl rounded-xl p-4 space-y-4">
           {hotels.map((hotel) => (
             <div key={hotel.id} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-200">
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 {/* Hotel Image */}
                 <div className="flex-shrink-0">
                   <Image
@@ -105,7 +105,7 @@ export default function PaymentPage() {
                     alt={hotel.name}
                     width={100}
                     height={80}
-                    className="rounded-lg object-cover w-[130px] h-[130px] xl:w-[300px] xl:h-[200px]"
+                    className="rounded-lg object-cover w-[140px] h-[140px] xl:w-[300px] xl:h-[200px]"
                   />
                 </div>
 
@@ -117,9 +117,9 @@ export default function PaymentPage() {
                   </div>
 
                   {/* Rating and Amenities */}
-                  <div className="flex md:flex-wrap flex-wrap items-center gap-x-4 text-[9px]  md:text-base text-gray-600 mb-3">
+                  <div className="flex md:flex-wrap flex-wrap items-center gap-x-4 text-[7px]   md:text-base text-[#797979] mb-3">
                     {roomDetails.map((detail, index) => (
-                      <div key={index} className="flex items-center">
+                      <div key={index} className="flex items-center bg-[#D9D9D99C] md:px-3 px-2 py-1 rounded-2xl mb-2">
                         {detail.icon}
                         {detail.text}
                       </div>
@@ -127,7 +127,7 @@ export default function PaymentPage() {
                   </div>
 
                   {/* More room details link */}
-                  <button className="flex items-center gap-1 text-blue-600 text-xs md:text-[20px] md:font-semibold mb-3 hover:text-blue-700">
+                  <button className="flex items-center gap-1 text-blue-500 text-[8px] md:text-[16px] md:font-semibold bg-[#D9D9D99C] px-3 py-1 rounded-2xl mb-3 hover:text-blue-600">
                     <span>More room details</span>
                     <ChevronRight size={12} />
                   </button>
@@ -137,8 +137,8 @@ export default function PaymentPage() {
               {/* Check-in/Check-out and Price */}
               <div className="flex justify-between items-end mt-4">
                 <div className="text-[10px] md:text-[16px] text-gray-600 font-bold tracking-wide mb-2">
-                  <div>Check-in: {hotel.checkIn}</div>
-                  <div>Check-out: {hotel.checkOut}</div>
+                  <div>Check-in: <span className="text-gray-600 font-semibold">{hotel.checkIn}</span></div>
+                  <div>Check-out: <span className="text-gray-600 font-semibold">{hotel.checkOut}</span> </div>
                 </div>
                 <div className="text-center">
                   <div className="text-xs md:text-sm mx-auto w-[50%] text-gray-600">
@@ -154,7 +154,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Step 2: Traveler Details */}
-      <div className="px-4 mb-6 mt-10 max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto">
+      <div className="px-4 mb-6 mt-10 max-w-4xl  mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-sm font-semibold text-white">
             2
@@ -251,7 +251,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Step 3: Billing Details */}
-      <div className="px-4 mb-6 max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto">
+      <div className="px-4 mb-6 max-w-4xl  mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-sm font-semibold text-white">
             3
@@ -267,7 +267,7 @@ export default function PaymentPage() {
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setSelectedPayment("card")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "card" ? "border-[#F96C41] bg-[#F96C41] text-white" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "card" ? "border-orange-500 bg-orange-500 text-white" : "border-gray-300 bg-transparent"
               }`}
           >
             <CreditCard className="w-5 h-5" />
@@ -275,7 +275,7 @@ export default function PaymentPage() {
           </button>
           <button
             onClick={() => setSelectedPayment("transfer")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "transfer" ? "border-[#F96C41] bg-[#F96C41] text-white" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "transfer" ? "border-orange-500 bg-orange-500" : "border-gray-300 bg-transparent"
               }`}
           >
             <Building2 className="w-5 h-5" />
@@ -283,7 +283,7 @@ export default function PaymentPage() {
           </button>
           <button
             onClick={() => setSelectedPayment("crypto")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "crypto" ? "border-[#F96C41] bg-[#F96C41] text-white" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "crypto" ? "border-orange-500 bg-orange-500" : "border-gray-300 bg-transparent"
               }`}
           >
             <Coins className="w-5 h-5 text-orange-500" />
@@ -367,7 +367,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Payment Summary */}
-      <div className="px-4 mb-6 max-w-md md:max-w-xl  lg:max-w-2xl xl:max-w-4xl mx-auto">
+      <div className="px-4 mb-6 max-w-3xl xl:max-w-4xl  mx-auto">
         <h3 className="text-lg font-semibold mb-4">PAYMENT DETAILS</h3>
 
         <div className="space-y-3">
@@ -391,8 +391,8 @@ export default function PaymentPage() {
       </div>
 
       {/* Pay Now Button */}
-      <div className="px-4 pb-8 max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto">
-        <button className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold py-4 rounded-xl text-lg">
+      <div className="px-4 pb-8 max-w-4xl  mx-auto">
+        <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold py-4 rounded-xl text-lg">
           PAY NOW
         </button>
       </div>
@@ -400,14 +400,14 @@ export default function PaymentPage() {
       </div>
 
       <div className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden">
-          <div className="max-w-5xl md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto">
+          <div className="max-w-5xl  mx-auto">
             <CarDiv />
           </div>
         </div>
 
         {/* Rentals Component */}
         <div className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden">
-          <div className="max-w-5xl md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto">
+          <div className="max-w-5xl  mx-auto">
             <Rentals />
           </div>
         </div>

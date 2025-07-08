@@ -1,11 +1,11 @@
 "use client"
 
 import Footer from "../../components/ui/footer"
-import HalfNavbar from "../common_components/halfnavbar/page"
-import Navbar from "../common_components/navbar/page"
+import HalfNavbar from "../../common_components/halfnavbar/page"
+import Navbar from "../../common_components/navbar/page"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import ContactForm from "../common_components/contactform/page"
+import ContactForm from "../../common_components/contactform/page"
 
 export default function Page() {
   // Refs for animation triggers

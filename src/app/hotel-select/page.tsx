@@ -1,18 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import CarDiv from "../common_components/cardiv/page";
-import Rentals from "../common_components/rentals/page";
+import
+  {
+    redirect,
+    // useSearchParams,
+    // useRouter
+  } from "next/navigation";
+// import { useEffect, useState } from "react";
+import CarDiv from "../../common_components/cardiv/page";
+import Rentals from "../../common_components/rentals/page";
 import Footer from "../../components/ui/footer";
-import Navbar from "../common_components/navbar/page";
+import Navbar from "../../common_components/navbar/page";
 import { FormField } from "./components/FormField";
 import { RoomCard } from "./components/RoomCard";
 import { StarRating } from "./components/StarRating";
 import { CalendarIcon, UserIcon, RoomIcon } from "./components/Icons";
 import type { Room, FormField as FormFieldType } from "./types/hotel";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useEffect, useState } from "react";
+import Error from "next/error";
 
 interface CenteredContentInterface {
   width?: string;
@@ -34,9 +41,38 @@ function formatDateString(dateStr?: string) {
 }
 
 export default function HotelBooking() {
-  const searchParams = useSearchParams();
-  const [hotelData, setHotelData] = useLocalStorage('selectedHotel', null);
-  const router = useRouter();
+  // const searchParams = useSearchParams();
+  const [ hotelData, setHotelData ] = useLocalStorage( 'selectedHotel', null );
+  
+  // const [hotelData, setHotelData] = useState<any>(null)
+
+  // // Load from localStorage on mount
+  // useEffect(() => {
+  //   const raw:string = localStorage.getItem( "selectedHotel" ) || "";
+  //   try {
+  //     setHotelData(raw?.startsWith("eyJ") ? raw : JSON.parse(raw))
+  //   } catch (error){
+  //     console.log(error)
+  //     setHotelData(null)
+  //   }
+  // }, [])
+
+  // // Save to localStorage whenever hotelData changes
+  // useEffect(() => {
+  //   if (hotelData === null) return
+  //   try {
+  //     const toStore =
+  //       typeof hotelData === "string" && hotelData.startsWith("eyJ")
+  //         ? hotelData
+  //         : JSON.stringify(hotelData)
+  //     localStorage.setItem("selectedHotel", toStore)
+  //   } catch(error)
+  //   {
+  //     console.log(error);
+  //   }
+  // }, [hotelData])
+
+  // const router = useRouter();
 
   // useEffect(() => {
   //   console.log(hotelData);
@@ -64,14 +100,14 @@ export default function HotelBooking() {
       label: "Check in",
       icon: <CalendarIcon className="w-4 h-4 mr-1 text-gray-400" />,
       type: "date",
-      value: formatDateString(hotelData.checkin),
+      value: formatDateString(hotelData?.checkin),
     },
     {
       id: "checkout",
       label: "Check out",
       icon: <CalendarIcon className="w-4 h-4 mr-1 text-gray-400" />,
       type: "date",
-      value: formatDateString(hotelData.checkout),
+      value: formatDateString(hotelData?.checkout),
     },
     {
       id: "guests",
@@ -105,7 +141,7 @@ export default function HotelBooking() {
         selectedRoom,
       };
       localStorage.setItem('reservationDetails', JSON.stringify(reservationDetails));
-      router.push('/reservationDetails');
+      redirect('/reservationDetails');
     }
   };
 

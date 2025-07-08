@@ -3,7 +3,7 @@
 import { X, DollarSign } from "lucide-react"
 import Link from "next/link"
 
-export default function SideMenu({ isOpen, onClose }) {
+export const SideMenu = ({ isOpen, onClose }) => {
   return (
     <>
       {/* Backdrop */}

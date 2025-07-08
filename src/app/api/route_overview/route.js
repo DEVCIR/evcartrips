@@ -1,15 +1,17 @@
 import { OpenAI } from "openai";
 
-const openai = new OpenAI(process.env.OPENAI_API_KEY);
+const openai = new OpenAI( process.env.OPENAI_API_KEY );
 
-export async function POST(request) {
-  try {
+export async function POST( request )
+{
+  try
+  {
     const { from, to, stops, maxDistance, autonomy } = await request.json();
 
     const prompt = `Calculate the total distance and estimated driving time for an EV road trip with these parameters:
 Start: ${from} 
 Destination: ${to}
-${stops?.length > 0 ? `Stops: ${stops.join(", ")}\n` : ""}
+${stops?.length > 0 ? `Stops: ${stops.join( ", " )}\n` : ""}
 Max Daily Distance: ${maxDistance}
 Vehicle Range: ${autonomy}
 
@@ -30,7 +32,7 @@ FORMAT REQUIREMENTS:
 - Use same unit (KM/MI) as provided in inputs
 - Average speed: 80 km/h or 50 mph depending on unit`;
 
-    const response = await openai.chat.completions.create({
+    const response = await openai.chat.completions.create( {
       model: "gpt-3.5-turbo",
       messages: [
         {
@@ -44,12 +46,12 @@ FORMAT REQUIREMENTS:
       ],
       temperature: 0.1, // Lower temperature for more consistent results
       response_format: { type: "json_object" },
-    });
+    } );
 
-    const result = JSON.parse(response.choices[0].message.content);
+    const result = JSON.parse( response.choices[ 0 ].message.content );
 
     return new Response(
-      JSON.stringify({
+      JSON.stringify( {
         overview: result,
         parameters: {
           from,
@@ -58,7 +60,7 @@ FORMAT REQUIREMENTS:
           maxDistance,
           autonomy,
         },
-      }),
+      } ),
       {
         status: 200,
         headers: {
@@ -66,13 +68,14 @@ FORMAT REQUIREMENTS:
         },
       }
     );
-  } catch (error) {
-    console.error("API Error:", error);
+  } catch ( error )
+  {
+    console.error( "API Error:", error );
     return new Response(
-      JSON.stringify({
+      JSON.stringify( {
         error: "Failed to calculate route overview",
         debug: error.message,
-      }),
+      } ),
       {
         status: 500,
         headers: {

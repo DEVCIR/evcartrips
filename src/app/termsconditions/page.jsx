@@ -1,8 +1,8 @@
 "use client"
 
 import Footer from "../../components/ui/footer"
-import HalfNavbar from "../common_components/halfnavbar/page"
-import Navbar from "../common_components/navbar/page"
+import HalfNavbar from "../../common_components/halfnavbar/page"
+import Navbar from "../../common_components/navbar/page"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 
@@ -130,7 +130,8 @@ export default function Page() {
               transition={{ delay: 1.0, duration: 0.5 }}
             >
               We reserve the right to update these terms at any time. Continued use of the platform following any changes implies acceptance of the revised terms.<br />
-              If you have any questions or concerns regarding these terms, please contact us at <a href="mailto:support@evcartrips.com" className="text-[#F96C41] hover:underline">support@evcartrips.com</a>
+              If you have any questions or concerns regarding these terms, please contact us at 
+             <div><a href="mailto:support@evcartrips.com" className="text-[#F96C41] hover:underline">support@evcartrips.com</a></div> 
             </motion.p>
           </motion.div>
         </div>

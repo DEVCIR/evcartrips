@@ -1,7 +1,7 @@
 "use client"
 
 import Footer from "../../components/ui/footer";
-import Navbar from "../common_components/navbar/page";
+import Navbar from "../../common_components/navbar/page";
 import { ChevronRight, ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
@@ -91,7 +91,7 @@ export default function BlogPage() {
               <img
                 src="/images/car.png"
                 alt="CAR IMAGEE"
-                className="w-full h-auto rounded-md"
+                className="w-full h-auto  rounded-md"
               />
             </motion.div>
             <div className="flex flex-col sm:flex-1 sm:min-h-[200px] sm:justify-between">
@@ -167,7 +167,7 @@ export default function BlogPage() {
               <img
                 src="/images/bed.png"
                 alt="Hotel"
-                className="w-full h-auto rounded-md"
+                className="w-full h-auto object-cover rounded-md"
               />
             </motion.div>
             <div className="flex flex-col flex-1 sm:min-h-[200px] justify-between">

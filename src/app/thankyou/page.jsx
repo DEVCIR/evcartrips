@@ -1,9 +1,9 @@
 "use client"
 
 import Footer from "../../components/ui/footer"
-import CarDiv from "../common_components/cardiv/page"
-import HalfNavbar1 from "../common_components/halfnavbar1/page"
-import Rentals from "../common_components/rentals/page"
+import CarDiv from "../../common_components/cardiv/page"
+import HalfNavbar1 from "../../common_components/halfnavbar1/page"
+import Rentals from "../../common_components/rentals/page"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import { useRouter } from "next/navigation"

@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 

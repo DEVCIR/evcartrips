@@ -1,11 +1,11 @@
 "use client"
 
-import Navbar from "../common_components/navbar/page"
-import Rentals from "../common_components/rentals/page"
+import Navbar from "../../common_components/navbar/page"
+import Rentals from "../../common_components/rentals/page"
 import Footer from "../../components/ui/footer"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import ResetForm from "../common_components/resetform/page"
+import ResetForm from "../../common_components/resetform/page"
 
 export default function Page() {
   const headerRef = useRef(null)
@@ -21,7 +21,7 @@ export default function Page() {
       {/* Animated Header Section */}
       <motion.div 
         ref={headerRef}
-        className="bg-black px-3 sm:px-4 md:px-6 lg:px-8 pt-4 pb-12 sm:pb-16 min-h-[40vh] lg:min-h-[60vh] xl:min-h-[80vh] flex flex-col justify-start rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[20px]"
+        className="w-full bg-black px-3 sm:px-4 md:px-6 lg:px-8 pt-4 pb-12 sm:pb-16 min-h-[40vh] lg:min-h-[60vh] xl:min-h-[80vh] flex flex-col justify-start rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[20px]"
         initial={{ opacity: 0, y: -50 }}
         animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -80,12 +80,12 @@ export default function Page() {
 
       {/* Mobile Rentals Section */}
       <motion.div
-        className="px-8 mt-4 pb-8 mx-3"
+        className="px-8 mt-4 pb-8"
         initial={{ opacity: 0 }}
         animate={isFormInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
-        <div className="max-w-full mx-auto">
+        <div className="w-[350px] md:w-[586px] xl:w-[1000px] mx-auto">
           <Rentals />
         </div>
       </motion.div>

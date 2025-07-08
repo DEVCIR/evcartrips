@@ -1,8 +1,8 @@
 "use client"
 
-import Navbar from "../common_components/navbar/page"
-import SignInForm from "../common_components/signInForm/page"
-import Rentals from "../common_components/rentals/page"
+import Navbar from "../../common_components/navbar/page"
+import SignInForm from "../../common_components/signInForm/page"
+import Rentals from "../../common_components/rentals/page"
 import Footer from "../../components/ui/footer"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"

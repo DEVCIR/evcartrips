@@ -1,17 +1,17 @@
 "use client"
 import { ListFilter, X } from "lucide-react"
 import HotelCard from "../../components/ui/hotel-card"
-import Navbar from "../common_components/navbar/page"
-import HotelFilters from "../common_components/hotel-filters/page"
+import Navbar from "../../common_components/navbar/page"
+import HotelFilters from "../../common_components/hotel-filters/page"
 import { useState, useEffect, useCallback } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { Suspense } from "react"
 import Footer from "../../components/ui/footer"
-import Rentals from "../common_components/rentals/page"
-import CarDiv from "../common_components/cardiv/page"
+import Rentals from "../../common_components/rentals/page"
+import CarDiv from "../../common_components/cardiv/page"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRef } from "react"
-import Navbar1 from "../common_components/navbar1/page"
+import Navbar1 from "../../common_components/navbar1/page"
 
 export default function PageWrapper() {
   return (

@@ -1,9 +1,8 @@
 "use client"
 import dynamic from "next/dynamic"
-import MapComponent from "./MapComponent"
 
 // Dynamically import the map to prevent SSR issues
-const MapComponentDynamic = dynamic(() => import("../../../components/ui/leaflet"), {
+const MapComponent = dynamic(() => import("../../components/ui/leaflet"), {
   ssr: false,
   loading: () => (
     <div className="mt-0">
@@ -16,6 +15,6 @@ const MapComponentDynamic = dynamic(() => import("../../../components/ui/leaflet
   ),
 })
 
-export default function Page() {
-  return <MapComponent />;
-}
+export default function Map({ onRouteInfoChange }) {
+  return <MapComponent onRouteInfoChange={onRouteInfoChange} />
+} 

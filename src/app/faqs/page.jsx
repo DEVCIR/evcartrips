@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Navbar from "../common_components/navbar/page"
+import Navbar from "../../common_components/navbar/page"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Footer from "../../components/ui/footer"
 

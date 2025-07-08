@@ -25,10 +25,10 @@ export default function Rentals() {
           </div>
 
           <div className="text-right w-[50%] my-auto">
-            <div className="text-[11px] md:text-2xl xl:text-4xl xl:tracking-[2px] font-bold text-gray-900 mb-1">
+            <div className=" flex justify-center text-[11px] md:text-xl xl:text-4xl xl:tracking-[0px] font-bold text-gray-900 mb-1">
               +1234-5678-9012
             </div>
-            <div className="text-[7px] font-[400] md:text-sm xl:text-2xl xl:-tracking-[1.4px] text-gray-700">
+            <div className=" flex justify-center text-[7px] font-[400] md:text-sm xl:text-2xl xl:-tracking-[1.4px] x-auto text-black">
               24/7 Assistance available
             </div>
           </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import Footer from "../../components/ui/footer";
-import Navbar from "../common_components/navbar/page";
+import Navbar from "../../common_components/navbar/page";
 import { ImageIcon, Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";

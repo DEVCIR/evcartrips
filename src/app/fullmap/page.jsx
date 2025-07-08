@@ -1,11 +1,11 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import Navbar1 from "../common_components/navbar1/page"
-import CarDiv from "../common_components/cardiv/page"
-import Navbar from "../common_components/navbar/page"
+import Navbar1 from "../../common_components/navbar1/page"
+import CarDiv from "../../common_components/cardiv/page"
+import Navbar from "../../common_components/navbar/page"
 import { Edit } from "lucide-react"
-import Rentals from "../common_components/rentals/page"
+import Rentals from "../../common_components/rentals/page"
 import { useSearchParams , useRouter} from "next/navigation"
 import React, { Suspense , useEffect } from "react"
 import Footer from "../../components/ui/footer"
@@ -30,7 +30,7 @@ export default function PageWrapper() {
 }
 
 // Dynamically import MapComplete with SSR disabled
-const MapComplete = dynamic(() => import("../common_components/mapcomplete/page"), {
+const MapComplete = dynamic(() => import("../../common_components/mapcomplete/page"), {
   ssr: false,
   loading: () => (
     <div className="h-[55rem] sm:h-[40rem] md:h-[85rem] lg:h-[56rem] xl:h-[146rem] bg-gray-200 animate-pulse rounded-2xl" />

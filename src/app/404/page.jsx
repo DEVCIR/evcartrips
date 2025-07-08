@@ -1,5 +1,6 @@
 import Link from "next/link"
-import Navbar from "../common_components/navbar/page"
+import Navbar from "../../common_components/navbar/page"
+import Footer from "../../components/ui/footer"
 
 export default function Custom404() {
   return (
@@ -42,6 +43,12 @@ export default function Custom404() {
           </Link>
         </div>
       </div>
+      {/* Animated Footer */}
+            <div className="max-md:hidden">
+
+              <Footer />
+            </div>
+           
     </div>
   )
 }

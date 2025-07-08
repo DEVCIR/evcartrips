@@ -1,17 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { Input } from "../../../components/ui/input"
-import { Button } from "../../../components/ui/button"
+import { Input } from "../../components/ui/input"
+import { Button } from "../../components/ui/button"
 import { useRouter } from "next/navigation"
 import { toast, ToastContainer } from "react-toastify"
 import { motion } from "framer-motion"
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const router = useRouter()
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    confirm_password: "",
   })
   const [loading, setLoading] = useState(false)
 
@@ -23,17 +26,24 @@ export default function SignInForm() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     
-    if (!formData.email || !formData.password) {
-      toast.error("Please fill all required fields")
-      setLoading(false)
-      return
+    // Basic validation
+    if (formData.password !== formData.confirm_password) {
+      toast.error("Passwords don't match");
+      setLoading(false);
+      return;
+    }
+    
+    if (!formData.email || !formData.password || !formData.firstName) {
+      toast.error("Please fill all required fields");
+      setLoading(false);
+      return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/users/login`, {
+      const response = await fetch(`http://localhost:8000/api/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,52 +51,144 @@ export default function SignInForm() {
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Login failed")
+        const errorMessage = data.error || "Signup failed";
+        if (errorMessage.toLowerCase().includes("email already exists")) {
+          toast.error("Email already exists");
+        } else {
+          toast.error(errorMessage);
+        }
+        return;
       }
 
-      toast.success("Login successful!")
-      
-      if (typeof window !== "undefined") {
-        localStorage.setItem("token", data.token)
-        localStorage.setItem("user", JSON.stringify(data.user))
-      }
+      toast.success("Account created successfully!");
       setTimeout(() => {
-        router.push("/home")
-      }, 3000);
+        router.push("/signin");
+      }, 3000)
     } catch (error) {
-      console.error("Login error:", error)
-      if (error.message.includes("Invalid email or password")) {
-        toast.error("Invalid email or password")
-      } else {
-        toast.error(error.message || "Login failed. Please try again.")
-      }
+      console.error("Signup error:", error);
+      toast.error(error.message || "Signup failed. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <motion.div
-      className="w-[350px] h-auto md:w-[586px] xl:w-[680px] bg-[#FFFFFF] rounded-t-3xl rounded-b-3xl shadow-xl px-4 md:px-6 xl:px-10 xl:py-10 py-6 -mt-4 relative z-10 mx-auto"
+      className="w-[350px] h-auto md:w-[586px] xl:w-[680px] bg-[#FFFFFF] rounded-t-3xl rounded-b-3xl shadow-xl px-4 md:px-6 xl:px-10 xl:py-10 py-6 -mt-4 relative z-40 mx-auto"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
     >
       <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-        {/* Email Field */}
+        {/* First Name */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
         >
           <label className="text-[#00000082] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] font-medium mb-1 md:mb-2 block">
-            Email Address
+            First Name <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+              <svg className="w-[24px] h-[24px] xl:w-[40px] xl:h-[40px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path 
+                  d="M12 9C13.933 9 15.5 7.433 15.5 5.5C15.5 3.567 13.933 2 12 2C10.067 2 8.5 3.567 8.5 5.5C8.5 7.433 10.067 9 12 9Z" 
+                  fill="#F96C41" 
+                  stroke="#F96C41" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M2 20.5C2 16.0815 6.0295 12.5 11 12.5" 
+                  stroke="#F96C41" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M15.5 21L20.5 16L18.5 14L13.5 19V21H15.5Z" 
+                  fill="#F96C41" 
+                  stroke="#F96C41" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <Input
+              value={formData.firstName}
+              onChange={(e) => handleInputChange("firstName", e.target.value)}
+              placeholder="First name"
+              className="w-full h-[44px] md:h-[67px] pl-10 md:pl-12 xl:pl-16 pr-10 md:pr-12 py-2 md:py-3 border-gray-400 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] text-[#00000075] font-medium"
+              required
+            />
+          </div>
+        </motion.div>
+
+        {/* Last Name */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+        >
+          <label className="text-[#00000082] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] font-medium mb-1 md:mb-2 block">
+            Last Name
+          </label>
+          <div className="relative">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+              <svg className="w-[24px] h-[24px] xl:w-[40px] xl:h-[40px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path 
+                  d="M12 9C13.933 9 15.5 7.433 15.5 5.5C15.5 3.567 13.933 2 12 2C10.067 2 8.5 3.567 8.5 5.5C8.5 7.433 10.067 9 12 9Z" 
+                  fill="#F96C41" 
+                  stroke="#F96C41" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M2 20.5C2 16.0815 6.0295 12.5 11 12.5" 
+                  stroke="#F96C41" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M15.5 21L20.5 16L18.5 14L13.5 19V21H15.5Z" 
+                  fill="#F96C41" 
+                  stroke="#F96C41" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <Input
+              value={formData.lastName}
+              onChange={(e) => handleInputChange("lastName", e.target.value)}
+              placeholder="Last name"
+              className="w-full h-[44px] md:h-[67px] pl-10 md:pl-12 xl:pl-16 pr-10 md:pr-12 py-2 md:py-3 border-gray-400 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] text-[#00000075] font-medium"
+            />
+          </div>
+        </motion.div>
+
+        {/* Email */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
+        >
+          <label className="text-[#00000082] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] font-medium mb-1 md:mb-2 block">
+            Email Address <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -104,22 +206,22 @@ export default function SignInForm() {
             <Input
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
-              placeholder="Email address"
               type="email"
+              placeholder="Email address"
               className="w-full h-[44px] md:h-[67px] pl-10 md:pl-12 xl:pl-16 pr-10 md:pr-12 py-2 md:py-3 border-gray-400 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] text-[#00000075] font-medium"
               required
             />
           </div>
         </motion.div>
 
-        {/* Password Field */}
+        {/* Password */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
+          transition={{ delay: 0.4, duration: 0.4 }}
         >
           <label className="text-[#00000082] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] font-medium mb-1 md:mb-2 block">
-            Password
+            Password <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -134,15 +236,43 @@ export default function SignInForm() {
               placeholder="Password"
               className="w-full h-[44px] md:h-[67px] pl-10 md:pl-12 xl:pl-16 pr-10 md:pr-12 py-2 md:py-3 border-gray-400 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] text-[#00000075] font-medium"
               required
+              minLength="6"
+            />
+          </div>
+        </motion.div>
+
+        {/* Confirm Password */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+        >
+          <label className="text-[#00000082] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] font-medium mb-1 md:mb-2 block">
+            Confirm Password <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+              <svg className="w-[24px] h-[24px] xl:w-[40px] xl:h-[40px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 19V17H22V19H2ZM3.15 12.95L1.85 12.2L2.7 10.7H1V9.2H2.7L1.85 7.75L3.15 7L4 8.45L4.85 7L6.15 7.75L5.3 9.2H7V10.7H5.3L6.15 12.2L4.85 12.95L4 11.45L3.15 12.95ZM11.15 12.95L9.85 12.2L10.7 10.7H9V9.2H10.7L9.85 7.75L11.15 7L12 8.45L12.85 7L14.15 7.75L13.3 9.2H15V10.7H13.3L14.15 12.2L12.85 12.95L12 11.45L11.15 12.95ZM19.15 12.95L17.85 12.2L18.7 10.7H17V9.2H18.7L17.85 7.75L19.15 7L20 8.45L20.85 7L22.15 7.75L21.3 9.2H23V10.7H21.3L22.15 12.2L20.85 12.95L20 11.45L19.15 12.95Z" fill="#F96C41"/>
+              </svg>
+            </div>
+            <Input
+              value={formData.confirm_password}
+              onChange={(e) => handleInputChange("confirm_password", e.target.value)}
+              type="password"
+              placeholder="Confirm password"
+              className="w-full h-[44px] md:h-[67px] pl-10 md:pl-12 xl:pl-16 pr-10 md:pr-12 py-2 md:py-3 border-gray-400 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] text-[#00000075] font-medium"
+              required
+              minLength="6"
             />
           </div>
         </motion.div>
                          
-        {/* Sign In Button */}
+        {/* Sign Up Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.4 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
         >
           <Button
             type="submit"
@@ -151,37 +281,25 @@ export default function SignInForm() {
             whileHover={{ scale: loading ? 1 : 1.02 }}
             whileTap={{ scale: loading ? 1 : 0.98 }}
           >
-            {loading ? "LOGGING IN..." : "SIGN IN"}
+            {loading ? "CREATING ACCOUNT..." : "SIGN UP"}
           </Button>
         </motion.div>
 
-        {/* Forgotten password link */}
+        {/* Already have account link */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
-          className="text-center py-0 my-0"
-        >
-          <a href="/resetpassword" className="text-[#F96C41] font-[600] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] hover:underline">
-            Forgotten password?
-          </a>
-        </motion.div>
-
-        {/* Create Account Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.4 }}
+          transition={{ delay: 0.7, duration: 0.4 }}
         >
           <Button
             type="button"
-            onClick={() => router.push("/signup")}
             variant="outline"
+            onClick={() => router.push("/signin")}
             className="w-full cursor-pointer border-none shadow-none text-gray-800 font-bold rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] py-0 my-0 xl:my-2"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-          > 
-            CREATE A NEW ACCOUNT
+          >
+            ALREADY HAVE AN ACCOUNT
           </Button>
         </motion.div>
 
@@ -189,7 +307,7 @@ export default function SignInForm() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.4 }}
+          transition={{ delay: 0.8, duration: 0.4 }}
           className="relative flex items-center justify-center py-0"
         >
           <span className="flex-shrink mx-4 text-[#F96C41] font-semibold text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px]">
@@ -198,11 +316,12 @@ export default function SignInForm() {
         </motion.div>
 
         {/* Social Buttons */}
-         <motion.div
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.4 }}
-           className="flex justify-center space-x-4 md:space-x-6">
+          transition={{ delay: 0.9, duration: 0.4 }}
+          className="flex justify-center space-x-4 md:space-x-6"
+        >
           <button className="cursor-pointer w-[42px] h-[42px] md:w-[70px] md:h-[70px] xl:w-[90px] xl:h-[90px] p-2 rounded-lg md:rounded-xl xl:rounded-2xl bg-[#D9D9D9] hover:bg-[#D9D9D9]">
             <svg className='w-[24px] h-[24px] md:w-[40px] md:h-[40px] xl:w-[60px] xl:h-[60px] mx-auto' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 12C5.99856 13.4165 6.49829 14.7877 7.41074 15.8712C8.32318 16.9546 9.58951 17.6802 10.9856 17.9197C12.3816 18.1592 13.8174 17.897 15.0388 17.1797C16.2601 16.4623 17.1883 15.336 17.659 14H12V10H21.805V14H21.8C20.873 18.564 16.838 22 12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C13.6345 1.99884 15.2444 2.39875 16.6883 3.16467C18.1323 3.93058 19.3662 5.0391 20.282 6.393L17.004 8.688C16.2924 7.61241 15.2532 6.79473 14.0404 6.35617C12.8275 5.9176 11.5057 5.88149 10.2707 6.25319C9.03579 6.62488 7.95347 7.38461 7.18421 8.41974C6.41495 9.45487 5.9997 10.7103 6 12Z" fill="black"/>

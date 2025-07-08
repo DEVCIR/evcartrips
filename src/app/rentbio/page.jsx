@@ -1,12 +1,12 @@
 "use client"
 
-import Navbar1 from "../common_components/navbar1/page"
-import RouteOverview from "../common_components/route_overview/page"
-import Iternary from "../common_components/iternary/page"
-import CarDiv from "../common_components/cardiv/page"
-import Navbar from "../common_components/navbar/page"
+import Navbar1 from "../../common_components/navbar1/page"
+import RouteOverview from "../../common_components/route_overview/page"
+import Iternary from "../../common_components/iternary/page"
+import CarDiv from "../../common_components/cardiv/page"
+import Navbar from "../../common_components/navbar/page"
 import { Edit } from "lucide-react"
-import Rentals from "../common_components/rentals/page"
+import Rentals from "../../common_components/rentals/page"
 import { useSearchParams,useRouter  } from "next/navigation"
 import React, { Suspense , useEffect, useState} from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
@@ -14,7 +14,7 @@ import { useRef } from "react"
 
 import dynamic from "next/dynamic"
 import Footer from "../../components/ui/footer"
-const MapComponent = dynamic(() => import("../common_components/map/page"), {
+const MapComponent = dynamic(() => import("../../common_components/map/page"), {
   ssr: false,
 })
 

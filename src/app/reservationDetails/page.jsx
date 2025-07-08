@@ -1,36 +1,15 @@
 "use client"
-import React, { useState, useEffect } from 'react'
-import { MapPin, Users, Bed, Utensils, Moon, Star, User, Phone, Mail, Globe, ShieldCheck } from "lucide-react"
-import Navbar from "../common_components/navbar/page"
-import Navbar1 from "../common_components/navbar1/page"
+import React, { useState } from 'react'
+import { MapPin, Users, Bed, Utensils, Moon, Star, User, Phone, Mail, Globe, ShieldCheck, SquareX, SquareCheck } from "lucide-react"
+import Navbar from "../../common_components/navbar/page"
+import Navbar1 from "../../common_components/navbar1/page"
 import Footer from '../../components/ui/footer'
-import Rentals from '../common_components/rentals/page'
-import CarDiv from '../common_components/cardiv/page'
-import { useRouter } from "next/navigation"
+import Rentals from '../../common_components/rentals/page'
+import CarDiv from '../../common_components/cardiv/page'
+
 
 function ReservationDetails() {
-  const [reservation, setReservation] = useState(null);
-  const router = useRouter()
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const data = localStorage.getItem('reservationDetails');
-      if (data) setReservation(JSON.parse(data));
-    }
-  }, []);
 
-  // Helper to format date from 'YYYYMMDD' to 'YYYY-MM-DD'
-  function formatDateString(dateStr) {
-    if (!dateStr || dateStr.length !== 8) return dateStr || '';
-    return `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
-  }
-  
-
-  function handleSubmit()
-  {
-    router.push("/payment")
-  }
-
- 
   return (
     <div
       className="w-full min-h-screen bg-white"
@@ -49,238 +28,230 @@ function ReservationDetails() {
       </div>
 
 
-        {/* main content */}
-        <div className='-mt-[10rem] md:-mt-[32rem] lg:-mt-[18rem] xl:-mt-[25rem] h-auto lg:flex lg:gap-x-6 px-4 mx-auto w-full lg:w-[135vh] max-lg:space-y-4'>
-          {/* card1 */}
-          <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-lg">
-            <div className="pb-3">
-              <div className="space-y-1">
-                <h2 className="text-lg font-semibold text-gray-900">{reservation?.name || 'Hotel Name'}</h2>
+      {/* main content */}
+      <div className='-mt-[10rem] md:-mt-[32rem] lg:-mt-[18rem] xl:-mt-[25rem] h-auto lg:flex lg:gap-x-6 px-4 mx-auto w-full lg:w-[135vh] max-lg:space-y-4'>
+        {/* card1 */}
+        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-lg">
+          <div className="pb-3">
+            <div className="space-y-1">
+              <h2 className="text-lg font-semibold text-gray-900">Hotel Frankfurt Messe Affiliated by Meliá</h2>
 
-              </div>
-
-              {/* Star Rating */}
-              <div className="flex items-center gap-1 pt-1">
-                {[...Array(Math.round(reservation?.rating || 0))].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-orange-400 text-orange-400" />
-                ))}
-                {[...Array(5 - Math.round(reservation?.rating || 0))].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-gray-300" />
-                ))}
-              </div>
-
-              {/* Location */}
-              <div className="flex items-center gap-2 pt-2">
-                <MapPin className="w-5 h-5 text-blue-500" />
-                <span className="text-base text-[#3F97E2]">{reservation?.address || 'Hotel Address'}</span>
-              </div>
             </div>
 
-            <div className="space-y-4">
-              {/* Check-in/Check-out */}
-              <div className="flex-col items-center space-y-3 gap-3">
-
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 border-2 border-black rounded flex items-center justify-center">
-                    <div className="w-3 h-3 bg-black rounded-sm"></div>
-                  </div>
-                  <div className='flex justify-between items-center w-full'>
-                    <p className="text-base font-medium text-gray-900">Check in:</p>
-                    <p className="text-base text-gray-600">{formatDateString(reservation?.checkin)}</p>
-                  </div>
-
-
-                </div>
-                <hr />
-
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 border-2 border-black rounded flex items-center justify-center">
-                    <div className="w-3 h-3 bg-black rounded-sm"></div>
-                  </div>
-                  <div className='flex justify-between items-center w-full'>
-                    <p className="text-lg font-medium text-gray-900">Check out:</p>
-                    <p className="text-lg text-gray-600">{formatDateString(reservation?.checkout)}</p>
-                  </div>
-                </div>
-              </div>
-              <hr />
-
-              {/* Nights */}
-              <div className="flex items-center gap-3">
-                <Moon className="w-6 h-6 text-black" />
-                <div className="flex justify-between items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-gray-900">Nights:</span>
-                  <span className="text-sm md:text-lg text-gray-600">{reservation?.nights || 1}</span>
-                </div>
-              </div>
-              <hr />
-
-              {/* Room */}
-              <div className="flex items-center gap-3">
-                <Bed className="w-6 h-6 text-black" />
-                <div className="flex justify-between gap-x-2 items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-black">Room:</span>
-                  <span className=" text-sm md:text-lg text-gray-600">{reservation?.selectedRoom?.name || 'Room Name'}</span>
-                </div>
-              </div>
-              <hr />
-
-              {/* Meal */}
-              <div className="flex items-center gap-3">
-                <Utensils className="w-6 h-6 text-black" />
-                <div className="flex justify-between items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-black">Meal:</span>
-                  <span className="text-sm md:text-lg text-gray-600">{reservation?.selectedRoom?.mealPlan || 'Meal Plan'}</span>
-                </div>
-              </div>
-              <hr />
-
-              {/* Travelers */}
-              <div className="flex items-center gap-3">
-                <Users className="w-6 h-6 text-black" />
-                <div className="flex justify-between items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-black">Travelers:</span>
-                  <span className="text-sm md:text-lg text-gray-600">{reservation?.travelers ? `${reservation.travelers} adult(s)` : '1 adult'}</span>
-                </div>
-              </div>
-              <hr />
-
-
-              {/* Price */}
-              <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                <span className="text-sm md:text-lg font-medium text-black">Price:</span>
-                <span className="text-sm md:text-lg font-semibold text-gray-900">US$ {reservation?.selectedRoom?.price?.toFixed(2) || '0.00'}</span>
-              </div>
-
-              {/* Cancellation Policy */}
-              <div className="">
-                <div className="flex items-center gap-2 pt-2">
-                  {/* <shieldcheck className="w-5 h-5 text-blue-500" /> */}
-                  <ShieldCheck className="w-5 h-5 text-blue-500" />
-                  <button className="text-blue-500 text-base hover:underline">Cancellation policy</button>
-                </div>
-
-
-              </div>
-            </div>
-          </div>
-          {/* card2 */}
-          <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-lg">
-            <div className="pb-3">
-              <div className="space-y-1">
-                <h2 className="text-lg font-semibold text-gray-900">{reservation?.name || 'Hotel Name'}</h2>
-
-              </div>
-
-              {/* Star Rating */}
-              <div className="flex items-center gap-1 pt-1">
-                {[...Array(Math.round(reservation?.rating || 0))].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-orange-400 text-orange-400" />
-                ))}
-                {[...Array(5 - Math.round(reservation?.rating || 0))].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-gray-300" />
-                ))}
-              </div>
-
-              {/* Location */}
-              <div className="flex items-center gap-2 pt-2">
-                <MapPin className="w-5 h-5 text-blue-500" />
-                <span className="text-base text-[#3F97E2]">{reservation?.address || 'Hotel Address'}</span>
-              </div>
+            {/* Star Rating */}
+            <div className="flex items-center gap-1 pt-1">
+              {[1, 2, 3, 4].map((star) => (
+                <Star key={star} className="w-4 h-4 fill-orange-400 text-orange-400" />
+              ))}
+              <Star className="w-4 h-4 text-gray-300" />
             </div>
 
-            <div className="space-y-4">
-              {/* Check-in/Check-out */}
-              <div className="flex-col items-center space-y-3 gap-3">
-
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 border-2 border-black rounded flex items-center justify-center">
-                    <div className="w-3 h-3 bg-black rounded-sm"></div>
-                  </div>
-                  <div className='flex justify-between items-center w-full'>
-                    <p className="text-base font-medium text-gray-900">Check in:</p>
-                    <p className="text-base text-gray-600">{formatDateString(reservation?.checkin)}</p>
-                  </div>
-
-
-                </div>
-                <hr />
-
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 border-2 border-black rounded flex items-center justify-center">
-                    <div className="w-3 h-3 bg-black rounded-sm"></div>
-                  </div>
-                  <div className='flex justify-between items-center w-full'>
-                    <p className="text-lg font-medium text-gray-900">Check out:</p>
-                    <p className="text-lg text-gray-600">{formatDateString(reservation?.checkout)}</p>
-                  </div>
-                </div>
-              </div>
-              <hr />
-
-              {/* Nights */}
-              <div className="flex items-center gap-3">
-                <Moon className="w-6 h-6 text-black" />
-                <div className="flex justify-between items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-gray-900">Nights:</span>
-                  <span className="text-sm md:text-lg text-gray-600">{reservation?.nights || 1}</span>
-                </div>
-              </div>
-              <hr />
-
-              {/* Room */}
-              <div className="flex items-center gap-3">
-                <Bed className="w-6 h-6 text-black" />
-                <div className="flex justify-between gap-x-2 items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-black">Room:</span>
-                  <span className=" text-sm md:text-lg text-gray-600">{reservation?.selectedRoom?.name || 'Room Name'}</span>
-                </div>
-              </div>
-              <hr />
-
-              {/* Meal */}
-              <div className="flex items-center gap-3">
-                <Utensils className="w-6 h-6 text-black" />
-                <div className="flex justify-between items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-black">Meal:</span>
-                  <span className="text-sm md:text-lg text-gray-600">{reservation?.selectedRoom?.mealPlan || 'Meal Plan'}</span>
-                </div>
-              </div>
-              <hr />
-
-              {/* Travelers */}
-              <div className="flex items-center gap-3">
-                <Users className="w-6 h-6 text-black" />
-                <div className="flex justify-between items-center w-full">
-                  <span className="text-sm md:text-lg font-medium text-black">Travelers:</span>
-                  <span className="text-sm md:text-lg text-gray-600">{reservation?.travelers ? `${reservation.travelers} adult(s)` : '1 adult'}</span>
-                </div>
-              </div>
-              <hr />
-
-
-              {/* Price */}
-              <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                <span className="text-sm md:text-lg font-medium text-black">Price:</span>
-                <span className="text-sm md:text-lg font-semibold text-gray-900">US$ {reservation?.selectedRoom?.price?.toFixed(2) || '0.00'}</span>
-              </div>
-
-              {/* Cancellation Policy */}
-              <div className="">
-                <div className="flex items-center gap-2 pt-2">
-                  {/* <shieldcheck className="w-5 h-5 text-blue-500" /> */}
-                  <ShieldCheck className="w-5 h-5 text-blue-500" />
-                  <button className="text-blue-500 text-base hover:underline">Cancellation policy</button>
-                </div>
-
-
-              </div>
+            {/* Location */}
+            <div className="flex items-center gap-2 pt-2">
+              <MapPin className="w-5 h-5 text-blue-500" />
+              <span className="text-base text-[#3F97E2]">Niederrad, 60-31 Frankfurt Am Main</span>
             </div>
           </div>
 
+          <div className="space-y-4">
+            {/* Check-in/Check-out */}
+            <div className="flex-col items-center space-y-3 gap-3">
+
+              <div className="flex items-center gap-3">
+                <SquareCheck className="w-6 h-6 text-black rounded-sm" />
+
+                <div className='flex justify-between items-center w-full'>
+                  <p className="text-lg font-medium text-gray-900">Check in:</p>
+                  <p className="text-lg text-gray-600">04/08/2026</p>
+                </div>
 
 
+              </div>
+              <hr />
+
+              <div className="flex items-center gap-3">
+
+                <SquareX className=' w-6 h-6 text-black rounded-sm' />
+
+                <div className='flex justify-between items-center w-full'>
+                  <p className="text-lg font-medium text-gray-900">Check out:</p>
+                  <p className="text-lg text-gray-600">04/08/2026</p>
+                </div>
+              </div>
+            </div>
+            <hr />
+
+            {/* Nights */}
+            <div className="flex items-center gap-3">
+              <Moon className="w-6 h-6 text-black" />
+              <div className="flex justify-between items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-gray-900">Nights:</span>
+                <span className="text-sm md:text-lg text-gray-600">1</span>
+              </div>
+            </div>
+            <hr />
+
+            {/* Room */}
+            <div className="flex items-center gap-3">
+              <Bed className="w-6 h-6 text-black" />
+              <div className="flex justify-between gap-x-2 items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-black">Room:</span>
+                <span className=" text-sm md:text-lg text-gray-600">Standard room with two double bed</span>
+              </div>
+            </div>
+            <hr />
+
+            {/* Meal */}
+            <div className="flex items-center gap-3">
+              <Utensils className="w-6 h-6 text-black" />
+              <div className="flex justify-between items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-black">Meal:</span>
+                <span className="text-sm md:text-lg text-gray-600">Room with RO</span>
+              </div>
+            </div>
+            <hr />
+
+            {/* Travelers */}
+            <div className="flex items-center gap-3">
+              <Users className="w-6 h-6 text-black" />
+              <div className="flex justify-between items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-black">Travelers:</span>
+                <span className="text-sm md:text-lg text-gray-600">2 adult(s)</span>
+              </div>
+            </div>
+            <hr />
+
+
+            {/* Price */}
+            <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+              <span className="text-sm md:text-lg font-medium text-black">Price:</span>
+              <span className="text-sm md:text-lg font-semibold text-gray-900">US$ 375.00</span>
+            </div>
+
+            {/* Cancellation Policy */}
+            <div className="">
+              <div className="flex items-center gap-2 pt-2">
+                {/* <shieldcheck className="w-5 h-5 text-blue-500" /> */}
+                <ShieldCheck className="w-5 h-5 text-blue-500" />
+                <button className="text-blue-500 text-base hover:underline">Cancellation policy</button>
+              </div>
+
+
+            </div>
+          </div>
         </div>
+        {/* card2 */}
+        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-lg">
+          <div className="pb-3">
+            <div className="space-y-1">
+              <h2 className="text-lg font-semibold text-gray-900">Hotel Frankfurt Messe Affiliated by Meliá</h2>
+
+            </div>
+
+            {/* Star Rating */}
+            <div className="flex items-center gap-1 pt-1">
+              {[1, 2, 3, 4].map((star) => (
+                <Star key={star} className="w-4 h-4 fill-orange-400 text-orange-400" />
+              ))}
+              <Star className="w-4 h-4 text-gray-300" />
+            </div>
+
+            {/* Location */}
+            <div className="flex items-center gap-2 pt-2">
+              <MapPin className="w-5 h-5 text-blue-500" />
+              <span className="text-base text-[#3F97E2]">Niederrad, 60-31 Frankfurt Am Main</span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {/* Check-in/Check-out */}
+            <div className="flex-col items-center space-y-3 gap-3">
+
+
+              <div className="flex items-center gap-3">
+                <SquareCheck className="w-6 h-6 text-black rounded-sm" />
+                <div className='flex justify-between items-center w-full'>
+                  <p className="text-lg font-medium text-gray-900">Check in:</p>
+                  <p className="text-base text-gray-600">04/08/2026</p>
+                </div>
+
+
+              </div>
+              <hr />
+
+              <div className="flex items-center gap-3">
+                <SquareX className=' w-6 h-6 text-black rounded-sm' />
+                <div className='flex justify-between items-center w-full'>
+                  <p className="text-lg font-medium text-gray-900">Check out:</p>
+                  <p className="text-lg text-gray-600">04/08/2026</p>
+                </div>
+              </div>
+            </div>
+            <hr />
+
+            {/* Nights */}
+            <div className="flex items-center gap-3">
+              <Moon className="w-6 h-6 text-black" />
+              <div className="flex justify-between items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-gray-900">Nights:</span>
+                <span className="text-sm md:text-lg text-gray-600">1</span>
+              </div>
+            </div>
+            <hr />
+
+            {/* Room */}
+            <div className="flex items-center gap-3">
+              <Bed className="w-6 h-6 text-black" />
+              <div className="flex justify-between gap-x-2 items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-black">Room:</span>
+                <span className=" text-sm md:text-lg text-gray-600">Standard room with two double bed</span>
+              </div>
+            </div>
+            <hr />
+
+            {/* Meal */}
+            <div className="flex items-center gap-3">
+              <Utensils className="w-6 h-6 text-black" />
+              <div className="flex justify-between items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-black">Meal:</span>
+                <span className="text-sm md:text-lg text-gray-600">Room with RO</span>
+              </div>
+            </div>
+            <hr />
+
+            {/* Travelers */}
+            <div className="flex items-center gap-3">
+              <Users className="w-6 h-6 text-black" />
+              <div className="flex justify-between items-center w-full">
+                <span className="text-sm md:text-lg font-medium text-black">Travelers:</span>
+                <span className="text-sm md:text-lg text-gray-600">2 adult(s)</span>
+              </div>
+            </div>
+            <hr />
+
+
+            {/* Price */}
+            <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+              <span className="text-sm md:text-lg font-medium text-black">Price:</span>
+              <span className="text-sm md:text-lg font-semibold text-gray-900">US$ 375.00</span>
+            </div>
+
+            {/* Cancellation Policy */}
+            <div className="">
+              <div className="flex items-center gap-2 pt-2">
+                {/* <shieldcheck className="w-5 h-5 text-blue-500" /> */}
+                <ShieldCheck className="w-5 h-5  text-blue-500" />
+                <button className="text-blue-500 text-base hover:underline">Cancellation policy</button>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
 
 
 
@@ -417,8 +388,8 @@ function ReservationDetails() {
 
             {/* Continue Button */}
             <button
-            onClick={handleSubmit}
-              className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold py-3 px-6 rounded-lg text-base"
+              className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg text-base"
+
             >
               CONTINUE
             </button>
@@ -427,19 +398,19 @@ function ReservationDetails() {
 
       </div>
 
-      
-      <div className="px-8 mt-4 pb-8 xl:px-40">
-          <div className="max-w-5xl mx-auto">
-            <CarDiv />
-          </div>
-        </div>
 
-        {/* Rentals Component */}
-        <div className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden">
-          <div className="max-w-5xl mx-auto">
-            <Rentals />
-          </div>
+      <div className="px-8 mt-4 pb-8 xl:px-40">
+        <div className="max-w-5xl mx-auto">
+          <CarDiv />
         </div>
+      </div>
+
+      {/* Rentals Component */}
+      <div className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden">
+        <div className="max-w-5xl mx-auto">
+          <Rentals />
+        </div>
+      </div>
 
       <div className="max-md:hidden">
         <Footer />
