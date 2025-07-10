@@ -1,14 +1,15 @@
 "use client"
 import React, { useState } from 'react'
-import { MapPin, Users, Bed, Utensils, Moon, Star, User, Phone, Mail, Globe, ShieldCheck, SquareX, SquareCheck } from "lucide-react"
+import { MapPin, Users,Check, Bed, Utensils, Moon, Star, User, Phone, Mail, Globe, ShieldCheck, SquareX, SquareCheck } from "lucide-react"
 import Navbar from "../../common_components/navbar/page"
 import Navbar1 from "../../common_components/navbar1/page"
 import Footer from '../../components/ui/footer'
 import Rentals from '../../common_components/rentals/page'
 import CarDiv from '../../common_components/cardiv/page'
 
-
 function ReservationDetails() {
+
+  const [isCheck, setIsCheck] = useState(false);
 
   return (
     <div
@@ -31,7 +32,7 @@ function ReservationDetails() {
       {/* main content */}
       <div className='-mt-[10rem] md:-mt-[32rem] lg:-mt-[18rem] xl:-mt-[25rem] h-auto lg:flex lg:gap-x-6 px-4 mx-auto w-full lg:w-[135vh] max-lg:space-y-4'>
         {/* card1 */}
-        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-lg">
+        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-2xl mb-6">
           <div className="pb-3">
             <div className="space-y-1">
               <h2 className="text-lg font-semibold text-gray-900">Hotel Frankfurt Messe Affiliated by Meliá</h2>
@@ -61,8 +62,8 @@ function ReservationDetails() {
                 <SquareCheck className="w-6 h-6 text-black rounded-sm" />
 
                 <div className='flex justify-between items-center w-full'>
-                  <p className="text-lg font-medium text-gray-900">Check in:</p>
-                  <p className="text-lg text-gray-600">04/08/2026</p>
+                  <p className="text-sm md:text-lg font-medium text-gray-900">Check in:</p>
+                  <p className="text-sm md:text-lg text-gray-600">04/08/2026</p>
                 </div>
 
 
@@ -74,8 +75,8 @@ function ReservationDetails() {
                 <SquareX className=' w-6 h-6 text-black rounded-sm' />
 
                 <div className='flex justify-between items-center w-full'>
-                  <p className="text-lg font-medium text-gray-900">Check out:</p>
-                  <p className="text-lg text-gray-600">04/08/2026</p>
+                  <p className="text-sm md:text-lg font-medium text-gray-900">Check out:</p>
+                  <p className="text-sm md:text-lg text-gray-600">04/08/2026</p>
                 </div>
               </div>
             </div>
@@ -123,9 +124,14 @@ function ReservationDetails() {
 
 
             {/* Price */}
-            <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-              <span className="text-sm md:text-lg font-medium text-black">Price:</span>
-              <span className="text-sm md:text-lg font-semibold text-gray-900">US$ 375.00</span>
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 "></div>
+
+              <div className="flex justify-between items-center pt-2 border-t w-full border-gray-100">
+
+                <span className="text-sm md:text-lg font-medium text-black ">Price:</span>
+                <span className="text-sm md:text-lg font-semibold text-gray-900">US$ 375.00</span>
+              </div>
             </div>
 
             {/* Cancellation Policy */}
@@ -141,7 +147,7 @@ function ReservationDetails() {
           </div>
         </div>
         {/* card2 */}
-        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-lg">
+        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-2xl">
           <div className="pb-3">
             <div className="space-y-1">
               <h2 className="text-lg font-semibold text-gray-900">Hotel Frankfurt Messe Affiliated by Meliá</h2>
@@ -167,12 +173,12 @@ function ReservationDetails() {
             {/* Check-in/Check-out */}
             <div className="flex-col items-center space-y-3 gap-3">
 
-
               <div className="flex items-center gap-3">
                 <SquareCheck className="w-6 h-6 text-black rounded-sm" />
+
                 <div className='flex justify-between items-center w-full'>
-                  <p className="text-lg font-medium text-gray-900">Check in:</p>
-                  <p className="text-base text-gray-600">04/08/2026</p>
+                  <p className="text-sm md:text-lg font-medium text-gray-900">Check in:</p>
+                  <p className="text-sm md:text-lg text-gray-600">04/08/2026</p>
                 </div>
 
 
@@ -180,10 +186,12 @@ function ReservationDetails() {
               <hr />
 
               <div className="flex items-center gap-3">
+
                 <SquareX className=' w-6 h-6 text-black rounded-sm' />
+
                 <div className='flex justify-between items-center w-full'>
-                  <p className="text-lg font-medium text-gray-900">Check out:</p>
-                  <p className="text-lg text-gray-600">04/08/2026</p>
+                  <p className="text-sm md:text-lg font-medium text-gray-900">Check out:</p>
+                  <p className="text-sm md:text-lg text-gray-600">04/08/2026</p>
                 </div>
               </div>
             </div>
@@ -231,16 +239,21 @@ function ReservationDetails() {
 
 
             {/* Price */}
-            <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-              <span className="text-sm md:text-lg font-medium text-black">Price:</span>
-              <span className="text-sm md:text-lg font-semibold text-gray-900">US$ 375.00</span>
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 "></div>
+
+              <div className="flex justify-between items-center pt-2 border-t w-full border-gray-100">
+
+                <span className="text-sm md:text-lg font-medium text-black ">Price:</span>
+                <span className="text-sm md:text-lg font-semibold text-gray-900">US$ 375.00</span>
+              </div>
             </div>
 
             {/* Cancellation Policy */}
             <div className="">
               <div className="flex items-center gap-2 pt-2">
                 {/* <shieldcheck className="w-5 h-5 text-blue-500" /> */}
-                <ShieldCheck className="w-5 h-5  text-blue-500" />
+                <ShieldCheck className="w-5 h-5 text-blue-500" />
                 <button className="text-blue-500 text-base hover:underline">Cancellation policy</button>
               </div>
 
@@ -259,7 +272,7 @@ function ReservationDetails() {
 
       {/* form */}
       <div className='mt-10 px-0 md:px-24 mx-auto'>
-        <div className="max-w-5xl mx-auto p-6 ">
+        <div className="max-w-full mx-auto xl:w-[1200px] p-6 ">
           {/* Total Section */}
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Total</h1>
@@ -359,7 +372,7 @@ function ReservationDetails() {
           {/* continue */}
           <div className="w-full mx-auto py-6 space-y-6">
             {/* Notification Box */}
-            <div className="bg-orange-50 border border-orange-100 rounded-full py-5 px-6">
+            <div className="bg-orange-50 border border-l-4 border-orange-100 border-l-[#F96C41] rounded-full  py-5 px-6">
               <p className="text-sm text-gray-700 leading-relaxed">
                 <span className="font-medium">Note:</span> All communication regarding your booking will be sent to this email
                 address and/or mobile number.
@@ -367,12 +380,17 @@ function ReservationDetails() {
             </div>
 
             {/* Terms Agreement */}
-            <div className="flex items-start space-x-3 px-2">
+            <div className={`flex ${isCheck === true ? 'items-center' : 'items-start'}  space-x-3 px-2`}>
               {/* <Check/> */}
-              <input id="orange-checkbox" type="checkbox" className="h-5 w-5  rounded-full border-2 border-gray-300 
-                 checked:bg-orange-500 checked:border-orange-500 
+              <input id="orange-checkbox" type='checkbox'  className={`h-5 w-5  rounded-full border-2  border-gray-300 
+                 
                  focus:outline-none focus:ring-2 focus:ring-orange-200
-                 transition-colors duration-200  "/>
+                 transition-colors duration-200 ${isCheck ? 'hidden' : undefined}`}
+                checked={isCheck}
+                onChange={() => setIsCheck(!isCheck)}
+              />
+              {isCheck && <Check onClick={() => setIsCheck(!isCheck)} className="w-4 h-4 text-white font-bold bg-orange-500 px-2 py-2 rounded-full cursor-pointer" />
+              }
               <label className="text-sm text-gray-700 leading-relaxed cursor-pointer">
                 I understand and agree with the{" "}
                 <a href="#" className="text-blue-500 hover:text-blue-600 underline">
@@ -388,7 +406,7 @@ function ReservationDetails() {
 
             {/* Continue Button */}
             <button
-              className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] cursor-pointer text-white font-semibold py-3 px-6 rounded-lg text-base"
+              className="w-full cursor-pointer  bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg text-base"
 
             >
               CONTINUE
@@ -399,20 +417,20 @@ function ReservationDetails() {
       </div>
 
 
-      <div className="px-8 mt-4 pb-8 xl:px-40">
-        <div className="max-w-5xl mx-auto">
+      <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
+        <div className="max-w-full mx-auto xl:w-[1200px]">
           <CarDiv />
         </div>
       </div>
 
       {/* Rentals Component */}
-      <div className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden">
-        <div className="max-w-5xl mx-auto">
+      <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
+        <div className="max-w-full mx-auto">
           <Rentals />
         </div>
       </div>
 
-      <div className="max-md:hidden">
+      <div className="">
         <Footer />
       </div>
     </div>

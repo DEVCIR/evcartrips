@@ -80,7 +80,7 @@ export default function Page() {
 
       {/* Mobile Rentals Section */}
       <motion.div
-        className="px-8 mt-4 pb-8 mx-3 md:hidden"
+        className="px-3 mt-4 pb-8 mx-3 sm:hidden"
         initial={{ opacity: 0 }}
         animate={isFormInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.5, duration: 0.6 }}

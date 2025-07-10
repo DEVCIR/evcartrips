@@ -21,7 +21,7 @@ export default function Page() {
       {/* Animated Header Section */}
       <motion.div 
         ref={headerRef}
-        className="w-full bg-black px-3 sm:px-4 md:px-6 lg:px-8 pt-4 pb-12 sm:pb-16 min-h-[40vh] lg:min-h-[60vh] xl:min-h-[80vh] flex flex-col justify-start rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[20px]"
+        className="bg-black px-3 sm:px-4 md:px-6 lg:px-8 pt-4 pb-12 sm:pb-16 min-h-[40vh] lg:min-h-[60vh] xl:min-h-[80vh] flex flex-col justify-start rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[20px]"
         initial={{ opacity: 0, y: -50 }}
         animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -80,12 +80,12 @@ export default function Page() {
 
       {/* Mobile Rentals Section */}
       <motion.div
-        className="px-8 mt-4 pb-8"
+        className="px-8 mt-4 pb-8 mx-3"
         initial={{ opacity: 0 }}
         animate={isFormInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
-        <div className="w-[350px] md:w-[586px] xl:w-[1000px] mx-auto">
+        <div className="max-w-full mx-auto">
           <Rentals />
         </div>
       </motion.div>

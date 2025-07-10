@@ -493,7 +493,7 @@ function Page() {
       </motion.main>
 
       <motion.div
-        className="px-8 mt-4 pb-8 xl:px-40"
+        className=" mt-4 pb-8"
         initial={{ opacity: 0, y: 100 }}
   animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
@@ -504,7 +504,7 @@ function Page() {
       </motion.div>
 
       <motion.div
-        className="px-8 mt-4 pb-8 xl:px-40"
+        className=" mt-4 pb-8"
         initial={{ opacity: 0, y: 100 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
@@ -515,7 +515,7 @@ function Page() {
       </motion.div>
 
       <motion.div
-        className="max-md:hidden"
+        className=""
         initial={{ opacity: 0, y: 100 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}

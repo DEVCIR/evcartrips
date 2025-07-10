@@ -36,6 +36,57 @@ function Page() {
   const [hotels, setHotels] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // const staticHotels = [
+  //   {
+  //     id: 1,
+  //     name: "Grand Hyatt Berlin",
+  //     location: "Berlin",
+  //     image: "/images/room.jpg",
+  //     thumbnails: ["/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg"],
+  //     checkIn: "Saturday, 10 May 2025",
+  //     checkOut: "Sunday, 11 May 2025",
+  //     description: "Luxury hotel in the heart of Berlin with spa and fine dining",
+  //     badge: "Gratis 25kWh",
+  //     badgeSubtext: "/ night",
+  //     originalData: {
+  //       locationCity: "Berlin",
+  //       geo: "52.5200;13.4050"
+  //     }
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Hilton Munich Park",
+  //     location: "Munich",
+  //     image: "/images/room.jpg",
+  //     thumbnails: ["/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg"],
+  //     checkIn: "Monday, 12 May 2025",
+  //     checkOut: "Tuesday, 13 May 2025",
+  //     description: "Modern hotel with panoramic views of the English Garden",
+  //     badge: "30% OFF",
+  //     badgeSubtext: "Limited time",
+  //     originalData: {
+  //       locationCity: "Munich",
+  //       geo: "48.1351;11.5820"
+  //     }
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Steigenberger Frankfurt",
+  //     location: "Frankfurt",
+  //     image: "/images/room.jpg",
+  //     thumbnails: ["/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg"],
+  //     checkIn: "Wednesday, 14 May 2025",
+  //     checkOut: "Thursday, 15 May 2025",
+  //     description: "Elegant hotel near the financial district with excellent conference facilities",
+  //     badge: "Gratis 25kWh",
+  //     badgeSubtext: "/ night",
+  //     originalData: {
+  //       locationCity: "Frankfurt",
+  //       geo: "50.1109;8.6821"
+  //     }
+  //   }
+  // ]
+  
   useEffect(() => {
     const fetchGeoLocations = async () => {
       try {
@@ -248,7 +299,7 @@ function Page() {
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="bg-black px-4 pt-4 pb-32 relative min-h-[50vh] md:min-h-[70vh] flex flex-col justify-start rounded-b-[18px]"
+        className="bg-black px-2 pt-4 pb-32 relative min-h-[50vh] md:min-h-[70vh] flex flex-col justify-start rounded-b-[18px]"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -275,7 +326,7 @@ function Page() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
-          <div className="text-center mb-6 md:mt-4">
+          <div className="text-center mb-6 mt-4">
             <motion.p
               className="text-[#FFFFFF99] text-sm md:text-[20px] font-medium md:font-bold tracking-wider"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -298,7 +349,7 @@ function Page() {
             {hotels.map((hotel, index) => (
               <motion.div
                 key={hotel.id}
-                className="bg-white rounded-[20px] p-4 xl:p-8 shadow-xl relative w-[365px] md:w-[693px] xl:w-[1200px] xl:rounded-[50px] mx-auto cursor-pointer"
+                className="bg-white rounded-[20px] p-4 xl:p-8 shadow-xl relative w-full sm:w-[500px] md:w-[693px] xl:w-[1200px] xl:rounded-[50px] h-auto mx-auto cursor-pointer"
                 initial={{ opacity: 0, y: 100, scale: 0.8 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
@@ -323,21 +374,21 @@ function Page() {
                 </div>
 
                 {/* Horizontal Layout for All Screen Sizes */}
-                <div className="flex gap-4 relative">
+                <div className="flex max-md:flex-col md:flex-row max-md:mx-auto gap-4 relative">
                   {/* Left Column - Full Height Main Image */}
-                  <div className="w-[163px] h-[187px] md:w-[324px] md:h-[400px] xl:w-[562px] xl:h-[644px] flex-shrink-0 relative">
+                  <div className="w-full  md:w-[324px]  xl:w-[562px]  flex-shrink-0 relative">
                     {/* Main Hotel Image with Navigation Arrows */}
-                    <div className="relative rounded-xl overflow-hidden space-y-3">
+                    <div className="max-md:flex max-md:items-start max-md:gap-x-2 md:relative rounded-xl overflow-hidden md:space-y-3">
                       <Image
                         src={hotel.image || "/placeholder.svg"}
                         alt={hotel.name}
                         width={300}
                         height={300}
-                        className="w-full h-auto object-cover rounded-xl xl:rounded-4xl"
+                        className="w-[80%] h-[210px] sm:w-full sm:h-[210px] md:h-[270px] order-2 xl:h-[430px] object-cover rounded-xl xl:rounded-4xl"
                       />
 
+                      <div className={`max-md:w-[20%] flex max-md:gap-y-1 max-md:flex-col md:flex-row order-1 ${hotel.thumbnails.length === 4 ? 'justify-center' : 'justify-start'}`}>
                       {/* Thumbnail Images */}
-                      <div className={`flex ${hotel.thumbnails.length === 4 ? 'justify-center' : 'justify-start'}`}>
                         {hotel.thumbnails.map((thumb, thumbIndex) => (
                           <Image
                             key={thumbIndex}
@@ -345,20 +396,20 @@ function Page() {
                             alt={`${hotel.name} thumbnail ${thumbIndex + 1}`}
                             width={50}
                             height={50}
-                            className={` ${hotel.thumbnails.length === 4 ? 'mx-auto' : ''} rounded-lg xl:rounded-2xl object-cover w-[37px] h-auto md:w-[73px] md:h-[71px] xl:w-[127px] xl:h-[124px] cursor-pointer hover:opacity-80 transition-opacity`}
+                            className={` ${hotel.thumbnails.length === 4 ? 'md:mx-auto' : ''}  rounded-lg xl:rounded-2xl object-cover w-full h-[50px] sm:w-[73px] sm:h-[50px] md:w-[73px] md:h-[71px] xl:w-[127px] xl:h-[124px] cursor-pointer hover:opacity-80 transition-opacity`}
                           />
                         ))}
                       </div>
 
                       {/* Navigation Arrows */}
                       <button 
-                        className="absolute left-1.5 top-[40%] -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
+                        className="absolute left-[24%] sm:left-23 md:left-1.5 top-[50%] md:top-[40%] -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
                       </button>
                       <button 
-                        className="absolute right-1.5 top-[40%] -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
+                        className="absolute right-1.5 top-[50%] md:top-[40%] -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
@@ -367,23 +418,24 @@ function Page() {
                   </div>
 
                   {/* Right Column - All Text and Buttons */}
-                  <div className="flex flex-col justify-between space-y-2 min-h-0">
+                  <div className="flex flex-col justify-between space-y-2 min-h-0 md:h-[400px] xl:h-[630px] ">
                     <div className="space-y-2 flex-1">
                       <div className="space-y-0.5 xl:-space-y-5">
-                        <h3 className="font-bold text-gray-800 text-[12px] md:text-[27px] md:-tracking-[0.81px] xl:text-[48px] xl:-tracking-[1.41px] -tracking-[0.41px] break-words">
-                          {hotel.name}
+                        <h3 className="font-bold text-gray-800 text-[16px] md:text-[27px] md:-tracking-[0.81px] xl:text-[48px] xl:-tracking-[1.41px] -tracking-[0.41px] break-words">
+                          {hotel.name.slice(0, 30)}{hotel.name.length > 30 ? '...' : ''}
                         </h3>
-                        <p className="font-medium text-gray-600 text-[14px] -tracking-[0.41px] md:text-[27px] md:-tracking-[0.81px] xl:text-[48px] xl:-tracking-[1.41px] break-words">
+                        <p className="font-medium text-gray-600 text-[16px] -tracking-[0.41px] md:text-[27px] md:-tracking-[0.81px] xl:text-[48px] xl:-tracking-[1.41px] break-words">
                           {hotel.location}
                         </p>
                       </div>
 
-                      <div className="flex items-center">
-                        <p className="text-gray-700 font-[400] text-[8px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.81px] xl:text-[28px] xl:-tracking-[1.41px]">
+                      <div className="flex gap-3 items-center">
+                        <p className="text-gray-700 font-[400] text-[12px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.81px] xl:text-[28px] xl:-tracking-[1.41px]">
                           {hotel.description}
                         </p>
                         <button 
-                          className="text-red-500 cursor-pointer bg-red-50 hover:bg-red-100 px-2 py-1 md:py-2 rounded text-[6px] md:text-[9px] xl:text-[16px] font-medium transition-colors shrink-0"
+                          className="text-red-500 cursor-pointer bg-red-50 hover:bg-red-100 px-2 py-1 md:py-2 rounded text-[9px] md:text-[9px] xl:text-[16px] font-medium
+                           transition-colors shrink-0"
                           onClick={(e) => e.stopPropagation()}
                         >
                           More details
@@ -392,19 +444,19 @@ function Page() {
 
                       {/* Check-in/Check-out */}
                       <div className="space-y-0.5">
-                        <div className="text-[7.4px] md:text-[14px] xl:text-[25px] text-gray-700">
+                        <div className="text-[12px] md:text-[14px] xl:text-[25px] text-gray-700">
                           <span className="font-medium">Check-in:</span>{" "}
                           <span className="text-gray-600 font-[400]">{hotel.checkIn}</span>
                         </div>
-                        <div className="text-[7.4px] md:text-[14px] xl:text-[25px] text-gray-700">
+                        <div className="text-[12px] md:text-[14px] xl:text-[25px] text-gray-700">
                           <span className="font-medium">Check-out:</span>{" "}
                           <span className="text-gray-600 font-[400]">{hotel.checkOut}</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center md:my-2 xl:my-4">
+                      <div className="flex items-center t md:my-2 xl:my-4">
                         <button 
-                          className="text-red-500 hover:text-red-600 text-[8px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px] -tracking-[0.41px] font-medium transition-colors flex mx-auto items-center gap-0.5 cursor-pointer"
+                          className="text-red-500 hover:text-red-600 text-[10px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px] -tracking-[0.41px] font-medium transition-colors flex  items-center  gap-0.5 cursor-pointer"
                           onClick={(e) => e.stopPropagation()}
                         >
                           Show more deals <ChevronDown className="w-2 h-2 md:w-3 md:h-3 xl:w-6 xl:h-6" />
@@ -413,21 +465,21 @@ function Page() {
                     </div>
 
                     {/* Stopover Section */}
-                    <div className="space-y-2 md:space-y-3 mt-auto md:mb-20 xl:mb-36">
-                      <p className="text-gray-700 font-medium text-[6px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px]">
+                    <div className="space-y-3 md:space-y-3 mt-auto md:mb-20 xl:mb-36">
+                      <p className="text-gray-700 font-medium text-[10px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px]">
                         I change this stop and would like to overnight on:
                       </p>
 
                       {/* Date Dropdown */}
                       <div 
-                        className="w-[141px] h-[20px] md:w-[281px] md:h-[39px] xl:w-[486px] xl:h-[68px]"
+                        className="w-full h-auto md:w-[281px] md:h-[39px] xl:w-[486px] xl:h-[68px]"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="flex items-center gap-x-2 border border-gray-200 rounded-md px-2 py-1 sm:p-2.5 bg-white hover:border-gray-300 transition-colors cursor-pointer">
+                        <div className="flex items-center gap-x-2 border border-gray-200 rounded-md px-2 py-2.5 sm:p-2.5 max-md:border-spacing-12 bg-white hover:border-gray-300 transition-colors cursor-pointer">
                           <div className="bg-red-500 p-1 rounded">
-                            <Calendar className="w-2 h-2 md:w-4 md:h-4 xl:w-8 xl:h-8 text-white" />
+                            <Calendar className="w-3 h-3 md:w-4 md:h-4 xl:w-8 xl:h-8 text-white" />
                           </div>
-                          <span className="text-[7px] md:text-[10px] md:-tracking-[-0.36px] xl:text-[15px] xl:-tracking-[0.63px] font-medium text-[#00000075] flex-1">
+                          <span className="text-[10px] md:text-[10px] md:-tracking-[-0.36px] xl:text-[15px] xl:-tracking-[0.63px] font-medium text-[#00000075] flex-1">
                             Monday, 12 May, 2025
                           </span>
                           <ChevronDown className="w-3 h-3 md:w-4 md:h-4 xl:w-6 xl:h-6 text-gray-400" />
@@ -436,7 +488,7 @@ function Page() {
 
                       {/* Delete Button */}
                       <button 
-                        className="w-[141px] h-[20px] md:w-[281px] md:h-[39px] xl:w-[486px] xl:h-[68px] cursor-pointer flex items-center justify-center gap-1.5 border border-red-200 hover:bg-red-50 text-red-500 rounded-md py-2.5 sm:py-2.5 text-[8px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px] -tracking-[0.41px] sm:text-sm font-medium transition-colors"
+                        className="w-full h-auto md:w-[281px] md:h-[39px] xl:w-[486px] xl:h-[68px] cursor-pointer flex items-center justify-center gap-1.5 border border-red-200 hover:bg-red-50 text-red-500 rounded-md py-2.5 sm:py-2.5 text-[10px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px] -tracking-[0.41px] sm:text-sm font-medium transition-colors"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <X className="w-2 h-2 md:w-4 md:h-4 xl:w-6 xl:h-6" />
@@ -450,7 +502,7 @@ function Page() {
 
             {/* Continue Button */}
             <motion.div
-              className="pt-4 pb-8 xl:flex xl:justify-center"
+              className="pt-4 pb-8 sm:flex sm:justify-center"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.6 }}
@@ -460,7 +512,7 @@ function Page() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
-                  className="cursor-pointer mt-4 md:mt-8 lg:mt-12 w-full md:w-[381px] bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg"
+                  className="cursor-pointer mt-4 md:mt-8 lg:mt-12 w-full sm:w-[250px] md:w-[381px] bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg"
                   onClick={handleContinue}
                 >
                   Continue
@@ -470,7 +522,7 @@ function Page() {
           </div>
 
           <motion.div
-            className="px-8 mt-4 pb-8"
+            className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -481,7 +533,7 @@ function Page() {
           </motion.div>
 
           <motion.div
-            className="px-8 mt-4 pb-8"
+            className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}

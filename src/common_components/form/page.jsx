@@ -163,7 +163,7 @@ const fetchCities = async (searchTerm) => {
     const params = new URLSearchParams()
     
     // Add basic fields
-    params.append('startDate', formData.startDate.toLocaleDateString('en-CA'))
+    params.append('startDate', formData.startDate.toISOString())
     params.append('from', formData.from)
     params.append('to', formData.to)
     

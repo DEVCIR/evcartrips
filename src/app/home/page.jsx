@@ -160,7 +160,7 @@ export default function Page() {
 
       <motion.div 
         ref={carDivRef}
-        className="px-8 mt-4 pb-8 z-30"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48  z-30"
         initial={{ y: 50, opacity: 0 }}
         animate={isCarDivInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
         transition={{ duration: 0.8 }}
@@ -172,7 +172,7 @@ export default function Page() {
 
       <motion.div 
         ref={rentalsRef}
-        className="px-8 mt-4 pb-8"
+        className="px-8 md:px-14 lg:px-20 xl:px-48 mt-4 pb-8"
         initial={{ y: 50, opacity: 0 }}
         animate={isRentalsInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
         transition={{ duration: 0.8 }}
@@ -184,7 +184,7 @@ export default function Page() {
       
       <motion.div 
         ref={footerRef}
-        className="max-md:hidden"
+        className=""
         initial={{ y: 50, opacity: 0 }}
         animate={isFooterInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
         transition={{ duration: 0.8 }}

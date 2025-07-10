@@ -188,7 +188,7 @@ export default function Page() {
 
       {/* Animated CarDiv */}
       <motion.div
-        className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden"
         initial={{ opacity: 0, y: 50 }}
         animate={isContentInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 1.0, duration: 0.6 }}
@@ -200,7 +200,7 @@ export default function Page() {
 
       {/* Animated Rentals */}
       <motion.div
-        className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden"
         initial={{ opacity: 0, y: 50 }}
         animate={isContentInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 1.2, duration: 0.6 }}

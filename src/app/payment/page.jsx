@@ -81,22 +81,22 @@ export default function PaymentPage() {
 
       <div className="-mt-[16rem] md:-mt-[30rem] lg:-mt-[16rem] xl:-mt-[20rem] px-2">
 
-      <div className="max-md:px-2 py-6  max-w-md md:max-w-sm md:flex md:justify-center lg:max-w-4xl lg:flex lg:justify-start lg:pl-[5%] xl:max-w-5xl  mx-auto">
+      <div className="max-md:px-2 py-6  max-w-md md:max-w-md md:flex md:justify-center w-full md:px-14 lg:px-20 mt-4  md:mt-24 lg:mt-0 pb-8 xl:px-48  mx-auto">
         <h1 className="text-2xl font-semibold text-white">Payment</h1>
       </div>
 
       {/* Step 1: Review and Book */}
-      <div className="max-md:px-2 mb-6 max-w-4xl  mx-auto">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-sm font-semibold text-white">
+      <div className=" mb-6 w-full md:px-14 lg:px-0 mt-4 pb-8 xl:px-48  mx-auto">
+        <div className="flex items-center justify-start w-full md:px-2 lg:px-2 mt-4 pb-8 xl:px-2 gap-3 mb-4">
+          <div className="w-6 h-6 bg-[#F96C41] rounded-full flex items-center justify-center text-sm font-semibold text-white">
             1
           </div>
           <span className="text-lg font-medium text-white">Review and Book your trip</span>
         </div>
 
-        <div className="max-w-5xl  mx-auto bg-white shadow-2xl rounded-xl p-4 space-y-4">
+        <div className="w-full md:px-10 lg:px-20 mt-4 pb-8 xl:px-10  mx-auto bg-white shadow-2xl rounded-3xl p-4 space-y-4">
           {hotels.map((hotel) => (
-            <div key={hotel.id} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-200">
+            <div key={hotel.id} className="bg-white rounded-3xl p-4 shadow-sm border border-gray-200">
               <div className="flex gap-3">
                 {/* Hotel Image */}
                 <div className="flex-shrink-0">
@@ -117,7 +117,7 @@ export default function PaymentPage() {
                   </div>
 
                   {/* Rating and Amenities */}
-                  <div className="flex md:flex-wrap flex-wrap items-center gap-x-4 text-[7px]   md:text-base text-[#797979] mb-3">
+                  <div className="flex md:flex-wrap flex-wrap items-center gap-x-4 text-[7px]   md:text-base text-[#797979] mb-1">
                     {roomDetails.map((detail, index) => (
                       <div key={index} className="flex items-center bg-[#D9D9D99C] md:px-3 px-2 py-1 rounded-2xl mb-2">
                         {detail.icon}
@@ -154,9 +154,9 @@ export default function PaymentPage() {
       </div>
 
       {/* Step 2: Traveler Details */}
-      <div className="px-4 mb-6 mt-10 max-w-4xl  mx-auto">
+      <div className="px-4 mb-6  w-full md:px-14 lg:px-20 mt-4 pb-8 xl:px-48  mx-auto">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-sm font-semibold text-white">
+          <div className="w-6 h-6 bg-[#F96C41] rounded-full flex items-center justify-center text-sm font-semibold text-white">
             2
           </div>
           <span className="text-lg font-medium">Traveler details</span>
@@ -251,9 +251,9 @@ export default function PaymentPage() {
       </div>
 
       {/* Step 3: Billing Details */}
-      <div className="px-4 mb-6 max-w-4xl  mx-auto">
+      <div className="px-4 mb-6 max-w-full md:px-14 lg:px-20 mt-4 pb-8 xl:px-48  mx-auto">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-sm font-semibold text-white">
+          <div className="w-6 h-6 bg-[#F96C41] rounded-full flex items-center justify-center text-sm font-semibold text-white">
             3
           </div>
           <span className="text-lg font-medium">Enter billing details</span>
@@ -264,10 +264,10 @@ export default function PaymentPage() {
         </p>
 
         {/* Payment Methods */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-y-2 md:gap-x-2   flex-col md:flex-row mb-6">
           <button
             onClick={() => setSelectedPayment("card")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "card" ? "border-orange-500 bg-orange-500 text-white" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "card" ? "border-[#F96C41] bg-[#F96C41] text-white" : "border-gray-300 bg-transparent"
               }`}
           >
             <CreditCard className="w-5 h-5" />
@@ -275,7 +275,7 @@ export default function PaymentPage() {
           </button>
           <button
             onClick={() => setSelectedPayment("transfer")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "transfer" ? "border-orange-500 bg-orange-500" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "transfer" ? "border-[#F96C41] bg-[#F96C41]" : "border-gray-300 bg-transparent"
               }`}
           >
             <Building2 className="w-5 h-5" />
@@ -283,7 +283,7 @@ export default function PaymentPage() {
           </button>
           <button
             onClick={() => setSelectedPayment("crypto")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "crypto" ? "border-orange-500 bg-orange-500" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "crypto" ? "border-[#F96C41] bg-[#F96C41]" : "border-gray-300 bg-transparent"
               }`}
           >
             <Coins className="w-5 h-5 text-orange-500" />
@@ -367,7 +367,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Payment Summary */}
-      <div className="px-4 mb-6 max-w-3xl xl:max-w-4xl  mx-auto">
+      <div className="px-4 mb-6 w-full md:px-14 lg:px-20 mt-4 pb-8 xl:px-48   mx-auto">
         <h3 className="text-lg font-semibold mb-4">PAYMENT DETAILS</h3>
 
         <div className="space-y-3">
@@ -380,7 +380,7 @@ export default function PaymentPage() {
             <span className="text-xl font-bold">$750.00</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-orange-500 text-base">Taxes and fees due at property</span>
+            <span className="text-[#F96C41] text-base">Taxes and fees due at property</span>
             <span className="text-base text-black">$50.00</span>
           </div>
         </div>
@@ -391,23 +391,23 @@ export default function PaymentPage() {
       </div>
 
       {/* Pay Now Button */}
-      <div className="px-4 pb-8 max-w-4xl  mx-auto">
-        <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold py-4 rounded-xl text-lg">
+      <div className="px-4 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48  max-w-full  mx-auto">
+        <button className="w-full  bg-gradient-to-b from-[#F96C41] to-[#AA3916] text-white font-semibold py-4 rounded-xl text-lg">
           PAY NOW
         </button>
       </div>
 
       </div>
 
-      <div className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden">
-          <div className="max-w-5xl  mx-auto">
+      <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden">
+          <div className="max-w-full  mx-auto">
             <CarDiv />
           </div>
         </div>
 
         {/* Rentals Component */}
-        <div className="px-8 mt-4 pb-8 xl:px-40 max-md:hidden">
-          <div className="max-w-5xl  mx-auto">
+        <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden">
+          <div className="max-w-full  mx-auto">
             <Rentals />
           </div>
         </div>
