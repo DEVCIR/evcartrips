@@ -249,19 +249,19 @@ export default function HotelBooking() {
 
           {/* Continue Button */}
           <div className="flex justify-center mb-8">
-            <button className="cursor-pointer btn-gradient text-white px-12 py-3 rounded-lg font-medium  text-lg">
+            <button className="btn-gradient text-white px-12 py-3 rounded-lg font-medium  text-lg">
               CONTINUE
             </button>
           </div>
         </div>
 
-        <div className="px-8 mt-4 pb-8">
+        <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
           <div className="z-10 max-w-full mx-auto xl:w-[1200px]">
             <CarDiv />
           </div>
         </div>
-        <div className="px-8 mt-4 pb-8">
-          <div className="z-10 max-w-full mx-auto xl:w-[1200px]">
+        <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
+          <div className="z-10 max-w-full mx-auto xl:w-[1196px]">
             <Rentals />
           </div>
         </div>

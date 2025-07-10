@@ -203,7 +203,7 @@ function Page() {
       {/* Other Sections */}
       <motion.div
         ref={carDivRef}
-        className="px-8 mt-4 pb-8 xl:px-32"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48  "
         initial={{ opacity: 0, y: 50 }}
         animate={isCarDivInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}
@@ -213,7 +213,7 @@ function Page() {
 
       <motion.div
         ref={rentalsRef}
-        className="px-8 mt-4 pb-8 xl:px-32 max-md:hidden"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
         initial={{ opacity: 0, y: 50 }}
         animate={isRentalsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}
@@ -223,7 +223,7 @@ function Page() {
 
       <motion.div
         ref={footerRef}
-        className="max-md:hidden"
+        className=""
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}

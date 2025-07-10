@@ -176,7 +176,7 @@ function Page() {
               viewBox="0 0 22 23"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="flex-shrink-0 w-[20px] h-[21px] md:w-[36px] md:h-[36px] xl:w-[62px] xl:h-[62px]"
+              className="flex-shrink-0 w-[20px]  h-[21px] md:w-[36px] md:h-[36px] xl:w-[62px] xl:h-[62px]"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.7, duration: 0.5, type: "spring" }}
@@ -256,7 +256,7 @@ function Page() {
         {/* Route Overview Component */}
         <motion.div
           ref={routeOverviewRef}
-          className="px-8 mt-4 pb-8 mx-0 xl:px-40 xl:mt-10 xl:pb-14"
+          className=" px-8 md:px-14 lg:px-20  mt-4 pb-8 mx-0 xl:px-48 xl:mt-10  xl:pb-14"
           initial={{ opacity: 0, y: 150 }}
           animate={isRouteOverviewInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 150 }}
           transition={{ duration: 1, type: "spring", stiffness: 80, damping: 15 }}
@@ -285,6 +285,7 @@ function Page() {
           animate={isIternaryInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8 }}
         >
+        
           <div className="">
             <Iternary
               from={from}
@@ -296,12 +297,13 @@ function Page() {
               travellers={travellers}
             />
           </div>
+          
         </motion.div>
 
         {/* Car Div Component */}
         <motion.div
           ref={carDivRef}
-          className="px-8 mt-4 pb-8 xl:px-40"
+          className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48"
           initial={{ opacity: 0, y: 50 }}
           animate={isCarDivInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8 }}
@@ -314,12 +316,12 @@ function Page() {
         {/* Rentals Component */}
         <motion.div
           ref={rentalsRef}
-          className="px-8 mt-4 pb-8 xl:px-40"
+          className="px-8 mt-4 pb-8 md:px-14 lg:px-20 xl:px-48"
           initial={{ opacity: 0, y: 50 }}
           animate={isRentalsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="max-w-full mx-auto">
+          <div className="max-w-full  mx-auto">
             <Rentals />
           </div>
         </motion.div>
@@ -328,7 +330,7 @@ function Page() {
       {/* Footer with Animation */}
       <motion.div
         ref={footerRef}
-        className="max-md:hidden"
+        className=""
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}

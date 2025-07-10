@@ -13,10 +13,10 @@ export default function Rentals() {
             />
 
             <div className="w-full">
-              <h3 className="text-[11px] md:text-xl xl:text-4xl font-[600] xl:-tracking-[1.4px] text-gray-900 mb-1">
+              <h3 className="text-[15px] md:text-xl xl:text-4xl font-[600] xl:-tracking-[1.4px] text-gray-900 mb-1">
                 Need help with rentals?
               </h3>
-              <p className="text-[7px] font-[400] md:text-base xl:text-2xl xl:-tracking-[1.4px] text-gray-700 max-xl:leading-relaxed">
+              <p className="text-[9px] font-[400] md:text-lg xl:text-2xl xl:-tracking-[1.4px] text-gray-700 max-xl:leading-relaxed">
                 Our live agents are ready to find
                 <br />
                 the best event gear for you!

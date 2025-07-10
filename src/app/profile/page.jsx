@@ -75,7 +75,7 @@ export default function EditProfilePage() {
           {/* Edit Form */}
           <motion.div
             ref={infoRef}
-            className="w-[360px] h-auto md:w-[586px] xl:w-[680px] bg-white rounded-2xl p-6 mb-6 shadow-sm max-xl:mx-auto"
+            className="w-[360px] h-auto md:w-[586px] xl:w-[680px] bg-white shadow-2xl rounded-2xl p-6 mb-6  max-xl:mx-auto"
             initial={{ opacity: 0, x: -50 }}
             animate={isInfoInView ? { 
               opacity: 1, 
@@ -141,7 +141,7 @@ export default function EditProfilePage() {
           {/* Current Booking */}
           <motion.div
             ref={bookingRef}
-            className="w-[360px] h-auto md:w-[586px] xl:w-[680px] bg-white rounded-2xl p-6 shadow-sm max-xl:mx-auto"
+            className="w-[360px] h-auto md:w-[586px] xl:w-[680px] bg-white rounded-2xl p-6 shadow-2xl max-xl:mx-auto"
             initial={{ opacity: 0, x: 50 }}
             animate={isBookingInView ? { 
               opacity: 1, 
@@ -161,7 +161,7 @@ export default function EditProfilePage() {
             </motion.h2>
 
             <motion.div 
-              className="bg-gray-50 rounded-xl p-4 flex items-center justify-between"
+              className="bg-[#EBEBEB]  rounded-xl p-4 flex items-center justify-between"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isBookingInView ? { 
                 opacity: 1, 
@@ -171,7 +171,7 @@ export default function EditProfilePage() {
             >
               <div className="flex items-center space-x-4">
                 <motion.div 
-                  className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"
+                  className="w-8 h-8 bg-[#F96C41] rounded-full flex items-center justify-center"
                   whileHover={{ rotate: 10 }}
                 >
                   <span className="text-white font-bold text-sm">1.</span>
