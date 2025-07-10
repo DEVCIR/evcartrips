@@ -21,14 +21,33 @@ export default function ResetForm() {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      toast.success("Password reset link sent to your email!")
+    
+    try {
+      const response = await fetch('http://localhost:8000/api/auth/request-reset', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to send reset link')
+      }
+
+      toast.success(data.message || "Password reset link sent to your email!")
+    } catch (error) {
+      toast.error(error.message || "Error sending reset link")
+    } finally {
       setLoading(false)
-    }, 1500)
+    }
   }
 
   return (
@@ -103,8 +122,6 @@ export default function ResetForm() {
             Back to Sign In
           </button>
         </motion.div>
-
-        
       </form>
       <ToastContainer/>
     </motion.div>

@@ -40,6 +40,8 @@ function Button({
   variant,
   size,
   asChild = false,
+  whileHover,
+  whileTap, // destructure to remove from ...props
   ...props
 }) {
   const Comp = asChild ? Slot : "button"
@@ -48,7 +50,8 @@ function Button({
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props} />
+      {...props} // whileHover is not included here
+    />
   );
 }
 
