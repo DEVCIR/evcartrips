@@ -388,7 +388,7 @@ function Iternary({
           <div className="md:flex md:justify-center">
             <Button
               onClick={handleContinue}
-              className="w-full md:w-[381px] xl:w-[656px] bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-10 xl:h-[75px] text-base md:text-sm xl:text-lg mt-3 md:mt-0 uppercase cursor-pointer"
+              className="w-full md:w-[381px] xl:w-[656px] btn-gradient text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-10 xl:h-[75px] text-base md:text-sm xl:text-lg mt-3 md:mt-0 uppercase cursor-pointer"
             >
               Continue
             </Button>

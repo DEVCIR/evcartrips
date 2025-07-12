@@ -37,14 +37,14 @@ export default function Custom404() {
         {/* Back to Home Button */}
         <div className="w-full max-w-sm">
           <Link href="/">
-            <button className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 transform hover:scale-105 shadow-lg">
+            <button className="w-full btn-gradient text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 transform hover:scale-105 shadow-lg">
               BACK TO HOME
             </button>
           </Link>
         </div>
       </div>
       {/* Animated Footer */}
-            <div className="max-md:hidden">
+            <div className="">
 
               <Footer />
             </div>

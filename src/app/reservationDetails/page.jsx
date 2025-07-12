@@ -147,7 +147,7 @@ function ReservationDetails() {
           </div>
         </div>
         {/* card2 */}
-        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-2xl">
+        <div className="w-full h-auto p-4 rounded-3xl md:max-w-xl lg:max-w-2xl mx-auto bg-white shadow-2xl mb-6">
           <div className="pb-3">
             <div className="space-y-1">
               <h2 className="text-lg font-semibold text-gray-900">Hotel Frankfurt Messe Affiliated by Meliá</h2>
@@ -289,7 +289,7 @@ function ReservationDetails() {
                 <div className="relative">
                   <label htmlFor="firstName" className="md:text-sm text-xs absolute top-[-12px] py-1 px-3 bg-[#F6F6F6] left-2 md:left-6 font-medium text-gray-700 flex items-center gap-2">
                     <User className="w-3 h-3 text-gray-500" />
-                    First Name*
+                    First Name<span className="text-red-500">*</span>
                   </label>
                   <input
                     id="firstName"
@@ -304,7 +304,7 @@ function ReservationDetails() {
                 <div className="relative">
                   <label htmlFor="lastName" className="md:text-sm text-xs absolute top-[-12px] py-1 px-3 bg-[#F6F6F6] left-2 md:left-6 font-medium text-gray-700 flex items-center gap-2">
                     <User className="w-3 h-3 text-gray-500" />
-                    Last Name*
+                    Last Name<span className="text-red-500">*</span>
                   </label>
                   <input
                     id="lastName"
@@ -389,7 +389,7 @@ function ReservationDetails() {
                 checked={isCheck}
                 onChange={() => setIsCheck(!isCheck)}
               />
-              {isCheck && <Check onClick={() => setIsCheck(!isCheck)} className="w-4 h-4 text-white font-bold bg-orange-500 px-2 py-2 rounded-full cursor-pointer" />
+              {isCheck && <Check onClick={() => setIsCheck(!isCheck)} className="w-5 h-5 text-white font-bold bg-orange-500 rounded-full cursor-pointer" />
               }
               <label className="text-sm text-gray-700 leading-relaxed cursor-pointer">
                 I understand and agree with the{" "}
@@ -406,7 +406,7 @@ function ReservationDetails() {
 
             {/* Continue Button */}
             <button
-              className="w-full cursor-pointer  bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg text-base"
+              className="w-full cursor-pointer  btn-gradient text-white font-semibold py-3 px-6 rounded-lg text-base"
 
             >
               CONTINUE

@@ -277,7 +277,7 @@ export default function SignUpForm() {
           <Button
             type="submit"
             disabled={loading}
-            className={`w-full h-[44px] md:h-[67px] cursor-pointer bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:to-[#F96C41] hover:from-[#AA3916] text-white font-bold py-3 md:py-4 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] mt-3 md:mt-0 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+            className={`w-full h-[44px] md:h-[67px] cursor-pointer btn-gradient text-white font-bold py-3 md:py-4 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] mt-3 md:mt-0 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
             whileHover={{ scale: loading ? 1 : 1.02 }}
             whileTap={{ scale: loading ? 1 : 0.98 }}
           >

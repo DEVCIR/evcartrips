@@ -531,7 +531,7 @@ const fetchCities = async (searchTerm) => {
 
         <Button
           onClick={handleSubmit}
-          className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] cursor-pointer text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg mt-3 md:mt-0"
+          className="w-full btn-gradient cursor-pointer text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg mt-3 md:mt-0"
         >
           FIND MY ROUTE
         </Button>

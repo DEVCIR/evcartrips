@@ -1,12 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import
-  {
-    redirect,
-    // useSearchParams,
-    // useRouter
-  } from "next/navigation";
+import {
+redirect,
+// useSearchParams,
+// useRouter
+} from "next/navigation";
 // import { useEffect, useState } from "react";
 import CarDiv from "../../common_components/cardiv/page";
 import Rentals from "../../common_components/rentals/page";
@@ -42,8 +41,8 @@ function formatDateString(dateStr?: string) {
 
 export default function HotelBooking() {
   // const searchParams = useSearchParams();
-  const [ hotelData, setHotelData ] = useLocalStorage( 'selectedHotel', null );
-  
+  const [hotelData, setHotelData] = useLocalStorage('selectedHotel', null);
+
   // const [hotelData, setHotelData] = useState<any>(null)
 
   // // Load from localStorage on mount
@@ -161,7 +160,7 @@ export default function HotelBooking() {
           </h2>
         </CenteredContent>
       </section>
-      <CenteredContent className="z-[9999]">
+      <CenteredContent className="z-[9999] w-full">
         {/* Hotel Image Section */}
         <div className="px-4 py-4 z-1">
           <div className="absolute top-0 left-0 z-[-1] bg-black rounded-b-4xl h-[37.5vh] lg:h-[50vh] w-screen"></div>
@@ -210,7 +209,7 @@ export default function HotelBooking() {
         </div>
 
         {/* Booking Form */}
-        <div className="px-4 py-6 space-y-4">
+        <div className="px-4 py-6 space-y-8">
           {/* Date Selection */}
           <div className="grid grid-cols-2 gap-4">
             {formFields.slice(0, 2).map((field) => (
@@ -248,28 +247,28 @@ export default function HotelBooking() {
           </div>
 
           {/* Continue Button */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mx-auto mb-8">
             <button className="btn-gradient text-white px-12 py-3 rounded-lg font-medium  text-lg">
               CONTINUE
             </button>
           </div>
         </div>
 
-        <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
-          <div className="z-10 max-w-full mx-auto xl:w-[1200px]">
-            <CarDiv />
-          </div>
-        </div>
-        <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
-          <div className="z-10 max-w-full mx-auto xl:w-[1196px]">
-            <Rentals />
-          </div>
-        </div>
       </CenteredContent>
-      <div className="bg-black max-md:hidden">
-        <CenteredContent>
+      <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
+        <div className=" max-w-full mx-auto xl:w-[1290px]">
+          <CarDiv />
+        </div>
+      </div>
+      <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
+        <div className=" max-w-full mx-auto xl:w-[1196px]">
+          <Rentals />
+        </div>
+      </div>
+      <div className="bg-black">
+        
           <Footer />
-        </CenteredContent>
+        
       </div>
     </>
   );

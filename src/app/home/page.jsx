@@ -155,6 +155,7 @@ export default function Page() {
         animate={isBenefitsInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
         transition={{ duration: 0.8 }}
       >
+        
         <CoreBenefits />
       </motion.div>
 

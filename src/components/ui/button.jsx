@@ -41,7 +41,7 @@ function Button({
   size,
   asChild = false,
   whileHover,
-  whileTap, // destructure to remove from ...props
+  whileTap,
   ...props
 }) {
   const Comp = asChild ? Slot : "button"

@@ -140,7 +140,7 @@ export default function Page() {
       {/* Animated Footer */}
       <motion.div
         ref={footerRef}
-        className="max-md:hidden"
+        className=""
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}

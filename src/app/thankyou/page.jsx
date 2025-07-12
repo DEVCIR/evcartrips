@@ -168,13 +168,13 @@ export default function Page() {
 
             {/* Home Page Button */}
             <motion.div
-              className="w-full max-w-sm sm:max-w-md"
+              className="w-full max-w-sm sm:max-w-6xl"
               initial={{ opacity: 0, y: 30 }}
               animate={isContentInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.8, duration: 0.5 }}
             >
               <motion.button 
-                className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:to-[#F96C41] hover:from-[#AA3916] cursor-pointer text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-base"
+                className="w-full btn-gradient cursor-pointer text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-base"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/home')}
@@ -188,7 +188,7 @@ export default function Page() {
 
       {/* Animated CarDiv */}
       <motion.div
-        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
         initial={{ opacity: 0, y: 50 }}
         animate={isContentInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 1.0, duration: 0.6 }}
@@ -200,7 +200,7 @@ export default function Page() {
 
       {/* Animated Rentals */}
       <motion.div
-        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
         initial={{ opacity: 0, y: 50 }}
         animate={isContentInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 1.2, duration: 0.6 }}
@@ -213,7 +213,7 @@ export default function Page() {
       {/* Animated Footer */}
       <motion.div
         ref={footerRef}
-        className="max-md:hidden overflow-y-hidden"
+        className=" overflow-y-hidden"
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}

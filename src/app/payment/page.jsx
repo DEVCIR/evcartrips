@@ -167,7 +167,7 @@ export default function PaymentPage() {
             <div className="relative">
               <label htmlFor="firstName" className="md:text-sm text-xs rounded-md absolute top-[-12px] py-1 px-3 bg-[#F6F6F6] left-2 md:left-6 font-medium text-gray-700 flex items-center gap-2">
                 <User className="w-3 h-3 text-gray-500" />
-                First Name*
+                First Name<span className="text-red-500">*</span>
               </label>
               <input
                 id="firstName"
@@ -182,7 +182,7 @@ export default function PaymentPage() {
             <div className="relative">
               <label htmlFor="lastName" className="md:text-sm text-xs rounded-md  absolute top-[-12px] py-1 px-3 bg-[#F6F6F6] left-2 md:left-6 font-medium text-gray-700 flex items-center gap-2">
                 <User className="w-3 h-3 text-gray-500" />
-                Last Name*
+                Last Name<span className="text-red-500">*</span>
               </label>
               <input
                 id="lastName"
@@ -275,7 +275,7 @@ export default function PaymentPage() {
           </button>
           <button
             onClick={() => setSelectedPayment("transfer")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "transfer" ? "border-[#F96C41] bg-[#F96C41]" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "transfer" ? "border-[#F96C41] bg-[#F96C41] text-white" : "border-gray-300 bg-transparent"
               }`}
           >
             <Building2 className="w-5 h-5" />
@@ -283,7 +283,7 @@ export default function PaymentPage() {
           </button>
           <button
             onClick={() => setSelectedPayment("crypto")}
-            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "crypto" ? "border-[#F96C41] bg-[#F96C41]" : "border-gray-300 bg-transparent"
+            className={`flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 ${selectedPayment === "crypto" ? "border-[#F96C41] bg-[#F96C41] text-white" : "border-gray-300 bg-transparent"
               }`}
           >
             <Coins className="w-5 h-5 text-orange-500" />
@@ -313,7 +313,7 @@ export default function PaymentPage() {
               />
             </div>
             <div className="relative">
-              <label htmlFor="countryCode" className="md:text-sm text-xs rounded-md font-medium absolute top-[-10px] left-2 md:left-6 bg-[#F6F6F6] py-1 px-1 md:w-[50%] w-[70%] text-gray-700 flex items-center gap-2">
+              <label htmlFor="countryCode" className="md:text-sm text-xs rounded-md font-medium absolute top-[-10px] left-2 md:left-6 bg-[#F6F6F6] py-1 px-3 md:w-[46%] w-[70%] text-gray-700 flex items-center gap-2">
                 <ClockAlert className="w-3 h-3 text-gray-500 "/>
                 Expiration Date 
               </label>
@@ -347,7 +347,7 @@ export default function PaymentPage() {
               />
             </div>
             <div className="relative">
-              <label htmlFor="countryCode" className="md:text-sm text-xs rounded-md font-medium absolute top-[-10px] left-2 md:left-6 bg-[#F6F6F6] py-1 px-1 md:w-[45%] w-[50%] text-gray-700 flex items-center gap-2">
+              <label htmlFor="countryCode" className="md:text-sm text-xs rounded-md font-medium absolute top-[-10px] left-2 md:left-6 bg-[#F6F6F6] py-1 px-2 md:w-[40%] w-[50%] text-gray-700 flex items-center gap-2">
                 <Earth className="w-3 h-3 text-gray-500" />
                 Country
               </label>
@@ -392,27 +392,27 @@ export default function PaymentPage() {
 
       {/* Pay Now Button */}
       <div className="px-4 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48  max-w-full  mx-auto">
-        <button className="w-full  bg-gradient-to-b from-[#F96C41] to-[#AA3916] text-white font-semibold py-4 rounded-xl text-lg">
+        <button className="w-full  btn-gradient text-white font-semibold py-4 rounded-xl text-lg">
           PAY NOW
         </button>
       </div>
 
       </div>
 
-      <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden">
+      <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
           <div className="max-w-full  mx-auto">
             <CarDiv />
           </div>
         </div>
 
         {/* Rentals Component */}
-        <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 max-md:hidden">
+        <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 ">
           <div className="max-w-full  mx-auto">
             <Rentals />
           </div>
         </div>
 
-      <div className="max-md:hidden">
+      <div className="">
         <Footer />
       </div>
     </div>
