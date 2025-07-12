@@ -40,6 +40,8 @@ function Button({
   variant,
   size,
   asChild = false,
+  whileHover,
+  whileTap,
   ...props
 }) {
   const Comp = asChild ? Slot : "button"

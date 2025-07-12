@@ -142,13 +142,13 @@ function Page() {
         </motion.div>
 
         <motion.div
-          className="mt-2 xl:mt-16 px-4 max-w-[80%]"
+          className="mt-2 xl:mt-16 px-6 lg:px-14 xl:px-32 max-w-[80%]"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           <motion.h2
-            className="text-gray-400 text-[10px] font-medium md:font-bold md:text-[16px] xl:text-[29px] mb-4 md:-tracking-[0.69px] xl:-tracking-[1.19px]"
+            className="text-gray-400 text-[10px] font-medium md:font-bold md:text-[16px] xl:text-[29px] mb-4 max-sm:mt-4 md:-tracking-[0.69px] xl:-tracking-[1.19px]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -158,13 +158,13 @@ function Page() {
 
           {/* Dynamic Trip Route Display */}
           <motion.div
-            className="flex items-center gap-1 sm:gap-2 md:gap-5 xl:gap-10 flex-wrap"
+            className="flex flex-wrap items-center gap-1 sm:gap-2 md:gap-5 xl:gap-10 "
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7 }}
           >
             <motion.span
-              className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+              className="text-white text-wrap text-base sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap "
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.6, type: "spring" }}
@@ -192,7 +192,7 @@ function Page() {
               stops.map((stop, index) => (
                 <React.Fragment key={`stop-${index}`}>
                   <motion.span
-                    className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+                    className="text-white text-wrap text-base sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.8 + index * 0.1, duration: 0.6, type: "spring" }}
@@ -220,7 +220,7 @@ function Page() {
             )}
 
             <motion.span
-              className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+              className="text-white text-wrap text-base sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.8 + stops.length * 0.1, duration: 0.6, type: "spring" }}
@@ -261,6 +261,7 @@ function Page() {
           animate={isRouteOverviewInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 150 }}
           transition={{ duration: 1, type: "spring", stiffness: 80, damping: 15 }}
         >
+          
           <div className="">
             <RouteOverview
               from={from}
@@ -286,7 +287,7 @@ function Page() {
           transition={{ duration: 0.8 }}
         >
         
-          <div className="">
+          <div className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48">
             <Iternary
               from={from}
               to={to}

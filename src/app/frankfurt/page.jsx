@@ -364,7 +364,7 @@ function Page() {
           <Navbar1 />
         </div>
 
-        <div className="container mx-auto py-8">
+        <div className="container mx-auto py-10">
           <motion.section
             className="my-8 px-8 md:px-14"
             initial={{ opacity: 0, y: 50 }}
@@ -436,7 +436,7 @@ function Page() {
             >
               <motion.button
                 onClick={toggleFilters}
-                className="flex items-center justify-center px-10 py-3 rounded-full bg-gradient-to-b to-[#AA3916] from-[#F96C41] cursor-pointer hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold shadow-lg w-full max-w-3xl text-[10px] md:text-[14px] xl:text-[20px] xl:-tracking-[1.4px]"
+                className="flex items-center justify-center px-10 py-3 rounded-full  cursor-pointer hover:bg-gradient-to-l btn-gradient text-white font-semibold shadow-lg w-full max-w-3xl text-[10px] md:text-[14px] xl:text-[20px] xl:-tracking-[1.4px]"
                 whileHover={{
                   scale: 1.05,
                   boxShadow: "0 15px 35px rgba(249, 108, 65, 0.4)",
@@ -493,7 +493,7 @@ function Page() {
       </motion.main>
 
       <motion.div
-        className=" mt-4 pb-8"
+        className=" mt-4 px-8 pb-8 md:px-14 lg:px-20 xl:px-48 "
         initial={{ opacity: 0, y: 100 }}
   animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
@@ -504,7 +504,7 @@ function Page() {
       </motion.div>
 
       <motion.div
-        className=" mt-4 pb-8"
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
         initial={{ opacity: 0, y: 100 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}

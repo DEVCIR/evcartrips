@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-black text-white">
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex flex-row max-lg:items-center justify-between items-start gap-8">
+        <div className="flex flex-row max-sm:flex-col  max-lg:items-center justify-between items-start gap-8">
           {/* Left side - Logo and Quick Links */}
           <div className="flex-1">
             {/* Logo */}
@@ -17,11 +17,11 @@ export default function Footer() {
             {/* Quick Links */}
             <div>
               <h3 className="text-white font-semibold mb-4 text-lg">Quick Links</h3>
-              <nav className="flex flex-wrap gap-6">
+              <nav className="flex flex-wrap gap-6  max-sm:gap-x-6 max-sm:gap-y-2">
                 <Link href="/home" className="text-white hover:text-orange-500 transition-colors">
                   Home
                 </Link>
-                <Link href="/about-us" className="text-white hover:text-orange-500 transition-colors">
+                <Link href="/about-us" className="text-white hover:text-orange-500 transition-colors"> 
                   About us
                 </Link>
                 <Link href="/contactus" className="text-white hover:text-orange-500 transition-colors">
@@ -41,8 +41,8 @@ export default function Footer() {
           </div>
 
           {/* Right side - Payment Methods */}
-          <div className="flex-shrink-0">
-            <div className="grid grid-cols-3 gap-3">
+          <div className="flex-shrink-0 ">
+            <div className="grid grid-cols-3 gap-3  max-sm:gap-x-10 max-sm:gap-y-4">
               {/* Row 1 */}
               <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center min-w-[70px] h-10">
                 <span className="text-black font-bold text-sm">AMEX</span>

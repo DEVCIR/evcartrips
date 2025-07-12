@@ -98,7 +98,7 @@ export default function FAQ() {
       {/* Bottom spacing */}
       <div className="h-20"></div>
 
-      <div className="max-md:hidden">
+      <div className="">
         <Footer />
       </div>
     </div>

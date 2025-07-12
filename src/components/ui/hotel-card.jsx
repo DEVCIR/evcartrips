@@ -232,7 +232,7 @@ const HotelCard = ({
 
         <motion.button
           onClick={handleChooseRoom}
-          className="px-4 py-2 md:px-8 md:py-4 rounded-md md:rounded-lg cursor-pointer bg-gradient-to-r from-orange-500 to-red-600 hover:bg-gradient-to-l hover:from-orange-500 hover:to-red-600 text-white shadow-lg flex items-center font-bold text-[8px] -tracking-[0.41px] md:text-[11px] md:-tracking-[0.81px]"
+          className="px-4 py-2 md:px-8 md:py-4 rounded-md md:rounded-lg cursor-pointer btn-gradient text-white shadow-lg flex items-center font-bold text-[8px] -tracking-[0.41px] md:text-[11px] md:-tracking-[0.81px]"
           whileHover={{
             scale: 1.05,
             boxShadow: "0 10px 25px rgba(249, 108, 65, 0.4)",

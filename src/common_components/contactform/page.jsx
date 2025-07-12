@@ -115,7 +115,7 @@ export default function ContactForm() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:to-[#F96C41] hover:from-[#AA3916] text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 mt-6"
+            className="w-full btn-gradient text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 mt-6"
           >
             SEND
           </button>
@@ -123,7 +123,7 @@ export default function ContactForm() {
 
         {/* Contact Information */}
         <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-4 text-center">
             {/* Phone */}
             <div className="flex flex-col items-center">
               <Phone className="h-5 w-5 text-gray-600 mb-1" />

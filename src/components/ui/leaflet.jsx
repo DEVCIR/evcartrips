@@ -49,7 +49,7 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
     lat: 25.276987,
     lng: 55.296249,
   }); // Dubai fallback
-  const initialZoom = 7;
+  const initialZoom = 12;
   const mapRef = useRef(null);
 
   // Load Google Maps script
@@ -185,7 +185,8 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
                 scrollwheel: true,
                 draggable: true,
                 gestureHandling: "auto",
-              }}
+              }
+              }
             >
               {/* Directions route */}
               {directions && (

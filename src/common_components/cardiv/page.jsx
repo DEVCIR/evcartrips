@@ -50,7 +50,7 @@ export default function CarDiv() {
           </div>
 
           <div className="w-full flex justify-end mb-4 xl:mb-6">
-            <button className="bg-transparent border-2 border-[#F96C41] text-white hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] cursor-pointer transition-colors rounded-xl w-full max-w-[150px] xs:max-w-[180px] sm:max-w-[220px] md:max-w-[260px] xl:max-w-[342px] xl:h-[85px] h-[40px] sm:h-[52px] md:h-[56px] flex items-center justify-between px-3 sm:px-6 md:px-8">
+            <button className="bg-transparent border-2 border-[#F96C41] text-white hover:bg-gradient-to-b from-[#F96C41] to-[#AA3916] cursor-pointer transition-colors rounded-xl w-full max-w-[150px] xs:max-w-[180px] sm:max-w-[220px] md:max-w-[260px] xl:max-w-[342px] xl:h-[85px] h-[40px] sm:h-[52px] md:h-[56px] flex items-center justify-between px-3 sm:px-6 md:px-8">
               <span className="font-medium text-xs sm:text-lg xl:text-xl xl:font-bold flex-1 text-center pr-2">
                 JOIN NOW
               </span>

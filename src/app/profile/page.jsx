@@ -124,7 +124,7 @@ export default function EditProfilePage() {
 
             {/* Edit Profile Button */}
             <motion.button
-              className="w-full bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:to-[#F96C41] hover:from-[#AA3916] text-white font-bold py-4 px-6 rounded-xl text-base mt-6 transition-all duration-200"
+              className="w-full btn-gradient text-white font-bold py-4 px-6 rounded-xl text-base mt-6 transition-all duration-200"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, y: 20 }}
@@ -196,7 +196,7 @@ export default function EditProfilePage() {
       {/* Animated Footer */}
       <motion.div
         ref={footerRef}
-        className="max-md:hidden"
+        className=""
         initial={{ opacity: 0, y: 50 }}
         animate={isFooterInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}

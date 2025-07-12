@@ -304,6 +304,7 @@ function Page() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
+        
         <motion.div
           className="xl:hidden"
           initial={{ opacity: 0, y: -20 }}
@@ -349,7 +350,7 @@ function Page() {
             {hotels.map((hotel, index) => (
               <motion.div
                 key={hotel.id}
-                className="bg-white rounded-[20px] p-4 xl:p-8 shadow-xl relative w-full sm:w-[500px] md:w-[693px] xl:w-[1200px] xl:rounded-[50px] h-auto mx-auto cursor-pointer"
+                className="bg-white rounded-[20px] p-4 xl:p-8 shadow-2xl relative w-full sm:w-[500px] md:w-[693px] xl:w-[1200px] xl:rounded-[50px] h-auto mx-auto cursor-pointer"
                 initial={{ opacity: 0, y: 100, scale: 0.8 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
@@ -502,7 +503,7 @@ function Page() {
 
             {/* Continue Button */}
             <motion.div
-              className="pt-4 pb-8 sm:flex sm:justify-center"
+              className="pt-2 pb-8 sm:flex sm:justify-center"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.6 }}
@@ -512,7 +513,7 @@ function Page() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
-                  className="cursor-pointer mt-4 md:mt-8 lg:mt-12 w-full sm:w-[250px] md:w-[381px] bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg"
+                  className="cursor-pointer mt-4 md:mt-7 lg:mt-5 w-full sm:w-[250px] md:w-[381px] btn-gradient text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg"
                   onClick={handleContinue}
                 >
                   Continue
