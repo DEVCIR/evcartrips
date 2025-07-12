@@ -50,7 +50,8 @@ function Button({
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props} />
+      {...props} // whileHover is not included here
+    />
   );
 }
 
