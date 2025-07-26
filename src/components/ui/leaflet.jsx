@@ -43,7 +43,9 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
   // State for directions
   const [directions, setDirections] = useState(null);
   const [routeInfo, setRouteInfo] = useState({ distance: "", duration: "" });
-
+  const [chargingStations, setChargingStations] = useState([]);
+  const [hotels, setHotels] = useState([]);
+  
   // Only for initial center/zoom
   const [initialCenter, setInitialCenter] = useState({
     lat: 25.276987,
@@ -55,11 +57,12 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
   // Load Google Maps script
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
   });
 
   // Geocode first location for initial center (only on first load)
   useEffect(() => {
-    console.log("useeffect 1");
+
 
     if (!from) return;
     async function geocodeFirst() {
@@ -98,6 +101,8 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
         (result, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
             setDirections(result);
+            findPlacesAlongRoute(result.routes[0], "electric_vehicle_charging_station", setChargingStations);
+            findPlacesAlongRoute(result.routes[0], "lodging", setHotels);
             if (result.routes[0] && result.routes[0].legs[0]) {
               let totalDistance = 0;
               let totalDuration = 0;
@@ -112,6 +117,9 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
                 (hours > 0 ? hours + " hr " : "") +
                 (minutes > 0 ? minutes + " min" : "");
 
+                console.log("newDistance: ",newDistance);
+                console.log("newDuration",newDuration);
+                
               setRouteInfo({ distance: newDistance, duration: newDuration });
             }
           } else {
@@ -155,6 +163,67 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
     });
     router.push(`/fullmap?${params.toString()}`);
   }, [from, to, stops, searchParams, router]);
+
+  const findPlacesAlongRoute = useCallback((route, type, setter) => {
+    if (!route || !window.google) return;
+  
+    const service = new window.google.maps.places.PlacesService(
+      document.createElement("div")
+    );
+  
+    const path = route.overview_path;
+    const step = Math.max(1, Math.floor(path.length / 10));
+    const allPlaces = [];
+  
+    for (let i = 0; i < path.length; i += step) {
+      const point = path[i];
+  
+      service.nearbySearch(
+        {
+          location: point,
+          radius: 5000,
+          type: type,
+        },
+        (results, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            results.forEach((place) => {
+              // Filter out permanently closed businesses using business_status
+              if (place.business_status === 'OPERATIONAL' &&
+                place.types &&
+                place.types.includes(type) && 
+                  !allPlaces.some(p => p.place_id === place.place_id)) {
+                allPlaces.push({
+                  ...place,
+                  position: place.geometry.location,
+                });
+              }
+            });
+  
+            setter((prev) => {
+              const newPlaces = [...allPlaces];
+              return newPlaces.filter((place, index, self) =>
+                index === self.findIndex(p => p.place_id === place.place_id)
+              );
+            });
+          }
+        }
+      );
+    }
+  }, []);
+
+  const purplePinSVG = (name) => `
+  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" viewBox="0 0 24 24">
+    <path fill="#9C27B0" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    <text x="12" y="22" font-family="Arial" font-size="8" font-weight="bold" text-anchor="middle" fill="white">${name.substring(0, 8)}</text>
+  </svg>
+`;
+
+  const bluePinSVG = (name) => `
+  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" viewBox="0 0 24 24">
+    <path fill="#4CAF50" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    <text x="12" y="22" font-family="Arial" font-size="8" font-weight="bold" text-anchor="middle" fill="white">${name.substring(0, 8)}</text>
+  </svg>
+`;
 
   return (
     <div className="mt-0">
@@ -201,6 +270,37 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
                   }}
                 />
               )}
+
+              {/* EV Charging Stations */}
+{chargingStations.map((station, index) => (
+  <Marker
+    key={`${station.place_id}_${index}`}
+    position={station.position}
+    icon={{
+      url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
+        bluePinSVG(station.name)
+      )}`,
+      scaledSize: new window.google.maps.Size(40, 50),
+      anchor: new window.google.maps.Point(20, 50),
+    }}
+    title={station.name}
+  />
+))}
+
+{hotels.map((hotel, index) => (
+  <Marker
+    key={`hotel_${hotel.place_id}_${index}`}
+    position={hotel.position}
+    icon={{
+      url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
+        purplePinSVG(hotel.name)
+      )}`,
+      scaledSize: new window.google.maps.Size(40, 50),
+      anchor: new window.google.maps.Point(20, 50),
+    }}
+    title={`Hotel: ${hotel.name}`}
+  />
+))}
             </GoogleMap>
           ) : (
             <div className="relative h-full flex items-center justify-center bg-gray-100">
@@ -233,6 +333,44 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
               </span>
             </div>
           </button>
+
+          <div className="absolute top-3 left-3 bg-white bg-opacity-90 rounded-lg shadow-md z-[1000] px-4 py-3">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-[#9C27B0]"></div>
+              <span className="text-xs font-medium">Hotels</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-[#4CAF50]"></div>
+              <span className="text-xs font-medium">Charging Stations</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-[#F96C41]"></div>
+              <span className="text-xs font-medium">Route</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Cities Box */}
+        <div className="absolute left-3 mt-3" style={{ top: '94px' }}>
+          <div className="bg-white bg-opacity-90 rounded-lg shadow-md z-[1000] px-4 py-3">
+            <div className="flex flex-col gap-1">
+              <div className="text-xs font-medium"><span className="font-semibold">From:</span> {from.split(',')[0] || '-'}</div>
+              {stops.length > 0 && (
+                <div className="flex flex-col gap-0.5">
+                  {stops.map((stop, idx) => (
+                    <div key={idx} className="text-xs font-medium">
+                      <span className="font-semibold">Stop {idx + 1}:</span> {stop.split(',')[0]}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="text-xs font-medium"><span className="font-semibold">To:</span> {to.split(',')[0] || '-'}</div>
+            </div>
+          </div>
+        </div>
+
+
         </div>
       </div>
     </div>

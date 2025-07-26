@@ -29,7 +29,22 @@ export default function Page() {
   const isBenefitsInView = useInView(benefitsRef, { once: true, amount: 0.3 })
   const isCarDivInView = useInView(carDivRef, { once: true, amount: 0.3 })
   const isRentalsInView = useInView(rentalsRef, { once: true, amount: 0.3 })
-  const isFooterInView = useInView(footerRef, { once: true, amount: 0.3 })
+  const isFooterInView = useInView(footerRef, { once: true, amount: 0.3  })
+
+  if (typeof window !== 'undefined') {
+  const isForm = localStorage.getItem("setForm");
+    if(isForm !== "true")
+    {
+      localStorage.removeItem('fullItinerary');
+      localStorage.removeItem('selectedHotel');
+      localStorage.removeItem('tripCities');
+      localStorage.removeItem('userData');
+      localStorage.removeItem('orderDetails');
+      localStorage.removeItem('recommendedHotelsUrl');
+      localStorage.removeItem('reservationDetailsByStop');
+      localStorage.removeItem('setForm');
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">

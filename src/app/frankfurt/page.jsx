@@ -88,7 +88,12 @@ function Page() {
 
   // Function to fetch hotels from API
   const fetchHotels = useCallback(async () => {
-    if (hasFetched.current || !cityGeo) return; // Skip if already fetched or no geo
+    if(!cityGeo)
+    {
+      router.push("/");
+      return;
+    }
+    if (hasFetched.current) return; // Skip if already fetched or no geo
     
     try {
       setLoading(true)
@@ -244,15 +249,11 @@ function Page() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <motion.div
-          className="text-gray-800 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          Loading hotels...
-        </motion.div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F96C41] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading</p>
+        </div>
       </div>
     )
   }
@@ -330,7 +331,7 @@ function Page() {
                   </motion.h2>
                   <motion.button
                     onClick={toggleFilters}
-                    className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+                    className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                     initial={{ opacity: 0, rotate: -90 }}

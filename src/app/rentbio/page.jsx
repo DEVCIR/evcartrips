@@ -11,12 +11,9 @@ import { useSearchParams,useRouter  } from "next/navigation"
 import React, { Suspense , useEffect, useState} from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRef } from "react"
-
-import dynamic from "next/dynamic"
+import MapComponent from "../../common_components/map/page"
 import Footer from "../../components/ui/footer"
-const MapComponent = dynamic(() => import("../../common_components/map/page"), {
-  ssr: false,
-})
+
 
 export default function PageWrapper() {
   return (
@@ -42,6 +39,10 @@ function Page() {
    const router = useRouter()
   const [routeInfo, setRouteInfo] = useState({ distance: '', duration: '' })
 
+  // Debug: Log when routeInfo changes
+  useEffect(() => {
+    console.log('[rentbio] routeInfo updated:', routeInfo);
+  }, [routeInfo]);
 
   // Check if required parameters exist
   useEffect(() => {
@@ -230,10 +231,26 @@ function Page() {
           </motion.div>
 
           <motion.div
-            className="max-md:hidden absolute right-28 top-32 xl:right-36 xl:top-52 bg-[#323232] rounded-md w-[49px] h-[46px] xl:w-[80px] xl:h-[75px]"
+            className="max-md:hidden absolute right-28 top-32 xl:right-36 xl:top-52 bg-[#323232] rounded-md w-[49px] h-[46px] xl:w-[80px] xl:h-[75px] cursor-pointer"
             initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ delay: 1, duration: 0.6, type: "spring" }}
+            onClick={() => {
+              const formData = {
+                startDate: startDate ? startDate.toISOString() : null,
+                from,
+                to,
+                stops,
+                maxDistance,
+                autonomy,
+                needHotel,
+                travellers,
+              };
+              localStorage.setItem("setForm", "true");
+              localStorage.setItem("formData", JSON.stringify(formData));
+              router.push('/');
+            }}
+            style={{ cursor: "pointer" }}
           >
             <Edit className="w-5 h-5 xl:w-8 xl:h-8 z-10 text-[#F96C41] mx-auto my-3 xl:my-5" />
           </motion.div>
@@ -250,7 +267,15 @@ function Page() {
           animate={isMapInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8 }}
         >
-          <MapComponent onRouteInfoChange={(distance, duration) => setRouteInfo({ distance, duration })} />
+          <MapComponent onRouteInfoChange={(distance, duration) => {
+  // Only update if values actually changed
+  setRouteInfo(prev => {
+    if (prev.distance === distance && prev.duration === duration) {
+      return prev; // No change, don't update state
+    }
+    return { distance, duration };
+  });
+}} />
         </motion.div>
 
         {/* Route Overview Component */}

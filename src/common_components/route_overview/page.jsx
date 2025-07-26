@@ -1,5 +1,6 @@
 "use client"
 
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function RouteOverview({
@@ -12,6 +13,8 @@ export default function RouteOverview({
   distance,  // Add this prop
   duration
 }) {
+  
+  const searchParams = useSearchParams()
   // const [routeData, setRouteData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -20,48 +23,10 @@ export default function RouteOverview({
     setLoading(false);
   },[distance,duration])
 
-  //  useEffect(() => {
-  //   const calculateRouteOverview = async () => {
-  //     try {
-  //       setLoading(true)
-  //       const response = await fetch('/api/route_overview', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({
-  //           maxDistance,
-  //           autonomy,
-  //           stops,
-  //         }),
-  //       })
 
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch route overview')
-  //       }
-
-  //       const data = await response.json()
-  //       setRouteData(data)
-  //     } catch (err) {
-  //       console.error('Error calculating route overview:', err)
-  //       setError(err.message)
-  //       // Fallback to local calculations if API fails
-  //       setRouteData({
-  //         totalDistance: calculateTotalDistanceLocal(),
-  //         drivingTime: calculateDrivingTimeLocal(),
-  //         dailyLimit: getDailyLimitLocal(),
-  //         chargingInterval: getChargingIntervalLocal(),
-  //       })
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
-
-  //   calculateRouteOverview()
-  // }, [maxDistance, autonomy, stops])
-
-  // Local calculation functions as fallback
+   // Local calculation functions as fallback
   const calculateTotalDistanceLocal = () => {
+    
     const maxDistanceValue = Number.parseInt(maxDistance) || 500
     const maxDistanceUnit = maxDistance.includes("MI") ? "MI" : "KM"
     const MILES_TO_KM = 1.60934
@@ -168,6 +133,15 @@ export default function RouteOverview({
     </svg>
   )
 
+  const actualDistance = () => {
+    const maxDistance = searchParams.get("maxDistance") || "500KM";
+    const isMiles = maxDistance.includes("MI");
+    const numericDistance = distance ? parseFloat(distance.toString().split(' ')[0]) : 0;
+    console.log("distanceValue" , numericDistance);
+    const validatedDistance = isMiles ? numericDistance * 0.621371 : numericDistance;
+    
+    return `${validatedDistance.toFixed(1)} ${isMiles ? "MI" : "KM"}`;
+  }
 
    if (loading) {
     return (
@@ -208,7 +182,7 @@ export default function RouteOverview({
               <DistanceIcon />
             </div>
             <div className="text-lg md:text-3xl xl:text-[54px] xl:-tracking-[1.4px] md:-tracking-[0.81px] font-bold text-gray-600 mb-1">
-              {distance || calculateTotalDistanceLocal()}
+              {actualDistance() || calculateTotalDistanceLocal()}
             </div>
             <div className="text-[8px] md:text-[11px] xl:text-[20px] font-bold xl:-tracking-[1.4px] md:-tracking-[0.81px] -tracking-[0.41px] text-gray-500 uppercase">
               TOTAL DISTANCE

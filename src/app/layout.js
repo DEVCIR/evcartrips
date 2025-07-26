@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AOSInitializer from './AOSInitializer';
 import Navbar from "../common_components/navbar/page";
+import { CartSidebar } from "../common_components/cartSidebar/cartSidebar";
 
 const geistSans = Geist( {
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout( { children } )
         suppressHydrationWarning
       >
         <AOSInitializer />
+        <CartSidebar />
         {children}
       </body>
     </html>

@@ -6,6 +6,7 @@ import { Button } from "../../components/ui/button"
 import { useRouter } from "next/navigation"
 import { toast, ToastContainer } from "react-toastify"
 import { motion } from "framer-motion"
+import { apiUrl } from "@/config/config"
 
 export default function ResetForm() {
   const router = useRouter()
@@ -26,7 +27,7 @@ export default function ResetForm() {
     setLoading(true)
     
     try {
-      const response = await fetch('http://localhost:8000/api/auth/request-reset', {
+      const response = await fetch(`${apiUrl}/api/auth/request-reset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
