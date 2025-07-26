@@ -9,6 +9,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { Input } from "../../../components/ui/input"
 import { Button } from "../../../components/ui/button"
 import { toast, ToastContainer } from 'react-toastify'
+import { apiUrl } from "@/config/config"
 
 export default function Page() {
   const params = useParams()
@@ -35,7 +36,7 @@ export default function Page() {
   useEffect(() => {
     async function verifyToken() {
       try {
-        const res = await fetch(`http://localhost:8000/api/auth/verify-reset-token?token=${token}`)
+        const res = await fetch(`${apiUrl}/api/auth/verify-reset-token?token=${token}`)
         
         if (!res.ok) {
           const errorData = await res.json()
@@ -69,7 +70,7 @@ export default function Page() {
 
     setLoading(true)
     try {
-      const res = await fetch('http://localhost:8000/api/auth/reset-password', {
+      const res = await fetch(`${apiUrl}/api/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -255,26 +256,18 @@ export default function Page() {
       </motion.div>
 
       {/* Animated Form Section */}
-      <motion.div
-        ref={formRef}
+      <div   
         className="-mt-24 md:-mt-18 lg:-mt-36 xl:-mt-40 pb-8"
-        initial={{ opacity: 0, y: 50 }}
-        animate={isFormInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, type: "spring" }}
       >
         <div className="mx-auto">
-          <motion.div
+          <div
             className="w-[350px] h-auto md:w-[586px] xl:w-[680px] bg-[#FFFFFF] rounded-t-3xl rounded-b-3xl shadow-xl px-4 md:px-6 xl:px-10 xl:py-10 py-6 relative z-10 mx-auto"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
+            
           >
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               {/* New Password Field */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.4 }}
+              <div
+                
               >
                 <label className="text-[#00000082] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] font-medium mb-1 md:mb-2 block">
                   New Password
@@ -288,14 +281,10 @@ export default function Page() {
                   minLength={6}
                   className="w-full h-[44px] md:h-[67px] pl-4 md:pl-6 xl:pl-8 pr-4 md:pr-6 py-2 md:py-3 border-gray-400 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] text-[#00000075] font-medium"
                 />
-              </motion.div>
+              </div>
 
               {/* Confirm Password Field */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.4 }}
-              >
+              <div>
                 <label className="text-[#00000082] text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] font-medium mb-1 md:mb-2 block">
                   Confirm Password
                 </label>
@@ -308,14 +297,10 @@ export default function Page() {
                   minLength={6}
                   className="w-full h-[44px] md:h-[67px] pl-4 md:pl-6 xl:pl-8 pr-4 md:pr-6 py-2 md:py-3 border-gray-400 rounded-lg text-[10px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[28px] xl:-tracking-[1.17px] text-[#00000075] font-medium"
                 />
-              </motion.div>
-                              
+              </div>
+                             
               {/* Reset Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.4 }}
-              >
+              <div>
                 <Button
                   type="submit"
                   disabled={loading}
@@ -325,50 +310,38 @@ export default function Page() {
                 >
                   {loading ? "UPDATING..." : "UPDATE PASSWORD"}
                 </Button>
-              </motion.div>
+              </div>
 
               {/* Back to Sign In link */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-                className="text-center py-0 my-0"
-              >
+              <div className="text-center py-0 my-0">
                 <button 
                   onClick={() => router.push("/signin")}
                   className="text-[#F96C41] font-[600] text-[10px] cursor-pointer -tracking-[0.41px] md:text-[16px] md:-tracking-[0.68px] xl:text-[20px] xl:-tracking-[1.17px] hover:underline"
                 >
                   Back to Sign In
                 </button>
-              </motion.div>
+              </div>
             </form>
             <ToastContainer/>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Mobile Rentals Section */}
-      <motion.div
+      <div
         className="px-8 mt-4 pb-8"
-        initial={{ opacity: 0 }}
-        animate={isFormInView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.5, duration: 0.6 }}
       >
         <div className="w-[350px] md:w-[586px] xl:w-[1000px] mx-auto">
           <Rentals />
         </div>
-      </motion.div>
+      </div>
 
       {/* Animated Footer */}
-      <motion.div
-        ref={footerRef}
-        initial={{ opacity: 0, y: 50 }}
-        animate={isFooterInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }}
+      <div
         className="max-md:hidden"
       >
         <Footer />
-      </motion.div>
+      </div>
     </div>
   )
 }

@@ -28,8 +28,8 @@ export default function TravelForm() {
     stops: [""], // Initialize with one empty stop
     maxDistance: "500",
     autonomy: "500",
-    needHotel: false,
-    travellers: "3 Travellers, 1 Room",
+    needHotel: true,
+    travellers: "2 Travellers, 1 Room",
   })
 
   const [distanceUnits, setDistanceUnits] = useState({
@@ -45,6 +45,37 @@ export default function TravelForm() {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const [searchTimeout, setSearchTimeout] = useState(null)
   const [activeStopIndex, setActiveStopIndex] = useState(0)
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("formData");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          // If startDate is a string, convert to Date object
+          if (parsed.startDate) {
+            parsed.startDate = new Date(parsed.startDate);
+          }
+
+          if(parsed.maxDistance && parsed.autonomy)
+          {
+            const distanceUnit = parsed.maxDistance.split(' ')[1]
+            const autonomyUnit = parsed.autonomy.split(' ')[1]
+            setDistanceUnits({maxDistance: distanceUnit,autonomy: autonomyUnit})
+          }
+
+          setFormData(prev => ({
+            ...prev,
+            ...parsed
+          }));
+        } catch (e) {
+          // ignore parse errors, keep default form
+        }
+      }
+    }
+  }, []);
 
 const fetchCities = async (searchTerm) => {
   if (!searchTerm || searchTerm.length < 2) return;
@@ -158,7 +189,7 @@ const fetchCities = async (searchTerm) => {
     if (!validateForm()) {
       return
     }
-
+    setIsLoading(true);
     // Prepare data for URL parameters
     const params = new URLSearchParams()
     
@@ -174,14 +205,15 @@ const fetchCities = async (searchTerm) => {
     })
     
     // Add distance fields with units
-    params.append('maxDistance', `${formData.maxDistance} ${distanceUnits.maxDistance}`)
-    params.append('autonomy', `${formData.autonomy} ${distanceUnits.autonomy}`)
+    params.append('maxDistance', `${String(formData.maxDistance).replace(/\D/g, '')} ${distanceUnits.maxDistance}`)
+    params.append('autonomy', `${String(formData.autonomy).replace(/\D/g, '')} ${distanceUnits.autonomy}`)
     
     // Add optional fields
     params.append('needHotel', formData.needHotel.toString())
     if (formData.needHotel) {
       params.append('travellers', formData.travellers)
     }
+
 
     toast.success("Processing Request");
     setTimeout(() => {
@@ -231,7 +263,7 @@ const fetchCities = async (searchTerm) => {
         </div>
 
         {/* From and To inputs - unchanged */}
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           <div>
             <label className="text-[#00000082] text-[10px] md:text-base font-medium mb-1 md:mb-2 block">From</label>
             <div className="relative">
@@ -263,7 +295,7 @@ const fetchCities = async (searchTerm) => {
                       </div>
                     ))
                   ) : (
-                    <div className="px-4 py-2 text-gray-500">No cities found</div>
+                    <div className="px-4 py-2 text-gray-500">Search City</div>
                   )}
                 </div>
               )}
@@ -300,7 +332,7 @@ const fetchCities = async (searchTerm) => {
                       </div>
                     ))
                   ) : (
-                    <div className="px-4 py-2 text-gray-500">No cities found</div>
+                    <div className="px-4 py-2 text-gray-500">Search City</div>
                   )}
                 </div>
               )}
@@ -310,7 +342,7 @@ const fetchCities = async (searchTerm) => {
 
         {/* Dynamic Stop inputs */}
         {formData.stops.map((stop, index) => (
-          <div key={`stop-${index}`} className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-4">
+          <div key={`stop-${index}`} className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             <div>
               <label className="text-[#00000082] text-[10px] md:text-base font-medium mb-1 md:mb-2 block">
                 {index === 0 ? "Stop Enroute" : `Stop ${index + 1}`}
@@ -352,7 +384,7 @@ const fetchCities = async (searchTerm) => {
                         </div>
                       ))
                     ) : (
-                      <div className="px-4 py-2 text-gray-500">No cities found</div>
+                      <div className="px-4 py-2 text-gray-500">Search City</div>
                     )}
                   </div>
                 )}
@@ -382,7 +414,7 @@ const fetchCities = async (searchTerm) => {
         ))}
 
         {/* Rest of the form remains unchanged */}
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           <div>
             <label className="text-[#00000082] text-[10px] md:text-base font-medium mb-1 md:mb-2 block">
               Max driving distance per day
@@ -392,7 +424,7 @@ const fetchCities = async (searchTerm) => {
                 <img src="/images/icons/time_icon.png" className="h-6 w-6 md:h-7 md:w-7" alt="Time" />
               </div>
               <Input
-                value={formData.maxDistance}
+                value={typeof formData.maxDistance === 'string' ? formData.maxDistance.replace(/\D/g, '') : String(formData.maxDistance || '')}
         onChange={(e) => {
           const value = e.target.value.replace(/\D/g, ''); // Only allow numbers
           handleInputChange("maxDistance", value ? parseInt(value) : '');
@@ -438,7 +470,7 @@ const fetchCities = async (searchTerm) => {
                 <img src="/images/icons/distance_icon.png" className="h-6 w-6 md:h-7 md:w-7" alt="Distance" />
               </div>
               <Input
-                value={formData.autonomy}
+                value={typeof formData.autonomy === 'string' ? formData.autonomy.replace(/\D/g, '') : String(formData.autonomy || '')}
         onChange={(e) => {
           const value = e.target.value.replace(/\D/g, ''); // Only allow numbers
           handleInputChange("autonomy", value ? parseInt(value) : '');
@@ -533,7 +565,17 @@ const fetchCities = async (searchTerm) => {
           onClick={handleSubmit}
           className="w-full btn-gradient cursor-pointer text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg mt-3 md:mt-0"
         >
-          FIND MY ROUTE
+          {isLoading ? (
+    <span className="flex items-center justify-center">
+      <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+      </svg>
+      Loading...
+    </span>
+  ) : (
+    "FIND MY ROUTE"
+  )}
         </Button>
 
  

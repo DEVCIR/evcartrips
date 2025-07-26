@@ -87,7 +87,7 @@ export const SideMenu = ({ isOpen, onClose }) => {
           <a href="#" className="block text-gray-400 hover:text-white transition-colors text-sm">
             Privacy Policy
           </a>
-          <a href="#" className="block text-gray-400 hover:text-white transition-colors text-sm">
+          <a href="/termsconditions" className="block text-gray-400 hover:text-white transition-colors text-sm">
             Terms & Conditions
           </a>
         </div>

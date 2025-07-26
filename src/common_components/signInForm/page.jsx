@@ -6,6 +6,7 @@ import { Button } from "../../components/ui/button"
 import { useRouter } from "next/navigation"
 import { toast, ToastContainer } from "react-toastify"
 import { motion } from "framer-motion"
+import { apiUrl } from "@/config/config"
 
 export default function SignInForm() {
   const router = useRouter()
@@ -33,7 +34,7 @@ export default function SignInForm() {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/users/login`, {
+      const response = await fetch(`${apiUrl}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

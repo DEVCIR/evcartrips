@@ -70,6 +70,11 @@ function Page() {
   const from = searchParams.get("from")
   const to = searchParams.get("to")
   const stops = []
+  const maxDistance = searchParams.get("maxDistance") || "500 KM"
+  const autonomy = searchParams.get("autonomy") || "500 KM"
+  const needHotel = searchParams.get("needHotel") === "true"
+  const travellers = searchParams.get("travellers") || "3 Travellers, 1 Room"
+  const startDate = searchParams.get("startDate") ? new Date(searchParams.get("startDate")) : new Date()
 
   // Collect all stops from parameters
   let i = 1
@@ -183,10 +188,25 @@ function Page() {
           </motion.div>
 
           <motion.div
-            className="max-md:hidden absolute right-28 top-32 xl:right-36 xl:top-52 bg-[#323232] rounded-md w-[49px] h-[46px] xl:w-[80px] xl:h-[75px]"
+            className="max-md:hidden absolute right-28 top-32 xl:right-36 xl:top-52 bg-[#323232] rounded-md w-[49px] h-[46px] xl:w-[80px] xl:h-[75px] cursor-pointer"
             initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ delay: 1, duration: 0.6, type: "spring" }}
+            onClick={() => {
+              const formData = {
+                startDate: startDate ? startDate.toISOString() : null,
+                from,
+                to,
+                stops,
+                maxDistance,
+                autonomy,
+                needHotel,
+                travellers,
+              };
+              localStorage.setItem("setForm", "true");
+              localStorage.setItem("formData", JSON.stringify(formData));
+              router.push('/');
+            }}
           >
             <Edit className="w-5 h-5 xl:w-8 xl:h-8 z-10 text-[#F96C41] mx-auto my-3 xl:my-5" />
           </motion.div>

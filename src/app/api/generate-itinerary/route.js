@@ -46,7 +46,9 @@ Hotel Recommendation: {Hotel name}
 - recommend hotel which is most nearest to the city
 - Use ~ before distance numbers
 - Use --> between cities
-- Calculate proper dates from start date`;
+- Calculate proper dates from start date
+- If the distance to next stop/city exceeds the daily driving limit (${maxDistance}), break the journey and add an intermediate stop where the daily limit would be reached
+- Never exceed the daily driving limit of ${maxDistance} in a single day`;
     } else {
       prompt = `Create a detailed itinerary for this EV road trip:
 Start: ${formattedFrom}
@@ -87,8 +89,8 @@ Midway Charging Stop: {Specific charger name and location}
           content: prompt,
         },
       ],
-      temperature: 0.3,
-      max_tokens: 1000,
+      temperature: 0.1,
+      max_tokens: 700,
     });
 
     const itinerary = response.choices[0].message.content;

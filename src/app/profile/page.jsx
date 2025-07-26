@@ -9,8 +9,11 @@ import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { apiUrl } from "@/config/config";
+import { useRouter } from "next/navigation";
 
 export default function EditProfilePage() {
+  const router = useRouter();
   const headerRef = useRef(null);
   const profileRef = useRef(null);
   const infoRef = useRef(null);
@@ -22,7 +25,12 @@ export default function EditProfilePage() {
   const [showForm, setShowForm] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-
+  // State for booking details
+  const [bookingDetails, setBookingDetails] = useState([]);
+  const [bookingLoading, setBookingLoading] = useState(true);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  
   // Add form state for editing
   const [form, setForm] = useState({
     firstName: "",
@@ -39,30 +47,71 @@ export default function EditProfilePage() {
   const isBookingInView = useInView(bookingRef, { once: true, margin: "-50px" });
   const isFooterInView = useInView(footerRef, { once: true });
 
+
+  
+
   const getData = () => {
 
     const storedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
     if (storedUser && token) {
       const user = JSON.parse(storedUser);
-      fetch(`http://localhost:8000/api/users/profile/${user.id}`, {
+      fetch(`${apiUrl}/api/users/profile/${user.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => res.json())
         .then((data) => {
+          // console.log(data);
           setProfile(data);
           if (data.profileImage) {
-            setImagePreview(`http://localhost:8000/${data.profileImage}`);
+            setImagePreview(`${apiUrl}/${data.profileImage}`);
           }
         })
         .catch((err) => console.error("Profile fetch error:", err));
     }
   }
 
+  const fetchBookingDetails = async () => {
+    setBookingLoading(true); // Start loading
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!token) {
+      // alert('User not logged in');
+      setBookingLoading(false); // Stop loading on error
+      return;
+    }
+    try {
+      const res = await fetch(`${apiUrl}/api/users/bookingDetails`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: user.id }),
+      });
+      const data = await res.json();
+      setBookingDetails(data);
+    } catch (err) {
+      setBookingDetails([]);
+      console.error('Error fetching booking details:', err);
+    } finally {
+      setBookingLoading(false); // Stop loading after fetch
+    }
+  };
+
   useEffect(() => {
+    if(typeof window !== "undefined")
+    {
+      const token = localStorage.getItem('token');
+      if(!token)
+      {
+        router.push('/');
+      }
+    }
     getData();
+    fetchBookingDetails();
   }, []);
 
   // Populate form state when profile loads
@@ -117,7 +166,7 @@ export default function EditProfilePage() {
       }
 
       try {
-        const res = await fetch(`http://localhost:8000/api/users/profile/${user.id}`, {
+        const res = await fetch(`${apiUrl}/api/users/profile/${user.id}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -138,10 +187,8 @@ export default function EditProfilePage() {
     }
   };
 
-  useEffect(()=>{
-    console.log(profile);
-    
-  },[profile])
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 overflow-hidden">
@@ -306,7 +353,7 @@ export default function EditProfilePage() {
                 <label className="text-sm font-medium text-gray-600 block mb-1">
                   Date of Birth
                 </label>
-                <input type="text" name="birthDate" className="w-full text-black text-base border border-gray-400 rounded-sm px-2 py-1.5" value={form.birthDate} onChange={handleInputChange} />
+                <input type="date" name="birthDate" className="w-full text-black text-base border border-gray-400 rounded-sm px-2 py-1.5" value={form.birthDate} onChange={handleInputChange} />
               </motion.div>
               </div>
               </>
@@ -470,9 +517,22 @@ export default function EditProfilePage() {
             >
               Current Booking
             </motion.h2>
-
-            <motion.div 
-              className="bg-[#EBEBEB]  rounded-xl p-4 flex items-center justify-between"
+            
+            {bookingLoading ? (
+              <div className="min-h-screen bg-white flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F96C41] mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading</p>
+              </div>
+            </div>
+            ) : bookingDetails && bookingDetails.length === 0 ? (
+              <div>No bookings found.</div>
+            ) : (
+              <div className="max-h-96 overflow-y-auto">
+              {bookingDetails.map((trip, idx) => (
+            <motion.div
+              key={trip._id}
+              className="bg-[#EBEBEB] rounded-xl p-4 flex items-center justify-between mb-2"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isBookingInView ? { 
                 opacity: 1, 
@@ -485,21 +545,28 @@ export default function EditProfilePage() {
                   className="w-8 h-8 bg-[#F96C41] rounded-full flex items-center justify-center"
                   whileHover={{ rotate: 10 }}
                 >
-                  <span className="text-white font-bold text-sm">1.</span>
+                  <span className="text-white font-bold text-sm">{idx + 1}.</span>
                 </motion.div>
                 <div>
-                  <p className="text-gray-400 text-base">1 EV Trip</p>
-                  <p className="text-gray-400 text-base">3 Hotel stays</p>
+                  <p className="text-gray-400 text-base">{idx + 1} EV Trip</p>
+                  <p className="text-gray-400 text-base">{Object.keys(trip.reservations[0]).length} Hotel stays</p>
                 </div>
               </div>
               <motion.button 
-                className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg text-sm transition-colors duration-200"
+                className="bg-teal-500 hover:bg-teal-600 text-white font-semibold cursor-pointer py-2 px-4 rounded-lg text-sm transition-colors duration-200"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setSelectedOrder(trip);
+                  setShowOrderModal(true);
+                }}
               >
                 SEE DETAILS
               </motion.button>
             </motion.div>
+            ))}
+            </div>
+            )}
           </motion.div>
         </div>
       </div>
@@ -514,6 +581,42 @@ export default function EditProfilePage() {
       >
         <Footer />
       </motion.div>
+
+      {/* Order Details Modal */}
+      {showOrderModal && selectedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-3xl cursor-pointer"
+              onClick={() => setShowOrderModal(false)}
+            >
+              &times;
+            </button>
+            <h2 className="text-xl font-bold mb-4">Order Details</h2>
+            <div className="space-y-2 max-h-[70vh] overflow-y-auto pr-2">
+              <div><b>Order ID:</b> {selectedOrder.orderId}</div>
+              <div><b>Amount:</b> {selectedOrder.amount / 100} {selectedOrder.currency}</div>
+              <div><b>Payment Status:</b> {selectedOrder.paymentStatus}</div>
+              <div><b>Customer Name:</b> {selectedOrder.customerName}</div>
+              <div><b>Customer Email:</b> {selectedOrder.customerEmail}</div>
+              <div><b>Customer Phone:</b> {selectedOrder.customerPhone}</div>
+              <div><b>Total Price:</b> {selectedOrder.totalPrice}</div>
+              <div><b>Reservations:</b>
+                <ul className="list-disc ml-6">
+                  {selectedOrder.reservations && selectedOrder.reservations[0] && Object.entries(selectedOrder.reservations[0]).map(([city, res]) => (
+                    <li key={city} className="mb-2">
+                      <b>{res.city}:</b> {res.name} ({res.roomName})<br/>
+                      <b>Check-in:</b> {res.checkin} <b>Check-out:</b> {res.checkout}<br/>
+                      <b>Price:</b> {res.price} <b>Bed:</b> {res.bedType} <b>Meal:</b> {res.mealPlan}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div><b>Created At:</b> {selectedOrder.createdAt ? new Date(selectedOrder.createdAt).toLocaleString() : ''}</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,12 +5,16 @@ import CarDiv from "../../common_components/cardiv/page"
 import HalfNavbar1 from "../../common_components/halfnavbar1/page"
 import Rentals from "../../common_components/rentals/page"
 import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 
 export default function Page() {
   const router = useRouter();
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  
   const headerRef = useRef(null)
   const checkmarkRef = useRef(null)
   const contentRef = useRef(null)
@@ -21,6 +25,65 @@ export default function Page() {
   const isContentInView = useInView(contentRef, { once: true, margin: "-100px" })
   const isFooterInView = useInView(footerRef, { once: true })
 
+  
+
+  useEffect(() => {
+    try {
+      const storedOrderDetails = localStorage.getItem("orderDetails");
+      if (storedOrderDetails) {
+        const parsedDetails = JSON.parse(storedOrderDetails);
+        setOrderDetails(parsedDetails);
+        setLoading(false);
+        // Trigger animations after a short delay to ensure DOM is ready
+        setTimeout(() => setIsVisible(true), 100);
+      } else {
+        // If no orderDetails found, redirect to home immediately
+        console.log("No orderDetails found in localStorage, redirecting to home");
+        router.push('/home');
+      }
+    } catch (error) {
+      console.error("Error parsing orderDetails from localStorage:", error);
+      // If there's an error parsing, also redirect to home
+      router.push('/home');
+    }
+  }, [router]);
+
+  // Format payment time
+  const formatPaymentTime = (paymentTime) => {
+    if (!paymentTime) return "N/A";
+    try {
+      const date = new Date(paymentTime);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    } catch (error) {
+      return paymentTime;
+    }
+  };
+
+  // Format payment method
+  const formatPaymentMethod = (method) => {
+    if (!method) return "N/A";
+    return method.charAt(0).toUpperCase() + method.slice(1);
+  };
+
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F96C41] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading payment details...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       {/* Animated Header */}
@@ -28,7 +91,7 @@ export default function Page() {
         ref={headerRef}
         className="bg-black px-3 sm:px-4 pt-1 pb-4 min-h-[10vh] md:min-h-[40vh] flex flex-col rounded-b-[16px] sm:rounded-b-[20px]"
         initial={{ opacity: 0, y: -50 }}
-        animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
       >
         <HalfNavbar1 />
@@ -39,7 +102,7 @@ export default function Page() {
           <motion.div 
             className="flex flex-col items-center justify-center text-center px-2 sm:px-4"
             initial={{ opacity: 0 }}
-            animate={isHeaderInView ? { opacity: 1 } : {}}
+            animate={isVisible ? { opacity: 1 } : {}}
             transition={{ delay: 0.3 }}
           >
             {/* Animated Checkmark */}
@@ -47,7 +110,7 @@ export default function Page() {
               ref={checkmarkRef}
               className="mb-4 sm:mb-6"
               initial={{ scale: 0 }}
-              animate={isCheckmarkInView ? { 
+              animate={isVisible ? { 
                 scale: 1,
                 transition: {
                   type: "spring",
@@ -77,7 +140,7 @@ export default function Page() {
             <motion.h1 
               className="text-xl sm:text-2xl md:text-3xl text-gray-900 mb-2 md:text-white/80"
               initial={{ opacity: 0, y: 20 }}
-              animate={isCheckmarkInView ? { opacity: 1, y: 0 } : {}}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
               Payment Success!
@@ -87,7 +150,7 @@ export default function Page() {
             <motion.p 
               className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 md:text-white"
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={isCheckmarkInView ? { 
+              animate={isVisible ? { 
                 opacity: 1, 
                 scale: 1,
                 transition: { 
@@ -97,7 +160,7 @@ export default function Page() {
                 }
               } : {}}
             >
-              US$ 750.00
+              US$ {orderDetails?.totalPrice || "0.00"}
             </motion.p>
 
             {/* Payment Details Container */}
@@ -105,36 +168,36 @@ export default function Page() {
               ref={contentRef}
               className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl rounded-lg p-3 sm:p-4 md:p-6 mb-6 sm:mb-8 bg-white shadow-lg"
               initial={{ opacity: 0, y: 50 }}
-              animate={isContentInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.6 }}
             >
               {/* Divider Line */}
               <motion.div 
                 className="w-full border-t border-gray-400 mb-4 sm:mb-6"
                 initial={{ scaleX: 0 }}
-                animate={isContentInView ? { scaleX: 1 } : {}}
-                transition={{ delay: 0.2, duration: 0.5 }}
+                animate={isVisible ? { scaleX: 1 } : {}}
+                transition={{ delay: 0.8, duration: 0.5 }}
               />
 
               {/* Payment Details - Staggered Animation */}
               <motion.div 
                 className="space-y-3 sm:space-y-4"
                 initial={{ opacity: 0 }}
-                animate={isContentInView ? { opacity: 1 } : {}}
-                transition={{ staggerChildren: 0.1 }}
+                animate={isVisible ? { opacity: 1 } : {}}
+                transition={{ delay: 0.9 }}
               >
                 {[
-                  { label: "Ref Number", value: "000085752257" },
-                  { label: "Payment Time", value: "25-06-2025, 13:22:16" },
-                  { label: "Payment Method", value: "Bank Transfer" },
-                  { label: "Sender Name", value: "Billed Hossain" }
+                  { label: "Order ID", value: orderDetails?.orderId || "N/A" },
+                  { label: "Payment Time", value: formatPaymentTime(orderDetails?.paymentTime) },
+                  { label: "Payment Method", value: formatPaymentMethod(orderDetails?.paymentMethod) },
+                  { label: "Sender Name", value: orderDetails?.senderName || "N/A" }
                 ].map((item, index) => (
                   <motion.div
                     key={index}
                     className="flex justify-between items-center"
                     initial={{ opacity: 0, x: -20 }}
-                    animate={isContentInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: index * 0.1 }}
+                    animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 1.0 + index * 0.1 }}
                   >
                     <span className="text-gray-600 text-sm sm:text-base text-left">{item.label}</span>
                     <span className="text-gray-900 font-medium text-sm sm:text-base text-left">{item.value}</span>
@@ -144,20 +207,20 @@ export default function Page() {
                 <motion.div 
                   className="w-full border-t border-[#F96C41] border-dashed mb-4 sm:mb-6"
                   initial={{ scaleX: 0 }}
-                  animate={isContentInView ? { scaleX: 1 } : {}}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  animate={isVisible ? { scaleX: 1 } : {}}
+                  transition={{ delay: 1.3, duration: 0.5 }}
                 />
 
                 {[
-                  { label: "Amount", value: "US$ 750.00" },
-                  { label: "Tax", value: "US$ 50.00" }
+                  { label: "Amount", value: `US$ ${orderDetails?.totalPrice || "0.00"}` },
+                  { label: "Tax", value: `US$ 0` }
                 ].map((item, index) => (
                   <motion.div
                     key={index + 4}
                     className="flex justify-between items-center"
                     initial={{ opacity: 0, x: 20 }}
-                    animate={isContentInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: 0.5 + index * 0.1 }}
+                    animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 1.4 + index * 0.1 }}
                   >
                     <span className="text-gray-600 text-sm sm:text-base text-left">{item.label}</span>
                     <span className="text-gray-900 font-medium text-sm sm:text-base text-left">{item.value}</span>
@@ -170,8 +233,8 @@ export default function Page() {
             <motion.div
               className="w-full max-w-sm sm:max-w-6xl"
               initial={{ opacity: 0, y: 30 }}
-              animate={isContentInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.8, duration: 0.5 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 1.6, duration: 0.5 }}
             >
               <motion.button 
                 className="w-full btn-gradient cursor-pointer text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-base"
@@ -190,8 +253,8 @@ export default function Page() {
       <motion.div
         className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
         initial={{ opacity: 0, y: 50 }}
-        animate={isContentInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ delay: 1.0, duration: 0.6 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 1.8, duration: 0.6 }}
       >
         <div className="max-w-full mx-auto">
           <CarDiv />
@@ -202,8 +265,8 @@ export default function Page() {
       <motion.div
         className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
         initial={{ opacity: 0, y: 50 }}
-        animate={isContentInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ delay: 1.2, duration: 0.6 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 2.0, duration: 0.6 }}
       >
         <div className="max-w-full mx-auto">
           <Rentals />
@@ -215,8 +278,8 @@ export default function Page() {
         ref={footerRef}
         className=" overflow-y-hidden"
         initial={{ opacity: 0, y: 50 }}
-        animate={isFooterInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 2.2, duration: 0.8 }}
       >
         <Footer />
       </motion.div>

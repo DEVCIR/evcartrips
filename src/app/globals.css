@@ -471,7 +471,7 @@
 }
 
 .btn-gradient:hover {
-  @apply from-[#E55C31] to-[#902F12] scale-105;
+  @apply from-[#E55C31] to-[#902F12] -translate-y-2 cursor-pointer;
 }
 /* Inverse Gradient Button */
 .btn-gradient-inverse {

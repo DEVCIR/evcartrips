@@ -5,7 +5,7 @@ import { Calendar, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-reac
 import Image from "next/image"
 import Navbar1 from "../../common_components/navbar1/page"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Suspense , useEffect, useState } from "react"
+import { Suspense, useEffect, useState, useCallback } from "react"
 import CarDiv from "../../common_components/cardiv/page"
 import Rentals from "../../common_components/rentals/page"
 import Footer from "../../components/ui/footer"
@@ -31,95 +31,83 @@ export default function PageWrapper() {
 
 function Page() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [locations, setLocations] = useState([])
+  const [amenity, setAmenity] = useState([])
   const [hotels, setHotels] = useState([])
   const [loading, setLoading] = useState(true)
+  const [openAmenitiesIndex, setOpenAmenitiesIndex] = useState(null); // <-- add this line
+  const searchParams = useSearchParams()
+  const travellers = parseInt(searchParams.get("travellers")?.split(" ")[0]) || 1
+  const rooms = parseInt(searchParams.get("travellers")?.split(",")[1]?.split(" ")[1]) || 1
+  const [isContinueLoading, setIsContinueLoading] = useState(false);
 
-  // const staticHotels = [
-  //   {
-  //     id: 1,
-  //     name: "Grand Hyatt Berlin",
-  //     location: "Berlin",
-  //     image: "/images/room.jpg",
-  //     thumbnails: ["/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg"],
-  //     checkIn: "Saturday, 10 May 2025",
-  //     checkOut: "Sunday, 11 May 2025",
-  //     description: "Luxury hotel in the heart of Berlin with spa and fine dining",
-  //     badge: "Gratis 25kWh",
-  //     badgeSubtext: "/ night",
-  //     originalData: {
-  //       locationCity: "Berlin",
-  //       geo: "52.5200;13.4050"
-  //     }
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Hilton Munich Park",
-  //     location: "Munich",
-  //     image: "/images/room.jpg",
-  //     thumbnails: ["/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg"],
-  //     checkIn: "Monday, 12 May 2025",
-  //     checkOut: "Tuesday, 13 May 2025",
-  //     description: "Modern hotel with panoramic views of the English Garden",
-  //     badge: "30% OFF",
-  //     badgeSubtext: "Limited time",
-  //     originalData: {
-  //       locationCity: "Munich",
-  //       geo: "48.1351;11.5820"
-  //     }
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Steigenberger Frankfurt",
-  //     location: "Frankfurt",
-  //     image: "/images/room.jpg",
-  //     thumbnails: ["/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg", "/images/thumb.jpg"],
-  //     checkIn: "Wednesday, 14 May 2025",
-  //     checkOut: "Thursday, 15 May 2025",
-  //     description: "Elegant hotel near the financial district with excellent conference facilities",
-  //     badge: "Gratis 25kWh",
-  //     badgeSubtext: "/ night",
-  //     originalData: {
-  //       locationCity: "Frankfurt",
-  //       geo: "50.1109;8.6821"
-  //     }
-  //   }
-  // ]
-  
   useEffect(() => {
-    const fetchGeoLocations = async () => {
+    const from = searchParams.get("from")
+    const to = searchParams.get("to")
+
+    if (!from || !to) {
+      router.push("/") // Redirect to home if required params are missing
+    }
+  }, [searchParams, router])
+
+  useEffect(() => {
+    console.log("amenity", amenity);
+  }, [amenity])
+  useEffect(() => {
+    // Save the current full URL to localStorage on mount
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('recommendedHotelsUrl', window.location.href);
+    }
+
+    const fetchHotelsFromItinerary = async () => {
+      setLoading(true);
       try {
-        // Get all search parameters
-        const params = new URLSearchParams(searchParams.toString());
-        
-        // Get destination (required)
-        const to = params.get("to");
-        if (!to) return;
-        
-        // Get all stops (stop1, stop2, stop3, etc.)
-        const stops = [];
-        for (const [key, value] of params.entries()) {
-          if (key.startsWith("stop") && value) {
-            stops.push(value);
-          }
+        // 1. Get fullItinerary from localStorage (client-side only)
+        let itineraryStr = null;
+        if (typeof window !== 'undefined') {
+          itineraryStr = localStorage.getItem("fullItinerary");
         }
-        
-        // Function to fetch and process a single location
-        const processLocation = async (locationName, type) => {
+        if (!itineraryStr) return setLoading(false);
+
+        const itinerary = JSON.parse(itineraryStr);
+        if (!Array.isArray(itinerary) || itinerary.length === 0) return setLoading(false);
+
+        const startDateParam = searchParams.get("startDate");
+        let currentDate = startDateParam ? new Date(startDateParam.split("T")[0]) : new Date();
+
+        // Function to format date as YYYYMMDD for API
+        const formatAPIDate = (date) => {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const day = String(date.getDate()).padStart(2, "0");
+          return `${year}${month}${day}`;
+        };
+
+        // Function to format date for display
+        const formatDisplayDate = (date) => {
+          return date.toLocaleDateString("en-US", {
+            weekday: "long",
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+          });
+        };
+
+        // 2. Extract all 'to' cities
+        const cities = itinerary.map(item => item.to).filter(Boolean);
+
+        // 3. Function to fetch and process a single location
+        const processLocation = async (locationName) => {
           if (!locationName) return null;
-          
           try {
             const response = await fetch(
               `https://cp.militaryfares.com/api.php?input=${encodeURIComponent(locationName)}&method=geocode`
             );
             const data = await response.json();
-            
             if (data.status === "OK" && data.response.length > 0) {
               const firstResult = data.response[0];
               return {
                 name: locationName,
-                type,
                 geo: firstResult.geo,
                 city: firstResult.city || firstResult.main_text
               };
@@ -130,30 +118,50 @@ function Page() {
             return null;
           }
         };
-        
-        // Prepare promises for all stops and destination
-        const locationPromises = [
-          ...stops.map((stop, index) => processLocation(stop, `stop${index + 1}`)),
-          processLocation(to, "destination")
-        ];
-        
+
+        // 4. Prepare promises for all cities
+        const locationPromises = cities.map(city => processLocation(city));
         const results = await Promise.all(locationPromises);
-        
-        // Filter out null results
         const validLocations = results.filter(loc => loc !== null);
         setLocations(validLocations);
-        
-        // Now fetch hotels for each location
-        const hotelPromises = validLocations.map(location => 
-          fetchHotelsForLocation(location)
-        );
-        
+
+        // 5. Fetch hotels for each location
+        const fetchHotelsForLocation = async (location) => {
+          try {
+            const [lat, lon] = location.geo.split(';');
+            // Use a static date for now, or you can use itinerary date if needed
+            const { checkInDate, checkOutDate } = getDatesForAPI()
+
+            const response = await fetch(
+              `https://gimmonixapi.militaryfares.com/?a=evtrips&method=search&_q=${lat};${lon}|${checkInDate}|${checkOutDate}|${rooms}|${travellers}:0|25|1||US|hotel&lang=en&curr=USD`
+            );
+            const data = await response.json();
+            if (data.status === "OK" && data.response && data.response.length > 0) {
+              setAmenity(data.ResultFilter.Amenity);
+              return data.response.slice(0, 4).map(hotel => ({
+                ...hotel,
+                locationCity: location.city
+              }));
+            }
+            return null;
+          } catch (error) {
+            console.error(`Error fetching hotels for ${location.name}:`, error);
+            return null;
+          }
+        };
+
+        const hotelPromises = validLocations.map(location => fetchHotelsForLocation(location));
         const hotelResults = await Promise.all(hotelPromises);
-        // hotelResults is an array: one entry per city, each entry is an array of hotels (or null)
         const formattedHotels = [];
         hotelResults.forEach((hotelArr, idx) => {
           if (Array.isArray(hotelArr) && hotelArr.length > 0) {
-            const hotel = hotelArr[0]; // Only the first hotel per city
+            // Only match hotels where location.city exactly matches the 'to' value (case-insensitive)
+            const cityName = cities[idx];
+            let hotel = hotelArr.find(h => h.location && h.location.city && h.location.city.toLowerCase() === cityName.toLowerCase());
+            if (!hotel) {
+              console.log("andar ayaaa---");
+              hotel = hotelArr[0]; // fallback to first hotel
+            }
             let mainImage = hotel.image || hotel.thumbnail || (hotel.images && Array.isArray(hotel.images) && hotel.images[0]) || null;
             let thumbnails = [];
             if (Array.isArray(hotel.images)) {
@@ -165,14 +173,15 @@ function Page() {
             } else if (mainImage) {
               thumbnails = [mainImage];
             }
+            const { checkInDate, checkOutDate } = getDatesForAPI();
             formattedHotels.push({
               id: idx + 1,
               name: hotel.name,
               location: hotel.location?.city || hotel.name,
               image: mainImage,
               thumbnails,
-              checkIn: "Saturday, 10 May 2025", // You might want to make this dynamic
-              checkOut: "Sunday, 11 May 2025",  // You might want to make this dynamic
+              checkIn: hotel.checkIn,
+              checkOut: hotel.checkOut,// You might want to make this dynamic
               description: hotel.desc || "Comfortable accommodation with great amenities",
               badge: idx % 2 === 0 ? "Gratis 25kWh" : "30% OFF",
               badgeSubtext: idx % 2 === 0 ? "/ night" : "Limited time",
@@ -181,101 +190,95 @@ function Page() {
           }
         });
         setHotels(formattedHotels);
-        
+
+        console.log(formattedHotels);
       } catch (error) {
-        console.error("Error fetching locations:", error);
+        console.error("Error fetching hotels from itinerary:", error);
       } finally {
         setLoading(false);
       }
     };
-    
-    const fetchHotelsForLocation = async (location) => {
-      try {
-        // Extract latitude and longitude from geo string
-        const [lat, lon] = location.geo.split(';');
-        
-        // Format dates (you might want to make these dynamic)
-        const checkInDate = '20250915'; // YYYYMMDD format
-        const checkOutDate = '20250918'; // YYYYMMDD format
-        
-        const response = await fetch(
-          `https://gimmonixapi.militaryfares.com/?a=evtrips&method=search&_q=${lat};${lon}|${checkInDate}|${checkOutDate}|1|2:0|25|1||US|hotel&lang=en&curr=USD`
-        );
-        
-        const data = await response.json();
-        
-        if (data.status === "OK" && data.response && data.response.length > 0) {
-          // Return first 4 hotels or all available if less than 4
-          return data.response.slice(0, 4).map(hotel => ({
-            ...hotel,
-            locationCity: location.city // Add city name to hotel data
-          }));
-        }
-        return null;
-      } catch (error) {
-        console.error(`Error fetching hotels for ${location.name}:`, error);
-        return null;
-      }
-    };
-    
-    // Only fetch if we have the required params
-    if (searchParams.get("to")) {
-      fetchGeoLocations();
+    fetchHotelsFromItinerary();
+  }, []);
+
+  const formatDisplayDate = (dateString) => {
+    // dateString: "20250915"
+    if (!dateString || dateString.length !== 8) return "";
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(4, 6);
+    const day = dateString.slice(6, 8);
+    const dateObj = new Date(`${year}-${month}-${day}T00:00:00`);
+    // Format: Saturday, 10 May 2025
+    return dateObj.toLocaleDateString("en-US", {
+      weekday: "long",
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+  };
+
+  const getDatesForAPI = useCallback(() => {
+    // Get startDate from params, or use today if missing
+    const startDateParam = searchParams.get("startDate");
+    let startDate;
+    if (startDateParam) {
+      // Only use the date part (YYYY-MM-DD)
+      const dateOnly = startDateParam.split("T")[0];
+      startDate = new Date(dateOnly + "T00:00:00");
+    } else {
+      startDate = new Date();
     }
+
+    // Format as YYYYMMDD
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}${month}${day}`;
+    };
+
+    const checkInDate = formatDate(startDate);
+
+    // Add 1 day for check-out
+    const checkOut = new Date(startDate);
+    checkOut.setDate(checkOut.getDate() + 1);
+    const checkOutDate = formatDate(checkOut);
+
+    return { checkInDate, checkOutDate };
   }, [searchParams]);
 
-  // Check if required parameters exist
-  useEffect(() => {
-    const from = searchParams.get("from")
-    const to = searchParams.get("to")
-    
-    if (!from || !to) {
-      router.push("/") // Redirect to home if required params are missing
-    }
-  }, [searchParams, router])
-
-  // If params are missing, return null (will redirect)
-  if (!searchParams.get("from") || !searchParams.get("to")) {
-    return null
-  }
+  // Remove all code related to searchParams, stops, and 'to' parameter
 
   const handleHotelClick = (hotel) => {
-    // Create URLSearchParams to preserve all current parameters
-    const params = new URLSearchParams(searchParams.toString())
-  
+
+    const params = new URLSearchParams(searchParams.toString());
+
     // Find the location data for the clicked hotel
-    const hotelLocation = locations.find(loc => 
-      hotel.originalData?.locationCity === loc.city || 
+    const hotelLocation = locations.find(loc =>
+      hotel.originalData?.locationCity === loc.city ||
       hotel.location === loc.city ||
       hotel.name.includes(loc.city)
     )
-  
-    // Set the city parameter
-    params.set('city', hotelLocation?.city || hotel.location)
-  
-    // If we have geo data for this location, set it in the params
+    params.set('city', hotelLocation?.city || hotel.location);
+
     if (hotelLocation?.geo) {
-      // Ensure the geo string is in "lat;lon" format
-      const geoParts = hotelLocation.geo.split(';')
+      const geoParts = hotelLocation.geo.split(';');
       if (geoParts.length === 2) {
-        params.set('geo', hotelLocation.geo) // Set the raw "lat;lon" string
+        params.set('geo', hotelLocation.geo);
       }
     }
-  
-    // Build the URL with all parameters
-    const url = `/frankfurt?${params.toString()}`
-  
-    router.push(url)
+
+    const url = `/frankfurt?${params.toString()}`;
+    router.push(url);
   }
 
   const handleContinue = () => {
     if (!locations.length) return;
+    setIsContinueLoading(true);
     const lastLocation = locations[locations.length - 1];
     const params = new URLSearchParams(searchParams.toString());
-
     if (lastLocation?.city) params.set('city', lastLocation.city);
     if (lastLocation?.geo) params.set('geo', lastLocation.geo);
-
     const url = `/frankfurt?${params.toString()}`;
     router.push(url);
   };
@@ -283,13 +286,15 @@ function Page() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-lg">Loading hotels...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F96C41] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading</p>
+        </div>
       </div>
     )
   }
 
-  console.log( "hotels", hotels.length);
 
   return (
     <motion.div
@@ -304,7 +309,7 @@ function Page() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        
+
         <motion.div
           className="xl:hidden"
           initial={{ opacity: 0, y: -20 }}
@@ -359,7 +364,7 @@ function Page() {
                   type: "spring",
                   stiffness: 100,
                 }}
-                whileHover={{ 
+                whileHover={{
                   y: -10,
                   transition: { duration: 0.3 }
                 }}
@@ -389,7 +394,7 @@ function Page() {
                       />
 
                       <div className={`max-md:w-[20%] flex max-md:gap-y-1 max-md:flex-col md:flex-row order-1 ${hotel.thumbnails.length === 4 ? 'justify-center' : 'justify-start'}`}>
-                      {/* Thumbnail Images */}
+                        {/* Thumbnail Images */}
                         {hotel.thumbnails.map((thumb, thumbIndex) => (
                           <Image
                             key={thumbIndex}
@@ -403,13 +408,13 @@ function Page() {
                       </div>
 
                       {/* Navigation Arrows */}
-                      <button 
+                      <button
                         className="absolute left-[24%] sm:left-23 md:left-1.5 top-[50%] md:top-[40%] -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
                       </button>
-                      <button 
+                      <button
                         className="absolute right-1.5 top-[50%] md:top-[40%] -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -419,7 +424,7 @@ function Page() {
                   </div>
 
                   {/* Right Column - All Text and Buttons */}
-                  <div className="flex flex-col justify-between space-y-2 min-h-0 md:h-[400px] xl:h-[630px] ">
+                  <div className={`flex flex-col justify-between space-y-2 min-h-0 ${openAmenitiesIndex === index ? "h-auto" : 'md:h-[400px]'} ${openAmenitiesIndex === index ? "h-auto" : 'xl:h-[630px]'} `}>
                     <div className="space-y-2 flex-1">
                       <div className="space-y-0.5 xl:-space-y-5">
                         <h3 className="font-bold text-gray-800 text-[16px] md:text-[27px] md:-tracking-[0.81px] xl:text-[48px] xl:-tracking-[1.41px] -tracking-[0.41px] break-words">
@@ -434,7 +439,7 @@ function Page() {
                         <p className="text-gray-700 font-[400] text-[12px] -tracking-[0.41px] md:text-[16px] md:-tracking-[0.81px] xl:text-[28px] xl:-tracking-[1.41px]">
                           {hotel.description}
                         </p>
-                        <button 
+                        <button
                           className="text-red-500 cursor-pointer bg-red-50 hover:bg-red-100 px-2 py-1 md:py-2 rounded text-[9px] md:text-[9px] xl:text-[16px] font-medium
                            transition-colors shrink-0"
                           onClick={(e) => e.stopPropagation()}
@@ -455,13 +460,28 @@ function Page() {
                         </div>
                       </div>
 
-                      <div className="flex items-center t md:my-2 xl:my-4">
-                        <button 
+                      <div className="flex flex-col items-start t md:my-2 xl:my-4">
+                        <button
                           className="text-red-500 hover:text-red-600 text-[10px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px] -tracking-[0.41px] font-medium transition-colors flex  items-center  gap-0.5 cursor-pointer"
-                          onClick={(e) => e.stopPropagation()}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenAmenitiesIndex(openAmenitiesIndex === index ? null : index);
+                          }}
                         >
                           Show more deals <ChevronDown className="w-2 h-2 md:w-3 md:h-3 xl:w-6 xl:h-6" />
                         </button>
+                        {openAmenitiesIndex === index && amenity && Array.isArray(amenity) && (
+                          <div className="mt-2 p-2 bg-gray-50 rounded">
+                            <h4 className="font-semibold mb-1">Amenities:</h4>
+                            <ul className="flex flex-wrap gap-2">
+                              {amenity.map((a, i) => (
+                                <li key={i} className="bg-white border px-2 py-1 rounded text-xs">
+                                  {a.Name}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -472,7 +492,7 @@ function Page() {
                       </p>
 
                       {/* Date Dropdown */}
-                      <div 
+                      <div
                         className="w-full h-auto md:w-[281px] md:h-[39px] xl:w-[486px] xl:h-[68px]"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -488,7 +508,7 @@ function Page() {
                       </div>
 
                       {/* Delete Button */}
-                      <button 
+                      <button
                         className="w-full h-auto md:w-[281px] md:h-[39px] xl:w-[486px] xl:h-[68px] cursor-pointer flex items-center justify-center gap-1.5 border border-red-200 hover:bg-red-50 text-red-500 rounded-md py-2.5 sm:py-2.5 text-[10px] md:text-[11px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.41px] -tracking-[0.41px] sm:text-sm font-medium transition-colors"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -515,8 +535,16 @@ function Page() {
                 <Button
                   className="cursor-pointer mt-4 md:mt-7 lg:mt-5 w-full sm:w-[250px] md:w-[381px] btn-gradient text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg"
                   onClick={handleContinue}
+                  disabled={isContinueLoading}
                 >
-                  Continue
+                  {isContinueLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
+                      Loading...
+                    </span>
+                  ) : (
+                    'Continue'
+                  )}
                 </Button>
               </motion.div>
             </motion.div>

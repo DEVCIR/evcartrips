@@ -11,12 +11,54 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState({});
+  const [cartCount , setCartCount] = useState(0);
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser !== user) {
       setUser(storedUser);
     }
+
+    // Initial cart count
+    setCartCount(calculateCartCount());
+
+    // Event listeners for cart updates
+    const handleCartUpdate = () => {
+      setCartCount(calculateCartCount());
+    };
+
+    window.addEventListener('reservationDetailsUpdated', handleCartUpdate);
+    window.addEventListener('storage', handleCartUpdate);
+
+    return () => {
+      window.removeEventListener('reservationDetailsUpdated', handleCartUpdate);
+      window.removeEventListener('storage', handleCartUpdate);
+    };
+
   }, []);
+
+  const handleStorageChange = () => {
+    updateCartCount();
+  };
+
+  const calculateCartCount = () => {
+    if (typeof window !== "undefined") {
+      const reservationDetails = localStorage.getItem('reservationDetailsByStop');
+      if (reservationDetails) {
+        try {
+          const parsedDetails = JSON.parse(reservationDetails);
+          // Calculate total count by summing quantities (default to 1 if not specified)
+          return Object.values(parsedDetails).reduce(
+            (total, item) => total + (item.quantity || 1),
+            0
+          );
+        } catch (error) {
+          console.error('Error parsing reservation details:', error);
+          return 0;
+        }
+      }
+    }
+    return 0;
+  };
 
   return (
     <nav className="max-md:bg-black px-4 py-3 flex items-center justify-between">
@@ -77,12 +119,15 @@ const Navbar = () => {
         <div className="relative xl:w-[51px] xl:h-[47px]">
           <img
             src="/images/icons/cart_icon.png"
-            className="h-5 w-5 md:h-6 md:w-6 xl:w-[47px] xl:h-[47px]"
+            className="h-5 w-5 md:h-6 md:w-6 xl:w-[47px] xl:h-[47px] cursor-pointer"
             alt="Cart"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-cart-sidebar'))}
           />
+
           <div className="absolute -top-0 -right-0 xl:w-[21px] xl:h-[21px] bg-orange-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center">
-            1
+            {cartCount}
           </div>
+
         </div>
 
         <div className="bg-gray-600 rounded-full p-1">

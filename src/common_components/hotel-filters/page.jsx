@@ -160,7 +160,7 @@ export default function HotelFilters({ initialFilters = defaultFilters, onApply 
       <div className="space-y-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Filters</h2>
-          <button onClick={handleReset} className="flex items-center gap-1 text-orange-500 text-sm font-medium">
+          <button onClick={handleReset} className="flex items-center gap-1 text-orange-500 text-sm font-medium cursor-pointer">
             <RotateCcw className="w-4 h-4" />
             Reset
           </button>
@@ -345,10 +345,10 @@ export default function HotelFilters({ initialFilters = defaultFilters, onApply 
       </div>
 
       <div className="mt-8 flex gap-4">
-        <button className="px-4 py-3 border border-gray-300 rounded-lg flex-1" onClick={onCancel}>
+        <button className="px-4 py-3 border border-gray-300 bg-transparent hover:bg-white/40 rounded-lg flex-1 cursor-pointer" onClick={onCancel}>
           Cancel
         </button>
-        <button className="px-4 py-3 bg-[#F96C41] text-white rounded-lg flex-1" onClick={handleApply}>
+        <button className="px-4 py-3 btn-gradient text-white rounded-lg flex-1 cursor-pointer" onClick={handleApply}>
           Apply Filters
         </button>
       </div>

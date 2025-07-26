@@ -76,7 +76,7 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-            <Link href="/terms" className="hover:text-white transition-colors">
+            <Link href="/termsconditions" className="hover:text-white transition-colors">
               Terms & Conditions
             </Link>
 
