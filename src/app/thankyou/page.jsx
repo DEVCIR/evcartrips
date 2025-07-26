@@ -3,6 +3,7 @@
 import Footer from "../../components/ui/footer"
 import CarDiv from "../../common_components/cardiv/page"
 import HalfNavbar1 from "../../common_components/halfnavbar1/page"
+import Navbar from "../../common_components/navbar/page"
 import Rentals from "../../common_components/rentals/page"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
@@ -31,11 +32,18 @@ export default function Page() {
         animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
       >
-        <HalfNavbar1 />
+         <div className="md:hidden">
+          <HalfNavbar1 />
+        </div>
+        <div className="max-md:hidden">
+          <Navbar />
+        </div>
+       
+        {/* <HalfNavbar1 /> */}
       </motion.div>
 
-      <div className="w-full md:-mt-[210px]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <div className="w-full md:-mt-[210px] fhd:-mt-[310px] 2k:-mt-[410px] 4k:-mt-[560px] ">
+        <div className="max-w-7xl  fhd:max-w-[105rem] 2k:max-w-[250rem] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8   ">
           <motion.div 
             className="flex flex-col items-center justify-center text-center px-2 sm:px-4"
             initial={{ opacity: 0 }}
@@ -45,7 +53,7 @@ export default function Page() {
             {/* Animated Checkmark */}
             <motion.div 
               ref={checkmarkRef}
-              className="mb-4 sm:mb-6"
+              className="mb-4 sm:mb-6 2k:mb-8 4k:mb-12 "
               initial={{ scale: 0 }}
               animate={isCheckmarkInView ? { 
                 scale: 1,
@@ -63,7 +71,7 @@ export default function Page() {
                 viewBox="0 0 66 65"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-12 h-12 sm:w-16 sm:h-16 md:w-[66px] md:h-[65px]"
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-[66px] md:h-[65px] fhd:w-[100px] fhd:h-[100px] 2k:w-[150px] 2k:h-[150px] 4k:w-[220px] 4k:h-[220px] "
               >
                 <circle cx="32.7664" cy="32.387" r="32.387" fill="#F96C41" fillOpacity="0.19" />
                 <path
@@ -75,7 +83,7 @@ export default function Page() {
 
             {/* Animated Heading */}
             <motion.h1 
-              className="text-xl sm:text-2xl md:text-3xl text-gray-900 mb-2 md:text-white/80"
+              className="text-xl sm:text-2xl md:text-3xl fhd:text-4xl 4k:text-6xl text-gray-900 mb-2 fhd:mb-5 2k:mb-12 4k:mb-12 md:text-white/80"
               initial={{ opacity: 0, y: 20 }}
               animate={isCheckmarkInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3, duration: 0.5 }}
@@ -85,7 +93,7 @@ export default function Page() {
 
             {/* Animated Amount */}
             <motion.p 
-              className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 md:text-white"
+              className="text-lg sm:text-xl md:text-2xl fhd:text-5xl 2k:text-6xl 4k:text-8xl font-bold text-gray-800 mb-4 sm:mb-6 md:text-white"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isCheckmarkInView ? { 
                 opacity: 1, 
@@ -103,7 +111,7 @@ export default function Page() {
             {/* Payment Details Container */}
             <motion.div
               ref={contentRef}
-              className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl rounded-lg p-3 sm:p-4 md:p-6 mb-6 sm:mb-8 bg-white shadow-lg"
+              className="w-full fhd:mt-20 max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl fhd:max-w-[108rem] 2k:max-w-[140rem] 4k:max-w-[230rem] rounded-lg p-3 sm:p-4 fhd:p-7 2k:p-14 md:p-6 mb-6 sm:mb-8 fhd:mb-10 2k:mb-14 4k:mb-18 bg-white shadow-lg"
               initial={{ opacity: 0, y: 50 }}
               animate={isContentInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
@@ -118,7 +126,7 @@ export default function Page() {
 
               {/* Payment Details - Staggered Animation */}
               <motion.div 
-                className="space-y-3 sm:space-y-4"
+                className="space-y-3 sm:space-y-4 fhd:space-y-6 2k:space-y-10 4k:space-y-16"
                 initial={{ opacity: 0 }}
                 animate={isContentInView ? { opacity: 1 } : {}}
                 transition={{ staggerChildren: 0.1 }}
@@ -136,13 +144,13 @@ export default function Page() {
                     animate={isContentInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <span className="text-gray-600 text-sm sm:text-base text-left">{item.label}</span>
-                    <span className="text-gray-900 font-medium text-sm sm:text-base text-left">{item.value}</span>
+                    <span className="text-gray-600 text-sm sm:text-base fhd:text-xl 2k:text-3xl 4k:text-5xl text-left">{item.label}</span>
+                    <span className="text-gray-900 font-medium text-sm sm:text-base fhd:text-3xl 2k:text-5xl 4k:text-7xl text-left">{item.value}</span>
                   </motion.div>
                 ))}
 
                 <motion.div 
-                  className="w-full border-t border-[#F96C41] border-dashed mb-4 sm:mb-6"
+                  className="w-full border-t border-[#F96C41] border-dashed mb-4 sm:mb-6 fhd:mb-8 2k:mb-12 4k:mb-16"
                   initial={{ scaleX: 0 }}
                   animate={isContentInView ? { scaleX: 1 } : {}}
                   transition={{ delay: 0.5, duration: 0.5 }}
@@ -159,8 +167,8 @@ export default function Page() {
                     animate={isContentInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ delay: 0.5 + index * 0.1 }}
                   >
-                    <span className="text-gray-600 text-sm sm:text-base text-left">{item.label}</span>
-                    <span className="text-gray-900 font-medium text-sm sm:text-base text-left">{item.value}</span>
+                    <span className="text-gray-600 text-sm sm:text-base fhd:text-xl 2k:text-3xl 4k:text-5xl  text-left">{item.label}</span>
+                    <span className="text-gray-900 font-medium text-sm sm:text-base fhd:text-3xl 2k:text-5xl 4k:text-7xl text-left">{item.value}</span>
                   </motion.div>
                 ))}
               </motion.div>
@@ -168,13 +176,13 @@ export default function Page() {
 
             {/* Home Page Button */}
             <motion.div
-              className="w-full max-w-sm sm:max-w-6xl"
+              className="w-full max-w-sm sm:max-w-6xl fhd:max-w-[85rem] 2k:max-w-[140rem] 4k:max-w-[230rem]"
               initial={{ opacity: 0, y: 30 }}
               animate={isContentInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.8, duration: 0.5 }}
             >
               <motion.button 
-                className="w-full btn-gradient cursor-pointer text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-base"
+                className="w-full fhd:text-xl 2k:text-4xl 4k:text-6xl  btn-gradient text-white font-semibold py-4 fhd:py-6 2k:py-10 4k:py-16 rounded-xl text-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/home')}
@@ -188,7 +196,7 @@ export default function Page() {
 
       {/* Animated CarDiv */}
       <motion.div
-        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
+        className="px-8 md:px-14 lg:px-20 mt-4 fhd:mt-6 2k:mt-10 4k:mt-14 pb-8 xl:px-48 fhd:px-[370px] 2k:px-[400px] 4k:px-[490px] "
         initial={{ opacity: 0, y: 50 }}
         animate={isContentInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 1.0, duration: 0.6 }}
@@ -200,7 +208,7 @@ export default function Page() {
 
       {/* Animated Rentals */}
       <motion.div
-        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 fhd:px-[370px] 2k:px-[400px] 4k:px-[490px]"
         initial={{ opacity: 0, y: 50 }}
         animate={isContentInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 1.2, duration: 0.6 }}

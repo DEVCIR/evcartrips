@@ -157,20 +157,22 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
   }, [from, to, stops, searchParams, router]);
 
   return (
-    <div className="mt-0">
-      <div className="relative bg-white max-md:rounded-2xl overflow-hidden shadow-lg">
+    <div className="mt-0 ">
+      <div className="relative bg-white max-md:rounded-2xl fhd:h-[600px] overflow-hidden shadow-lg">
         <div
-          className="relative"
+          className="relative "
           style={{ height: `400px`, minHeight: 300, width: "100%" }}
         >
           {isLoaded ? (
             <GoogleMap
+            
               mapContainerStyle={{
                 ...containerStyle,
                 height: `400px`,
                 minHeight: 300,
                 width: "100%",
               }}
+              
               defaultCenter={initialCenter}
               defaultZoom={initialZoom}
               onLoad={(map) => {
@@ -191,6 +193,7 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
               {/* Directions route */}
               {directions && (
                 <DirectionsRenderer
+                
                   directions={directions}
                   options={{
                     suppressMarkers: false,
