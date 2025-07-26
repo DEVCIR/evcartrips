@@ -33,8 +33,6 @@ export const FormField: React.FC<FormFieldProps> = ({ field, onChange }) => {
             <option key={option} value={option}>
               {option}
             </option>
-            
-        {field.arrow}
           ))}
 
         </div>
