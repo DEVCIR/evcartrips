@@ -86,8 +86,8 @@ const Navbar = () => {
         </div>
 
         <div className="bg-gray-600 rounded-full p-1">
-          <Link href="/signin" className="cursor-pointer">
-            <User className="h-4 w-4 md:h-5 md:w-5 xl:w-[41px] xl:h-[41px] fhd:w-[50px] fhd:h-[50px] 2k:w-[65px] 2k:h-[65px] 4k:w-[100px] 4k:h-[100px] text-white" />
+          <Link href={`${user ? '/profile' : '/signin'}`} className="cursor-pointer">
+            <User className="h-4 w-4 md:h-5 md:w-5 xl:w-[41px] xl:h-[41px] text-white" />
           </Link>
         </div>
         {user && (
