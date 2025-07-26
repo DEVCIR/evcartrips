@@ -180,7 +180,7 @@ export default function MapCompleteGoogleMaps({ from, to, stops }) {
       <div className="md:flex md:justify-center">
         <Button
           onClick={handleContinue}
-          className="cursor-pointer mt-4 md:mt-8 lg:mt-12 w-full md:w-[381px] bg-gradient-to-b from-[#F96C41] to-[#AA3916] hover:bg-gradient-to-l hover:from-[#AA3916] hover:to-[#F96C41] text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-14 text-base md:text-lg"
+          className="cursor-pointer mt-4 md:mt-8 lg:mt-12 w-full md:w-[381px] fhd:w-[650px] 2k:w-[866px] 4k:w-[1100px] btn-gradient text-white font-semibold py-3 md:py-4 fhd:py-9 2k:py-10 4k:py-20 rounded-lg fhd:rounded-xl 2k:rounded-2xl 4k:rounded-3xl h-12 md:h-14 2k:h-[110px] 4k:h-[130px] text-base md:text-lg fhd:text-3xl 2k:text-4xl 4k:text-6xl"
         >
           Continue
         </Button>

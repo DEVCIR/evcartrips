@@ -1,6 +1,13 @@
 @import 'aos/dist/aos.css';
 @import "tailwindcss";
+@theme {
+  --breakpoint-fhd: 120rem;
+  --breakpoint-2k: 160rem;
+  --breakpoint-4k: 240rem;
+  --breakpoint-8k: 480rem;
+}
 @import "tw-animate-css";
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -487,3 +494,5 @@
 .btn-gradient-inverse:hover::before {
   @apply opacity-0;
 }
+
+

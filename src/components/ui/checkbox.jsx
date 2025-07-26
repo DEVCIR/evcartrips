@@ -25,13 +25,13 @@ const Checkbox = React.forwardRef(({ className, checked, onCheckedChange, defaul
       aria-checked={checkedState}
       onClick={handleChange}
       className={cn(
-        "peer h-4 w-4 shrink-0 rounded-sm border border-gray-300 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center",
+        "peer h-4 w-4  shrink-0 rounded-sm border border-gray-300 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center",
         checkedState && "bg-orange-500 border-orange-500 text-white",
         className,
       )}
       {...props}
     >
-      {checkedState && <Check className="h-3 w-3" />}
+      {checkedState && <Check className="h-3 w-3 fhd:h-6 fhd:w-6 2k:h-10 2k:w-10 4k:h-12 4k:w-12" />}
     </button>
   )
 })

@@ -13,6 +13,7 @@ export interface FormField {
   id: string;
   label: string;
   icon: React.ReactNode;
+  arrow : React.ReactNode;
   type: "date" | "select";
   value: string;
   options?: string[];

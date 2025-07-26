@@ -30,14 +30,14 @@ export default function Page() {
       </motion.div>
 
       {/* Main Content */}
-      <div className="w-full -mt-60">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-28 py-8">
+      <div className="w-full -mt-60 fhd:-mt-96 2k:-mt-[32rem] 4k:-mt-[46em]">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-28 fhd:px-36 py-8 fhd:py-20 2k:py-24 4k:py-32">
           {/* Breadcrumb Animation */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl mx-auto text-sm text-[#FFFFFFCC] mb-2"
+            className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl fhd:max-w-[95rem] 2k:max-w-[126rem] 4k:max-w-[189rem] 2k:text-3xl mx-auto text-sm fhd:text-xl 4k:text-5xl text-[#FFFFFFCC] mb-2 fhd:mb-4 2k:mb-8 4k:mb-12"
           >
             Home &gt; Pages &gt; <span className="text-[#FFFFFF]">Terms and Conditions</span>
           </motion.div>
@@ -45,13 +45,13 @@ export default function Page() {
           {/* Title Section with Scroll Animation */}
           <motion.div 
             ref={titleRef}
-            className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl mb-6 mx-auto"
+            className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl fhd:max-w-[95rem] 2k:max-w-[126rem] 4k:max-w-[189rem] mb-6 fhd:mb-10 2k:mb-14 4k:mb-20  mx-auto"
             initial={{ opacity: 0, y: 50 }}
             animate={isTitleInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, type: "spring" }}
           >
             <motion.h1 
-              className="text-3xl sm:text-4xl font-bold text-white"
+              className="text-3xl sm:text-4xl fhd:text-6xl 2k:text-7xl 4k:text-[7rem] font-bold text-white"
               initial={{ opacity: 0 }}
               animate={isTitleInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.2, duration: 0.6 }}
@@ -59,7 +59,7 @@ export default function Page() {
               Terms and Conditions
             </motion.h1>
             <motion.h2 
-              className="text-2xl sm:text-3xl font-bold text-white"
+              className="text-2xl sm:text-3xl fhd:text-5xl 2k:text-6xl 4k:text-[6rem] font-bold text-white"
               initial={{ opacity: 0 }}
               animate={isTitleInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.4, duration: 0.6 }}
@@ -71,13 +71,13 @@ export default function Page() {
           {/* Content Box with Staggered Animations */}
           <motion.div
             ref={contentRef}
-            className="bg-white shadow-2xl w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl h-auto p-4 rounded-lg mx-auto"
+            className="bg-white shadow-2xl w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl fhd:max-w-[95rem] 2k:max-w-[126rem] 4k:max-w-[189rem] h-auto p-4 fhd:p-6 2k:p-10 4k:p-16 rounded-lg 2k:rounded-xl 4k:rounded-2xl mx-auto"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={isContentInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.6 }}
           >
             <motion.p 
-              className="mb-6 text-gray-800 leading-relaxed max-w-4xl"
+              className="mb-6 2k:mb-8 4k:mb-14 fhd:text-2xl 2k:text-3xl 4k:text-5xl text-gray-800 leading-relaxed max-w-4xl fhd:max-w-[85rem] 2k:max-w-[113rem] 4k:max-w-[175rem]"
               initial={{ opacity: 0, y: 20 }}
               animate={isContentInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.5 }}
@@ -88,7 +88,7 @@ export default function Page() {
             </motion.p>
 
             <motion.ul 
-              className="list-disc mt-10 pl-6 mb-6 space-y-2 text-gray-800 max-w-4xl marker:text-[#F96C41]"
+              className="list-disc mt-10 pl-6 mb-6 fhd:mt-18 fhd:pl-8 fhd:mb-8 2k:mt-24 2k:pl-12 2k:mb-12 4k:mt-32 4k:pl-18 4k:mb-20 space-y-2 fhd:space-y-4 2k:space-y-6 4k:space-y-12 fhd:text-2xl 2k:text-3xl 4k:text-5xl text-gray-800 max-w-4xl fhd:max-w-[85rem] 2k:max-w-[113rem] 4k:max-w-[175rem] marker:text-[#F96C41]"
               initial={{ opacity: 0 }}
               animate={isContentInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.4 }}
@@ -124,7 +124,7 @@ export default function Page() {
             </motion.ul>
 
             <motion.p 
-              className="text-gray-800 mt-10 leading-relaxed max-w-4xl"
+              className="text-gray-800 mt-10 fhd:mt-18 fhd:text-2xl 2k:text-3xl 4k:text-5xl leading-relaxed max-w-4xl fhd:max-w-[85rem] 2k:max-w-[113rem] 4k:max-w-[175rem]"
               initial={{ opacity: 0, y: 20 }}
               animate={isContentInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 1.0, duration: 0.5 }}
