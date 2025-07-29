@@ -227,7 +227,7 @@ export default function GoogleMapsComponent({ onRouteInfoChange }) {
 
   return (
     <div className="mt-0">
-      <div className="relative bg-white max-md:rounded-2xl overflow-hidden shadow-lg">
+      <div className="relative bg-white max-md:rounded-2xl fhd:h-[600px] overflow-hidden shadow-lg">
         <div
           className="relative"
           style={{ height: `400px`, minHeight: 300, width: "100%" }}

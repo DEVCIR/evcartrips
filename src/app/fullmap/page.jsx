@@ -118,13 +118,13 @@ function Page() {
         </motion.div>
 
         <motion.div
-          className="mt-2 max-xl:leading-4 px-6 lg:px-14 xl:px-32 max-w-[80%]"
+          className="mt-2 fhd:mt-24 2k:mt-28 max-xl:leading-4 px-6 lg:px-14 xl:px-32 max-w-[80%]"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           <motion.h2
-            className="text-gray-400 text-[10px] font-medium md:font-bold md:text-[16px] xl:text-[29px] mb-4 max-sm:mt-4 md:-tracking-[0.69px] xl:-tracking-[1.19px]"
+            className="text-gray-400 text-[10px] font-medium md:font-bold md:text-[16px] xl:text-[29px] fhd:text-[35px] 2k:text-[50px] 4k:text-[75px] mb-4 max-sm:mt-4 md:-tracking-[0.69px] xl:-tracking-[1.19px]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -134,13 +134,13 @@ function Page() {
 
           {/* Dynamic Route Display */}
           <motion.div
-            className="flex items-center gap-1 sm:gap-2 md:gap-5 xl:gap-10 flex-wrap"
+            className="flex items-center gap-1 sm:gap-2 md:gap-5 xl:gap-10 flex-wrap "
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7 }}
           >
             <motion.span
-              className="text-white text-wrap text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+              className="text-white text-wrap text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl fhd:text-5xl 2k:text-6xl 4k:text-8xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.6, type: "spring" }}
@@ -159,7 +159,7 @@ function Page() {
                     <ArrowIcon />
                   </motion.div>
                   <motion.span
-                    className="text-white text-wrap text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+                    className="text-white text-wrap text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl fhd:text-5xl 2k:text-6xl 4k:text-8xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.8 + index * 0.1, duration: 0.6, type: "spring" }}
@@ -178,7 +178,7 @@ function Page() {
               <ArrowIcon />
             </motion.div>
             <motion.span
-              className="text-white text-wrap text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
+              className="text-white text-wrap text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl fhd:text-5xl 2k:text-6xl 4k:text-8xl font-bold xl:-tracking-[1.43px] whitespace-nowrap"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.8 + stops.length * 0.1, duration: 0.6, type: "spring" }}
@@ -188,7 +188,7 @@ function Page() {
           </motion.div>
 
           <motion.div
-            className="max-md:hidden absolute right-28 top-32 xl:right-36 xl:top-52 bg-[#323232] rounded-md w-[49px] h-[46px] xl:w-[80px] xl:h-[75px] cursor-pointer"
+            className="max-md:hidden absolute right-28 top-32 xl:right-36 xl:top-52 2k:top-72 4k:top-[350px] bg-[#323232] rounded-md w-[49px] h-[46px] xl:w-[80px] cursor-pointer xl:h-[75px] 2k:w-[100px] 2k:h-[90px] 4k:w-[140px] 4k:h-[135px]"
             initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ delay: 1, duration: 0.6, type: "spring" }}
@@ -208,7 +208,7 @@ function Page() {
               router.push('/');
             }}
           >
-            <Edit className="w-5 h-5 xl:w-8 xl:h-8 z-10 text-[#F96C41] mx-auto my-3 xl:my-5" />
+            <Edit className="w-5 h-5 xl:w-8 xl:h-8 2k:w-12 2k:h-12 4k:w-24 4k:h-24 z-10 text-[#F96C41] mx-auto my-3 xl:my-5" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -224,23 +224,27 @@ function Page() {
       {/* Other Sections */}
       <motion.div
         ref={carDivRef}
-        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48  "
+        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 fhd:px-6 "
         initial={{ opacity: 0, y: 50 }}
         animate={isCarDivInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}
       >
-        <CarDiv />
+        <div className="max-w-full mx-auto xl:w-[1200px] fhd:w-[70%] 2k:w-[67%] 4k:w-[64%]">
+          <CarDiv />
+        </div>
       </motion.div>
 
       <motion.div
         ref={rentalsRef}
-        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
+        className="px-8 md:px-14 lg:px-20 xl:px-48 fhd:px-6 mt-4 pb-8 "
         initial={{ opacity: 0, y: 50 }}
         animate={isRentalsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8 }}
       >
-        <Rentals />
-      </motion.div>
+        <div className="max-w-full mx-auto xl:w-[1196px] fhd:w-[70%] 2k:w-[67%] 4k:w-[64%]">
+          <Rentals />
+        </div>     
+     </motion.div>
 
       <motion.div
         ref={footerRef}

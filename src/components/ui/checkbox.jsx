@@ -31,7 +31,7 @@ const Checkbox = React.forwardRef(({ className, checked, onCheckedChange, defaul
       )}
       {...props}
     >
-      {checkedState && <Check className="h-3 w-3" />}
+      {checkedState && <Check className="h-3 w-3 fhd:h-6 fhd:w-6 2k:h-10 2k:w-10 4k:h-12 4k:w-12" />}
     </button>
   )
 })

@@ -339,24 +339,20 @@ function Iternary({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full max-auto">
       <div className="bg-white rounded-2xl overflow-hidden">
         <div className="relative">
           {displayData.map((item, index) => (
             <div key={item.day} className="relative">
               {/* Timeline Line */}
               <div
-                className={`absolute left-4 sm:left-5 top-10 sm:top-12 w-0.5 h-[80%] z-0 ${
-                  index === 0 ? "bg-[#5AB1FF]" : "bg-[#17C19B]"
-                }`}
+                className={`absolute left-4 sm:left-5 2k:left-6 4k:left-9 top-10 sm:top-12 2k:top-18 4k:top-22 w-0.5  h-[80%] 2k:w-1 2k:h-[90%] 4k:w-2   z-0 ${index === 0 ? "bg-[#5AB1FF]" : "bg-[#17C19B]"}`}
               ></div>
 
               <div className="flex gap-4 sm:gap-6 mb-6 sm:mb-8 md:mb-10">
                 {/* Day Number Circle */}
                 <div
-                  className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 text-white rounded-full flex items-center justify-center text-sm sm:text-base font-bold z-10 relative ${
-                    index === 0 ? "bg-[#5AB1FF]" : "bg-[#17C19B]"
-                  }`}
+                  className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 2k:w-14 2k:h-14 4k:w-20 4k:h-20 text-white rounded-full flex items-center justify-center text-sm sm:text-base  2k:text-3xl 4k:text-4xl font-bold z-10 relative ${index === 0 ? "bg-[#5AB1FF]" : "bg-[#17C19B]"}`}
                 >
                   {item.day}
                 </div>
@@ -364,17 +360,17 @@ function Iternary({
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   {/* Day Title */}
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
-                    <h3 className="text-base sm:text-lg md:text-3xl xl:text-[50px] font-bold text-gray-900">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 2k:mb-8 flex-wrap">
+                    <h3 className="text-base sm:text-lg md:text-3xl xl:text-[50px] 2k:text-[75px] 4k:text-[100px] font-bold text-gray-900">
                       DAY {item.day}: {item.from} → {item.to} (~{item.distance})
                     </h3>
                   </div>
 
                   {/* Trip Details */}
-                  <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-                    <div className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
-                      <div className="text-[10px] sm:text-base md:text-lg xl:text-3xl">
+                  <div className="space-y-2 sm:space-y-3 2k:space-y-8  4k:space-y-14 mb-4 sm:mb-6">
+                    <div className="flex items-start gap-2  fhd:gap-4 2k:gap-4">
+                      <div className="w-1.5 h-1.5 fhd:w-3 fhd:h-3 2k:w-4 2k:h-4 4k:w-6 4k:h-6 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
+                      <div className="text-[10px] sm:text-base md:text-lg xl:text-3xl 2k:text-5xl 4k:text-7xl">
                         <span className="font-medium text-gray-900">
                           {index === 0 ? "Departure:" : "Overnight Stay:"}
                         </span>
@@ -385,13 +381,11 @@ function Iternary({
                     </div>
 
                     {item.chargingStop && (
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
+                      <div className="flex items-start gap-2 fhd:gap-4 2k:gap-4">
+                        <div className="w-1.5 h-1.5 fhd:w-3 fhd:h-3 2k:w-4 2k:h-4 4k:w-6 4k:h-6 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
                         <div className="text-[10px] sm:text-base">
-                          <span className="font-medium text-gray-900 md:text-lg xl:text-3xl">
-                            Midway Charging Stop:
-                          </span>
-                          <span className="text-[10px] font-[400] text-gray-700 ml-1 md:text-lg xl:text-3xl">
+                          <span className="font-medium text-gray-900 md:text-lg xl:text-3xl 2k:text-5xl 4k:text-7xl ">Midway Charging Stop:</span>
+                          <span className="text-[10px] font-[400] text-gray-700 ml-1 md:text-lg xl:text-3xl 2k:text-5xl 4k:text-7xl">
                             {item.chargingStop}
                           </span>
                         </div>
@@ -400,44 +394,36 @@ function Iternary({
 
                     {actualNeedHotel && (item.matchedHotel || item.hotel) && (
                       <>
-                        <div className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
-                          <div className="text-[10px] sm:text-base md:text-lg">
-                            <span className="font-medium text-gray-900 xl:text-3xl">
-                              Hotel Recommendation:
-                            </span>
+                        <div className="flex items-start gap-2  fhd:gap-4 2k:gap-4 ">
+                          <div className="w-1.5 h-1.5 fhd:w-3 fhd:h-3 2k:w-4 2k:h-4 4k:w-6 4k:h-6 bg-orange-500 rounded-full mt-2 xl:mt-4 flex-shrink-0"></div>
+                          <div className="text-[10px] sm:text-base md:text-lg 2k:text-5xl">
+                            <span className="font-medium text-gray-900 xl:text-3xl 2k:text-5xl 4k:text-7xl">Hotel Recommendation:</span>
                           </div>
                         </div>
-                        <div className="bg-white w-[311px] md:w-[584px] xl:w-[1005px] h-auto rounded-lg px-4 py-4 sm:p-5 border-2 border-gray-200 relative">
-                          <div className="absolute -top-5 right-4 md:-top-12 md:right-8 xl:right-8 xl:-top-22 w-[36px] h-[36px] md:w-[68px] md:h-[68px] xl:w-[117px] xl:h-[117px] flex items-center justify-center">
+                        <div className="bg-white w-[311px] md:w-[584px] xl:w-[1005px] 2k:w-[1505px] 4k:w-[2055px] h-auto rounded-lg px-4 py-4 sm:p-5 border-2 border-gray-200 relative">
+                          <div className="absolute -top-5 right-4 md:-top-12 md:right-8 xl:right-8 xl:-top-22 2k:-top-28 4k:-top-44 w-[36px] h-[36px] md:w-[68px] md:h-[68px] xl:w-[117px] xl:h-[117px]  2k:w-[170px] 2k:h-[170px] 4k:w-[250px] 4k:h-[250px] flex items-center justify-center">
                             <img
                               src="images/icons/discount2.png"
                               alt="discount"
                               className="w-full h-auto"
                             />
                           </div>
-                          <div className="flex flex-row sm:items-center sm:justify-between gap-3">
+                          <div className="flex flex-row sm:items-center sm:justify-between gap-3 2k:p-4 4k:p-6 ">
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-medium text-gray-900 text-[10px] md:text-lg sm:text-base xl:text-3xl mb-1 sm:mb-2 md:mb-0">
-                                {(item.matchedHotel &&
-                                  item.matchedHotel.name) ||
-                                  (item.hotel && item.hotel.name)}
+                              <h4 className="font-medium text-gray-900 text-[10px] md:text-lg sm:text-base xl:text-3xl 2k:text-5xl 4k:text-7xl mb-1 sm:mb-2 md:mb-0 2k:mb-5">
+                                {(item.matchedHotel && item.matchedHotel.name) || (item.hotel && item.hotel.name)}
                               </h4>
-                              <p className="text-[8px] font-[400] md:text-base sm:text-sm xl:text-2xl text-gray-600 leading-relaxed">
-                                {(item.matchedHotel &&
-                                  item.matchedHotel.location?.address) ||
-                                  (item.hotel && item.hotel.description)}
+                              <p className="text-[8px] font-[400] md:text-base sm:text-sm xl:text-2xl 2k:text-3xl 4k:text-5xl text-gray-600 leading-relaxed">
+                                {(item.matchedHotel && item.matchedHotel.location?.address) || (item.hotel && item.hotel.description)}
                               </p>
                             </div>
-                            <Button className="bg-[#F96C41] hover:bg-[#e55f38] cursor-pointer text-white text-xs font-medium rounded-sm flex-shrink-0 self-center w-[50px] h-[21px] md:w-24 md:h-10 xl:w-36 xl:h-[50px] md:rounded-lg">
-                              <div className="flex items-center justify-center w-full gap-x-1 md:gap-x-2">
-                                <h1 className="text-[6px] font-[600] md:text-[11px] xl:text-xl">
-                                  More Info
-                                </h1>
+                            <Button className="bg-[#F96C41] hover:bg-[#e55f38]  cursor-pointer text-white text-xs font-medium rounded-sm flex-shrink-0 self-center w-[50px] h-[21px] md:w-24 md:h-10 xl:w-36 xl:h-[50px] 2k:w-44 2k:h-[65px] 4k:w-66 4k:h-[100px] md:rounded-lg fhd:rounded-xl 2k:rounded-2xl 4k:rounded-3xl">
+                              <div className="flex items-center justify-center w-full gap-x-1 md:gap-x-2 4k:md:gap-x-6">
+                                <h1 className="text-[6px] font-[600] md:text-[11px] xl:text-xl 2k:text-2xl 4k:text-4xl">More Info</h1>
                                 <img
                                   src="images/icons/more.png"
                                   alt="MORE"
-                                  className="w-2 h-2 md:w-3 md:h-3 xl:w-4 xl:h-4"
+                                  className="w-2 h-2 md:w-3 md:h-3 xl:w-4 xl:h-4 2k:w-6 2k:h-6"
                                 />
                               </div>
                             </Button>
@@ -454,7 +440,7 @@ function Iternary({
           <div className="md:flex md:justify-center">
             <Button
               onClick={handleContinue}
-              className="w-full md:w-[381px] xl:w-[656px] btn-gradient text-white font-semibold py-3 md:py-4 rounded-lg h-12 md:h-10 xl:h-[75px] text-base md:text-sm xl:text-lg mt-3 md:mt-0 uppercase cursor-pointer"
+              className="w-full md:w-[381px] xl:w-[656px] 2k:w-[866px] 4k:w-[1200px] btn-gradient text-white font-semibold py-3 md:py-4 fhd:py-8 2k:py-10 4k:py-22 rounded-lg fhd:rounded-xl 2k:rounded-2xl 4k:rounded-3xl h-12 md:h-10 xl:h-[75px] 2k:h-[110px] text-base md:text-sm xl:text-lg fhd:text-3xl 2k:text-4xl 4k:text-6xl mt-3 fhd:mt-4 2k:mt-6 4k:mt-10 md:mt-0 uppercase cursor-pointer"
               disabled={isContinueLoading}
             >
               {isContinueLoading ? (

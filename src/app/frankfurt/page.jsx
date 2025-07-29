@@ -303,7 +303,7 @@ function Page() {
 
             {/* Filter Panel with Enhanced Slide Animation */}
             <motion.div
-              className="absolute left-0 top-0 h-full w-full max-w-sm bg-white text-black overflow-y-auto shadow-2xl"
+              className="absolute left-0 top-0 h-full w-full max-w-sm 2k:max-w-xl 4k:max-w-[90rem] bg-white text-black overflow-y-auto shadow-2xl"
               initial={{ x: "-100%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "-100%", opacity: 0 }}
@@ -322,7 +322,7 @@ function Page() {
               >
                 <div className="flex justify-between items-center mb-6">
                   <motion.h2
-                    className="text-xl font-bold"
+                    className="text-xl 2k:text-3xl font-bold"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
@@ -338,7 +338,7 @@ function Page() {
                     animate={{ opacity: 1, rotate: 0 }}
                     transition={{ delay: 0.4 }}
                   >
-                    <X className="w-6 h-6" />
+                    <X className="w-6 h-6 2k:w-10 2k:h-10" />
                   </motion.button>
                 </div>
 
@@ -353,7 +353,7 @@ function Page() {
 
       {/* Header/Navbar Section with Dark Background */}
       <motion.div
-        className="bg-black min-h-[65vh] md:min-h-[80vh] text-white rounded-b-[40px]"
+        className="bg-black min-h-[63vh] sm:min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] fhd:min-h-[73vh] 2k:min-h-[75vh] 4k:min-h-[80vh] text-white rounded-b-[40px]"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
@@ -365,15 +365,15 @@ function Page() {
           <Navbar1 />
         </div>
 
-        <div className="container mx-auto py-10">
+        <div className="container mx-auto py-10 fhd:py-12 2k:py-16 4k:py-22">
           <motion.section
-            className="my-8 px-8 md:px-14"
+            className="my-8 px-8 md:px-14 2k:px-18"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
             <motion.h1
-              className="text-[10px] md:text-[20px] md:-tracking-[0.81px] xl:text-[34px] xl:-tracking-[1.4px] -tracking-[0.41px] font-bold mb-6 text-center"
+              className="text-[10px] md:text-[20px] md:-tracking-[0.81px] xl:text-[34px] fhd:text-[46px] 2k:text-[72px] 4k:text-[100px] xl:-tracking-[1.4px] -tracking-[0.41px] font-bold mb-6 2k:mb-16 4k:mb-32 text-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.6, type: "spring" }}
@@ -388,7 +388,7 @@ function Page() {
               transition={{ delay: 0.7, duration: 0.5 }}
             >
               <motion.p
-                className="font-bold text-[10px] -tracking-[0.41px] md:text-[12px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.4px] text-white"
+                className="font-bold text-[10px] -tracking-[0.41px] md:text-[12px] md:-tracking-[0.81px] xl:text-[20px] fhd:text-[40px] 2k:text-[45px] 4k:text-[65px] xl:-tracking-[1.4px] text-white"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.8 }}
@@ -406,7 +406,7 @@ function Page() {
                 <select
                   value={sortOption}
                   onChange={handleSortChange}
-                  className="appearance-none bg-transparent text-white cursor-pointer pr-0 font-semibold text-[10px] md:text-[15px] md:-tracking-[0.81px] xl:text-[20px] xl:-tracking-[1.4px] focus:outline-none"
+                  className="appearance-none bg-transparent text-white cursor-pointer pr-0 font-semibold text-[10px] md:text-[15px] md:-tracking-[0.81px] xl:text-[20px] fhd:text-[40px] 2k:text-[45px] 4k:text-[65px] xl:-tracking-[1.4px] focus:outline-none"
                 >
                   <option value="recommended" className="text-black">
                     Recommended
@@ -421,8 +421,8 @@ function Page() {
                     Rating
                   </option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-3.5 -right-3 md:inset-y-0 md:-right-2 flex items-center px-2 text-white">
-                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <div className="pointer-events-none absolute inset-y-3.5 -right-3 md:inset-y-0 md:-right-2 flex items-center px-2 2k:px-4 4k:px-8 text-white">
+                  <svg className="fill-current h-4 w-4 fhd:h-6 fhd:w-6 2k:h-8 2k:w-8 4k:h-12 4k:w-12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                   </svg>
                 </div>
@@ -430,14 +430,14 @@ function Page() {
             </motion.div>
 
             <motion.div
-              className="flex justify-center mb-8"
+              className="flex justify-center mb-8 fhd:mb-12"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.5 }}
             >
               <motion.button
                 onClick={toggleFilters}
-                className="flex items-center justify-center px-10 py-3 rounded-full  cursor-pointer hover:bg-gradient-to-l btn-gradient text-white font-semibold shadow-lg w-full max-w-3xl text-[10px] md:text-[14px] xl:text-[20px] xl:-tracking-[1.4px]"
+                className="flex items-center justify-center px-10 py-3 fhd:py-5 2k:px-16 2k:py-8 4k:px-20 4k:py-12 rounded-full  cursor-pointer hover:bg-gradient-to-l btn-gradient text-white font-semibold shadow-lg w-full max-w-3xl fhd:max-w-4xl 2k:max-w-7xl 4k:max-w-[120rem] text-[10px] md:text-[14px] xl:text-[20px] fhd:fhd:text-3xl 2k:text-5xl 4k:text-7xl xl:-tracking-[1.4px]"
                 whileHover={{
                   scale: 1.05,
                   boxShadow: "0 15px 35px rgba(249, 108, 65, 0.4)",
@@ -447,7 +447,7 @@ function Page() {
                 transition={{ duration: 0.2 }}
               >
                 <motion.div whileHover={{ rotate: 180 }} transition={{ duration: 0.3 }}>
-                  <ListFilter className="w-2 h-2 md:w-4 md:h-4 xl:w-5 xl:h-5 mr-1 md:mr-3" />
+                  <ListFilter className="w-2 h-2 md:w-4 md:h-4 xl:w-5 xl:h-5 fhd:w-8 fhd:h-8 2k:w-12 2k:h-12 4k:w-18 4k:h-18 mr-1 md:mr-3 fhd:mr-4 2k:mr-8 4k:mr-12" />
                 </motion.div>
                 Filters
               </motion.button>
@@ -458,12 +458,13 @@ function Page() {
 
       {/* Main Content Section with White Background */}
       <motion.main
-        className="-mt-48"
+        className="-mt-48 2k:-mt-56 4k:-mt-[30rem] "
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
       >
-        <div className="container mx-auto py-8">
+
+        <div className="container mx-auto py-8 ">
           <motion.section
             className="grid grid-cols-1 gap-y-4 md:gap-y-8 mb-12"
             initial={{ opacity: 0 }}
@@ -494,25 +495,25 @@ function Page() {
       </motion.main>
 
       <motion.div
-        className=" mt-4 px-8 pb-8 md:px-14 lg:px-20 xl:px-48 "
+        className=" px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 fhd:px-6"
         initial={{ opacity: 0, y: 100 }}
   animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
       >
-        <div className="max-w-full mx-auto">
-          <CarDiv />
-        </div>
+         <div className="max-w-full mx-auto xl:w-[1200px] fhd:w-[70%] 2k:w-[67%] 4k:w-[64%]">
+                 <CarDiv />
+               </div>
       </motion.div>
 
       <motion.div
-        className="px-8 md:px-14 lg:px-20 mt-4 pb-8 xl:px-48 "
+        className="px-8 md:px-14 lg:px-20 xl:px-48 fhd:px-6 mt-4 pb-8"
         initial={{ opacity: 0, y: 100 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
       >
-        <div className="max-w-full mx-auto">
-          <Rentals />
-        </div>
+       <div className="max-w-full mx-auto xl:w-[1196px] fhd:w-[70%] 2k:w-[67%] 4k:w-[64%]">
+                 <Rentals />
+               </div> 
       </motion.div>
 
       <motion.div
