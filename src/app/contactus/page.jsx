@@ -31,14 +31,14 @@ export default function Page() {
       </motion.div>
 
       {/* Main Content */}
-      <div className="w-full -mt-60">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-28 py-8">
+      <div className="w-full -mt-60 fhd:-mt-[21rem] 2k:-mt-[29rem] 4k:-mt-[42rem] ">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-28 py-8 fhd:py-10 2k:py-14 4k:py-22">
           {/* Breadcrumb Animation */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl mx-auto text-sm text-[#FFFFFFCC] mb-2"
+            className="w-full max-w-md sm:max-w-xl md:max-w-2xl fhd:max-w-[62rem] 2k:max-w-[82rem] 4k:max-w-[124rem] 2k:text-3xl  fhd:text-xl 4k:text-5xl mx-auto text-sm text-[#FFFFFFCC] mb-2 fhd:mb-4 2k:mb-8 4k:mb-14"
           >
             Home &gt; Pages &gt; <span className="text-[#FFFFFF]">Contact Us</span>
           </motion.div>
@@ -46,13 +46,13 @@ export default function Page() {
           {/* Title Section with Scroll Animation */}
           <motion.div 
             ref={titleRef}
-            className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl mx-auto mb-6"
+            className="w-full max-w-md sm:max-w-xl md:max-w-2xl fhd:max-w-[62rem] 2k:max-w-[82rem] 4k:max-w-[124rem] 2k:text-3xl mx-auto mb-6 fhd:mb-16 2k:mb-20 4k:mb-28"
             initial={{ opacity: 0, y: 50 }}
             animate={isTitleInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, type: "spring" }}
           >
             <motion.h1 
-              className="text-3xl sm:text-4xl font-bold text-white"
+              className="text-3xl sm:text-4xl fhd:text-6xl 2k:text-7xl 4k:text-[7rem] font-bold text-white"
               initial={{ opacity: 0 }}
               animate={isTitleInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.2, duration: 0.6 }}
